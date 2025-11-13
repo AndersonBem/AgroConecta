@@ -1,0 +1,406 @@
+:root{
+  --verde-1: #002D28;
+  --verde-2: #489372;
+  --texto:    #F1F5F2;
+  --texto-soft:#E6EEE9;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--texto);
+  background: #000;
+}
+
+/* ===== HERO ===== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* fundo */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("../img/plantacao.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.05) contrast(1.05);
+}
+
+/* triângulo geral */
+.hero__triangle {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 6rem; /* afasta a logo do topo */
+  z-index: 2;
+}
+
+/* triângulo em si */
+.hero__triangle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(50% 0%, 110% 105%, -10% 105%);
+  background: var(--verde-1);
+  opacity: 0.95;
+  pointer-events: none; /* não bloqueia clique */
+  z-index: 1;
+}
+
+/* logo */
+.hero__logo {
+  position: relative;
+  z-index: 5;
+  width: clamp(120px, 12vw, 200px);
+  height: auto;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,.35));
+}
+
+
+/* botões */
+.hero__actions{
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: clamp(16px, 3vw, 40px);
+}
+
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: clamp(14px, 1.1vw, 16px);
+  border: 2px solid transparent;
+  transition: all .2s ease;
+}
+
+.btn--primary{
+  background: var(--verde-2);
+  color: #0D1A14;
+}
+
+.btn--primary:hover{
+  background: #58A783;
+}
+
+.btn--ghost{
+  background: transparent;
+  color: var(--texto);
+  border-color: var(--verde-2);
+}
+
+.btn--ghost:hover{
+  border-color: #58A783;
+  color: var(--texto-soft);
+}
+
+/* Responsividade */
+@media (max-width: 1024px){
+  .hero__triangle::before{
+    clip-path: polygon(50% 8%, 100% 100%, 0% 100%);
+  }
+}
+
+
+/* === CARD LOGIN === */
+.login-card {
+  position: relative;
+  z-index: 5;               /* acima do triângulo */
+  margin-top: 2rem;
+  background: #004137;      /* um pouco mais claro que o triângulo */
+  width: 330px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+  text-align: center;
+}
+
+.avatar {
+  width: 80px;
+  margin-bottom: 20px;
+}
+
+/* Inputs */
+.input {
+  display: block;
+  width: 90%;
+  margin: 10px auto;
+  height: 38px;
+  border-radius: 20px;
+  border: none;
+  padding: 0 15px;
+  outline: none;
+  font-size: 15px;
+  background: #0f1f18;
+  color: var(--texto);
+}
+
+/* Botão */
+.btn-login {
+  width: 80%;
+  margin-top: 15px;
+  padding: 10px 0;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--verde-1);
+  background: var(--verde-2);
+  font-weight: 600;
+}
+
+/* Links */
+.links a {
+  display: block;
+  margin-top: 12px;
+  color: var(--texto);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+/* ===========================
+   CADASTRO DO GESTOR
+   =========================== */
+
+.cadastro-gestor {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: #f5f5f5; /* fundo claro fora do card */
+}
+
+/* card grande verde */
+.cadastro-gestor__card {
+  position: relative;
+  width: min(1100px, 100%);
+  min-height: 520px;
+  border-radius: 16px;
+  padding: 2.5rem 3rem 3rem;
+  background: radial-gradient(circle at top left, #4da37a 0, #064331 55%, #022d26 100%);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+/* barra superior */
+.cadastro-gestor__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 3rem;
+  opacity: 0.9;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.topbar-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 4px;
+}
+
+.topbar-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--texto-soft);
+}
+
+.topbar-right .user-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.topbar-right .user-icon img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+}
+
+/* conteúdo central */
+.cadastro-gestor__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.cadastro-gestor__title {
+  font-size: 2.1rem;
+  font-weight: 500;
+  color: #122018;
+  margin-bottom: 2rem;
+}
+
+/* formulário */
+.cadastro-gestor__form {
+  width: min(620px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* linha com 2 campos (senha / confirmar senha) */
+.cadastro-gestor__row {
+  display: flex;
+  gap: 1rem;
+}
+
+.cadastro-gestor__row .campo {
+  flex: 1;
+}
+
+/* campos genéricos */
+.campo {
+  width: 100%;
+  height: 38px;
+  border-radius: 999px;
+  border: none;
+  padding: 0 16px;
+  font-size: 0.95rem;
+  background: #fdfdfd;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  outline: none;
+}
+
+.campo::placeholder {
+  color: #9f9f9f;
+}
+
+/* botão de confirmar */
+.cadastro-gestor__submit {
+  margin: 2rem auto 0;
+  width: min(420px, 100%);
+  height: 42px;
+  border-radius: 999px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #c7d1c6;
+  color: #111;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.cadastro-gestor__submit:hover {
+  background: #dde6db;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+/* personagem à direita */
+.cadastro-gestor__farmer {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 1.8rem;
+  height: 230px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* responsivo */
+@media (max-width: 900px) {
+  .cadastro-gestor__card {
+    padding: 1.75rem 1.5rem 2.25rem;
+  }
+
+  .cadastro-gestor__title {
+    font-size: 1.7rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .cadastro-gestor__row {
+    flex-direction: column;
+  }
+
+  .cadastro-gestor__farmer {
+    opacity: 0.3;
+    right: -20px;
+    height: 200px;
+  }
+}
+
+@media (max-width: 600px) {
+  .cadastro-gestor {
+    padding: 1rem;
+  }
+
+  .cadastro-gestor__card {
+    border-radius: 0;
+  }
+
+  .cadastro-gestor__farmer {
+    display: none; /* some no celular pra não poluir */
+  }
+}
+
+
+/* ajuste de largura do formulário na tela da cooperativa */
+.cadastro-coop .cadastro-gestor__form {
+  width: min(720px, 100%);
+}
+
+/* linha com 4 campos: nº, bairro, cidade, CEP */
+.cadastro-gestor__row--endereco {
+  display: flex;
+  gap: 0.75rem;
+}
+
+/* todos os campos da linha de endereço crescem igualmente */
+.cadastro-gestor__row--endereco .campo {
+  flex: 1;
+}
+
+/* número um pouco menor, CEP levemente menor */
+.campo--num {
+  max-width: 80px;
+  flex: 0.5;
+}
+
+.campo--cep {
+  max-width: 130px;
+  flex: 0.7;
+}
+
+/* responsivo: empilha os 4 campos no mobile */
+@media (max-width: 900px) {
+  .cadastro-gestor__row--endereco {
+    flex-direction: column;
+  }
+
+  .campo--num,
+  .campo--cep {
+    max-width: none;
+    flex: 1;
+  }
+}

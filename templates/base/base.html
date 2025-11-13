@@ -1,0 +1,25 @@
+<!-- templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}AgroConecta{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <!-- pode adicionar menu fixo, logo, etc -->
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- conteúdo específico de cada página -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <!-- rodapé padrão -->
+    </footer>
+</body>
+</html>

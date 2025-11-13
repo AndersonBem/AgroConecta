@@ -1,0 +1,169 @@
+Terminal:
+    python -m venv venv
+    venv/Scripts/activate
+    pip install django
+    python.exe -m pip install --upgrade pip
+    django-admin startproject setup .
+Em setting:
+   
+Terminal:
+    pip install python-dotenv
+Criar:
+    .env
+    add: secret_key
+    settings:
+        import os
+        from pathlib import Path
+        from dotenv import load_dotenv
+        load_dotenv()
+        SECRET_KEY = str(os.getenv('SECRET_KEY'))
+criar:
+    .gitignore
+        https://www.toptal.com/developers/gitignore/ peguei do Django
+Terminal:
+    python manage.py startapp _______
+    pip freeze > requirements.txt
+settings:
+
+    INSTALLED_APPS = [
+    ...
+    'apps.______',
+]
+    - LANGUAGE_CODE = 'pt-br';  TIME_ZONE = 'America/Sao_Paulo'
+
+
+Apps.py:
+    ...
+    name = 'apps.____'
+
+Criar:
+    urls.py dentro de apps/____  (se criar um novo app precisa criar um novo urls.py nele e incluir no urls.py do setup)
+    dentro desse apps/____/urls.py:
+        from django.urls import path
+
+        urlpatterns = [
+            # As rotas virão aqui depois
+        ]
+    dentro o urls.py de setup:
+        from django.contrib import admin
+        from django.urls import path, include
+
+        urlpatterns = [
+            path('admin/', admin.site.urls),
+            path('', include('apps.______.urls')),
+        ]
+
+Criar:
+    pastas:
+        /templates
+            /base
+            /index
+        /static
+            /css
+            /img 
+            /js
+settings.py:
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = [BASE_DIR / 'static']
+    STATIC_ROOT = BASE_DIR / 'staticfiles'  # Para uso com collectstatic em produção
+
+    TEMPLATES = [
+        ...
+        'DIRS': [BASE_DIR / 'templates'],
+        ...
+    ]
+
+""""""
+ Comando para produção:
+
+    python manage.py collectstatic
+
+Esse comando:
+
+Copia tudo de static/ e dos apps para STATIC_ROOT
+
+Prepara os arquivos estáticos para serem servidos por servidores como Nginx, Apache ou via Whitenoise
+
+
+
+Como usar nos templates HTML:
+
+No topo de cada template onde for usar arquivos estáticos:
+{% load static %}
+Depois:
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<img src="{% static 'img/logo.png' %}" alt="Logo">
+
+"""""
+Dentro de templates/base:
+    base.html = 
+    
+""
+<!-- templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Meu Projeto Django{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <!-- pode adicionar menu fixo, logo, etc -->
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- conteúdo específico de cada página -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <!-- rodapé padrão -->
+    </footer>
+</body>
+</html>
+""
+
+dentro de templates/index:
+    index.html = "
+    {% extends "base/base.html" %}
+
+{% block title %}Página Inicial{% endblock %}
+
+{% block content %}
+<h1>Bem-vindo!</h1>
+<p>Este é o início do projeto Django.</p>
+{% endblock %}
+    "
+
+views.py:
+    def index(request):
+    return render(request, 'index.html')
+
+em urls.py do app:
+    from apps.______.views import index
+    from django.urls import path
+
+    urlpatterns = [
+        # As rotas virão aqui depois
+        path('', index, name='index')
+    ]   
+
+pip install mysqlclient
+Criar o banco no workbench
+Alterar DATABASES em settings.
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'nome_do_banco',
+        'USER': 'seu_usuario_mysql',
+        'PASSWORD': 'sua_senha_mysql',
+        'HOST': 'localhost',   # ou IP do servidor MySQL
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
+    }
+}

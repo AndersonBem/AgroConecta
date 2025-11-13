@@ -1,0 +1,26 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}AgroConecta — Home{% endblock %}
+
+{% block content %}
+<main class="hero">
+  <!-- imagem de fundo -->
+  <div class="hero__bg" role="img" aria-label="Plantação verde com céu"></div>
+
+  <!-- triângulo central -->
+  <section class="hero__triangle">
+    <img
+      src="{% static 'img/logo-agroconecta.svg' %}"
+      alt="Logo AgroConecta"
+      class="hero__logo"
+      width="360"
+      height="360"
+    />
+
+    <div class="hero__actions">
+      <a href="{% url 'login_view' %}" class="btn btn--primary">Login</a>
+      <a href="" class="btn btn--ghost">Cadastrar</a>
+    </div>
+  </section>
+</main>
+{% endblock %}

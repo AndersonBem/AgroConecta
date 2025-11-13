@@ -1,0 +1,37 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}AgroConecta — Login{% endblock %}
+
+{% block content %}
+<main class="hero">
+  <!-- imagem de fundo -->
+  <div class="hero__bg" role="img" aria-label="Plantação verde com céu"></div>
+
+  <!-- triângulo central -->
+    <section class="hero__triangle hero__triangle--login">
+        <img
+        src="{% static 'img/logo-agroconecta.svg' %}"
+        alt="Logo AgroConecta"
+        class="hero__logo"
+        />
+
+        <div class="login-card">
+            <img src="{% static 'img/avatar.svg' %}" class="avatar" alt="avatar">
+
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" name="username" class="input" placeholder="Usuário" required>
+                <input type="password" name="password" class="input" placeholder="Senha" required>
+                <button type="submit" class="btn-login">Entrar</button>
+            </form>
+
+            <div class="links">
+                <a href="{% url 'cadastro_cooperativa' %}">Cadastrar cooperativa</a>
+                <a href="{% url 'cadastro_gestor' %}">Cadastrar gestor</a>
+            </div>
+        </div>
+    </section>
+
+
+</main>
+{% endblock %}
