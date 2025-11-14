@@ -3,6 +3,18 @@
 {% block title %}AgroConecta — Cadastro do Gestor{% endblock %}
 
 {% block content %}
+
+{% if messages %}
+  <script>
+      {% for message in messages %}
+          alert("{{ message|escapejs }}");
+      {% endfor %}
+  </script>
+{% endif %}
+
+
+
+
 <main class="cadastro-gestor">
   <div class="cadastro-gestor__card">
 
@@ -31,6 +43,9 @@
 
         <input type="text" name="nome_completo"
                class="campo" placeholder="Nome Completo">
+        
+        <input type="text" name="usuario"
+               class="campo" placeholder="Usuário">
 
         <input type="text" name="cpf"
                class="campo" placeholder="CPF">

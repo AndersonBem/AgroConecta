@@ -12,7 +12,7 @@ class BaseReadOnlyPKAdmin(admin.ModelAdmin):
 # ===== Cadastros básicos =====
 @admin.register(Gestor)
 class GestorAdmin(BaseReadOnlyPKAdmin):
-    list_display = ('cpf', 'nome', 'email')
+    list_display = ('cpf', 'nome', 'email', 'senha_hash', 'usuario')
     search_fields = ('cpf', 'nome', 'email')
     ordering = ('nome',)
 
@@ -25,7 +25,7 @@ class EnderecoAdmin(BaseReadOnlyPKAdmin):
 
 @admin.register(OperadorArmazem)
 class OperadorArmazemAdmin(BaseReadOnlyPKAdmin):
-    list_display = ('idoperadorarmazem', 'nome', 'email')
+    list_display = ('idoperadorarmazem', 'nome', 'email', 'senha_hash', 'usuario')
     search_fields = ('nome', 'email')
     ordering = ('nome',)
 
@@ -59,7 +59,7 @@ class ArmazemAdmin(BaseReadOnlyPKAdmin):
 
 @admin.register(Cooperativa)
 class CooperativaAdmin(BaseReadOnlyPKAdmin):
-    list_display = ('cnpj', 'razaosocial', 'nomeresponsavel', 'emailinstitucional', 'endereco_idendereco')
+    list_display = ('cnpj', 'razaosocial', 'nomeresponsavel', 'emailinstitucional', 'endereco_idendereco', 'senha_hash', 'usuario')
     search_fields = ('cnpj', 'razaosocial', 'nomeresponsavel', 'emailinstitucional')
     autocomplete_fields = ('endereco_idendereco',)
     list_select_related = ('endereco_idendereco',)

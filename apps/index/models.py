@@ -5,7 +5,8 @@ class Gestor(models.Model):
     cpf = models.CharField(db_column='CPF', primary_key=True, max_length=14)
     nome = models.CharField(max_length=60)
     email = models.CharField(max_length=80)
-
+    senha_hash = models.CharField(db_column='senha_hash', max_length=128)
+    usuario = models.CharField(db_column='usuario', max_length=20)
     class Meta:
         managed = False
         db_table = 'Gestor'
@@ -28,6 +29,8 @@ class OperadorArmazem(models.Model):
     idoperadorarmazem = models.AutoField(db_column='idOperadorArmazem', primary_key=True)
     nome = models.CharField(max_length=60)
     email = models.CharField(max_length=80)
+    senha_hash = models.CharField(db_column='senha_hash', max_length=128)
+    usuario = models.CharField(db_column='usuario', max_length=20)
 
     class Meta:
         managed = False
@@ -61,6 +64,8 @@ class Cooperativa(models.Model):
     nomeresponsavel = models.CharField(db_column='nomeResponsavel', max_length=60)
     cpfresponsavel = models.CharField(db_column='cpfResponsavel', max_length=14, blank=True, null=True)
     emailinstitucional = models.CharField(db_column='emailInstitucional', max_length=80, unique=True)
+    senha_hash = models.CharField(db_column='senha_hash', max_length=128)
+    usuario = models.CharField(db_column='usuario', max_length=20)
     endereco_idendereco = models.ForeignKey(
         Endereco, models.DO_NOTHING,
         db_column='Endereco_idEndereco'
