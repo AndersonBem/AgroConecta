@@ -40,6 +40,7 @@ body {
   justify-content: flex-start;
   padding-top: 6rem; /* afasta a logo do topo */
   z-index: 2;
+  padding-bottom: 6rem;
 }
 
 /* triângulo em si */
@@ -75,6 +76,7 @@ body {
 
 .btn{
   display: inline-flex;
+  min-width: 120px;
   align-items: center;
   justify-content: center;
   padding: 12px 28px;
@@ -121,10 +123,11 @@ body {
   margin-top: 2rem;
   background: #004137;      /* um pouco mais claro que o triângulo */
   width: 330px;
-  padding: 25px;
+  padding: 25px 25px 50px 25px;
   border-radius: 12px;
   box-shadow: 0 5px 20px rgba(0,0,0,0.4);
   text-align: center;
+  
 }
 
 .avatar {
@@ -183,21 +186,30 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem;
-  background: #f5f5f5; /* fundo claro fora do card */
+  padding: 0rem;
+  background: var(--verde-1); /* fundo claro fora do card */
 }
 
 /* card grande verde */
 .cadastro-gestor__card {
   position: relative;
   width: min(1100px, 100%);
+  width: 100% !important;
+  max-width: none !important;
   min-height: 520px;
-  border-radius: 16px;
+  border-radius: 10px;
   padding: 2.5rem 3rem 3rem;
   background: radial-gradient(circle at top left, #4da37a 0, #064331 55%, #022d26 100%);
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
   overflow: hidden;
 }
+section{
+  margin-bottom: 9.375rem; /* Margem para os campos não ficarem tão */
+  box-shadow: #022d26;
+
+}  
+
+
 
 /* barra superior */
 .cadastro-gestor__topbar {
@@ -208,6 +220,7 @@ body {
   opacity: 0.9;
 }
 
+
 .topbar-left {
   display: flex;
   align-items: center;
@@ -215,8 +228,8 @@ body {
 }
 
 .topbar-logo {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.25);
   padding: 4px;
@@ -229,10 +242,10 @@ body {
 }
 
 .topbar-right .user-icon {
-  width: 36px;
-  height: 36px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background: #000;
+  
   display: flex;
   align-items: center;
   justify-content: center;
@@ -273,6 +286,9 @@ body {
 .cadastro-gestor__row {
   display: flex;
   gap: 1rem;
+  width: calc(65% - 4px);
+  margin: 0 auto;
+  
 }
 
 .cadastro-gestor__row .campo {
@@ -294,6 +310,12 @@ body {
   display: block;
   margin: 0 auto 0.25rem auto;
 }
+/* Adiciona a largura de 60% e centraliza APENAS para campos longos (que são filhos diretos do form) */
+.cadastro-gestor__form > .campo:not(.campo--num):not(.campo--cep) {
+ width: 60%;
+ margin-left: auto;
+ margin-right: auto;
+}
 
 .campo::placeholder {
   color: #9f9f9f;
@@ -302,8 +324,8 @@ body {
 /* botão de confirmar */
 .cadastro-gestor__submit {
   margin: 2rem auto 0;
-  width: min(420px, 100%);
-  height: 42px;
+  width: min(220px, 100%);
+  height: 50px;
   border-radius: 999px;
   border: none;
   font-size: 1rem;
@@ -326,9 +348,12 @@ body {
   position: absolute;
   bottom: 0.5rem;
   right: 1.8rem;
-  height: 230px;
+  height: 300px;
   object-fit: contain;
   pointer-events: none;
+  margin-bottom: 15rem;
+  margin-right: 4rem;
+  
 }
 
 /* responsivo */
@@ -376,12 +401,15 @@ body {
 /* linha com 4 campos: nº, bairro, cidade, CEP */
 .cadastro-gestor__row--endereco {
   display: flex;
+  width: calc(65% - 4px);
   gap: 0.75rem;
+  margin: 0 auto;
 }
 
 /* todos os campos da linha de endereço crescem igualmente */
 .cadastro-gestor__row--endereco .campo {
   flex: 1;
+  
 }
 
 /* número um pouco menor, CEP levemente menor */
