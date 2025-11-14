@@ -69,7 +69,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'agroconecta',
         'USER': 'root',
-        'PASSWORD': str(os.getenv('password_bd')),
+        'PASSWORD': 'Ne@123456789',
         'HOST': 'localhost',
         'PORT': '3306',
     }
