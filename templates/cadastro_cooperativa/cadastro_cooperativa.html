@@ -28,6 +28,9 @@
       <form class="cadastro-gestor__form" method="post">
         {% csrf_token %}
 
+        <input type="text" name="usuario"
+               class="campo" placeholder="Usuário">
+
         <input type="text" name="nome_fantasia"
                class="campo" placeholder="Nome Completo">
 

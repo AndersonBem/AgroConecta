@@ -29,6 +29,9 @@
       <form class="cadastro-gestor__form" method="post">
         {% csrf_token %}
 
+        <input type="text" name="usuario"
+               class="campo" placeholder="Usuário">
+
         <input type="text" name="nome_completo"
                class="campo" placeholder="Nome Completo">
 
@@ -41,13 +44,12 @@
         <input type="tel" name="telefone"
                class="campo" placeholder="Telefone">
 
-        <div class="cadastro-gestor__row">
-          <input type="password" name="senha"
+        <input type="password" name="senha"
                  class="campo" placeholder="Senha">
 
           <input type="password" name="confirmar_senha"
                  class="campo" placeholder="Confirmar Senha">
-        </div>
+       
 
         <button type="submit" class="cadastro-gestor__submit">
           Confirmar Cadastro ✔

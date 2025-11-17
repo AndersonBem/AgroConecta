@@ -1,0 +1,93 @@
+@charset "UTF-8";
+
+:root{
+  --verde-1: #002D28;
+  --verde-2: #489372;
+  --texto:    #F1F5F2;
+  --texto-soft:#E6EEE9;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    height: 900vh;
+}
+nav.sidebar{
+    width: 300px;
+    height: 100%;
+    background: radial-gradient(circle at top left, #4da37a 0, #064331 55%, #022d26 100%);
+    padding: 40px 0 40px 1%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    
+}
+
+/*nav.sidebar{
+    width: 60px;
+    height: 100%;
+    background-color: var(--verde-1) ;
+    padding: 40px 0 40px 1%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    transition: .2s;
+}
+    */
+/* nav.sidebar:hover{
+    width: 300px;
+
+}
+*/
+.btn-expandir{
+    width: 100%;
+    padding-left: 10px ;
+}
+
+.btn-expandir > i {
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+ul{
+    height: 100%;
+    list-style-type: none;
+}
+ul li.item-menu{
+    transition: .2s;
+}
+
+ul li.item-menu:hover {
+    background-color: var(--verde-2);
+
+}
+
+ul li.item-menu a{
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+    padding: 20px 4%;
+    display: flex;
+    margin-bottom: 20px;
+    line-height: 40px;
+
+}
+
+ul li.item-menu a .txt-link{
+    margin-left: 25px;
+    
+
+}
+
+ul li.item-menu a .icon > i{
+    font-size: 30px;
+    
+    
+}
