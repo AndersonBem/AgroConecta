@@ -3,6 +3,16 @@
 {% block title %}AgroConecta — Login{% endblock %}
 
 {% block content %}
+
+{% if messages %}
+<script>
+    {% for message in messages %}
+        alert("{{ message|escapejs }}");
+    {% endfor %}
+</script>
+{% endif %}
+
+
 <main class="hero">
   <!-- imagem de fundo -->
   <div class="hero__bg" role="img" aria-label="Plantação verde com céu"></div>
