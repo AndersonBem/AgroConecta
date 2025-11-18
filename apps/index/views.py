@@ -158,7 +158,6 @@ def cadastro_cooperativa(request):
     # GET
     return render(request, "cadastro_cooperativa/cadastro_cooperativa.html")
 
-
 def cadastro_gestor(request):
     if request.method == "POST":
         nome = request.POST.get("nome_completo","").strip()

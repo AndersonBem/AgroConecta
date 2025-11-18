@@ -16,6 +16,9 @@ ALTER TABLE `OperadorArmazem`
 ALTER TABLE `Cooperativa`
   ADD COLUMN `usuario` VARCHAR(20) NOT NULL AFTER `senha_hash`;
 
+ALTER TABLE safra
+	DROP COLUMN Safracol;
+
 delimiter $$
 create procedure cadGestor_telefone(
     IN p_cpf VARCHAR(14),

@@ -125,7 +125,6 @@ class Safra(models.Model):
     idsafra = models.AutoField(db_column='idSafra', primary_key=True)
     ano = models.DateField()  # veio como DATE no script
     descricao = models.CharField(max_length=150, blank=True, null=True)
-    safracol = models.CharField(db_column='Safracol', max_length=45, blank=True, null=True)
 
     class Meta:
         managed = False
