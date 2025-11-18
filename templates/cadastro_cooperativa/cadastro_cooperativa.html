@@ -3,6 +3,15 @@
 {% block title %}AgroConecta — Cadastro da Cooperativa{% endblock %}
 
 {% block content %}
+{% if messages %}
+  <script>
+      {% for message in messages %}
+          alert("{{ message|escapejs }}");
+      {% endfor %}
+  </script>
+{% endif %}
+
+
 <main class="cadastro-gestor cadastro-coop">
   <div class="cadastro-gestor__card">
 

@@ -43,8 +43,8 @@ class StatusAdmin(BaseReadOnlyPKAdmin):
 
 @admin.register(Safra)
 class SafraAdmin(BaseReadOnlyPKAdmin):
-    list_display = ('idsafra', 'ano', 'descricao', 'safracol')
-    search_fields = ('descricao', 'safracol')
+    list_display = ('idsafra', 'ano', 'descricao')
+    search_fields = ('descricao',)
     ordering = ('-ano',)
 
 # ===== Entidades com FKs =====
