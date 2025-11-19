@@ -1,0 +1,47 @@
+{% extends "Siderbar/base_sidebar.html" %}
+
+{% block title %}GestaoCooperativa - AgroConecta{% endblock %}
+
+{% block content %}
+
+<div class="cooperativas-container">
+    <header class="cooperativas-header">
+        <h1>Gestão de Cooperativas 🌱</h1>
+        <button class="add-cooperativa-btn">
+            <i class="bi bi-plus-circle"></i> Adicionar Nova Cooperativa
+        </button>
+    </header>
+
+    <div class="cooperativas-list-grid">
+        <div class="cooperativa-card">
+            <h3>Cooperativa 1</h3>
+            <p><strong>Status:</strong> Ativa</p>
+            <p><strong>Número de solicitações:</strong> 45</p>
+            <div class="card-actions">
+                <button class="action-btn view-btn"><i class="bi bi-eye"></i> Ver Detalhes</button>
+                <button class="action-btn edit-btn"><i class="bi bi-pencil-square"></i> Editar</button>
+            </div>
+        </div>
+         <div class="cooperativa-card">
+            <h3>Cooperativa 2</h3>
+            <p><strong>Status:</strong> Ativa</p>
+            <p><strong>Número de solicitações:</strong> 38</p>
+            <div class="card-actions">
+                <button class="action-btn view-btn"><i class="bi bi-eye"></i> Ver Detalhes</button>
+                <button class="action-btn edit-btn"><i class="bi bi-pencil-square"></i> Editar</button>
+            </div>
+        </div>
+        </div>
+        <div class="cooperativas-list-grid">
+        <div class="cooperativa-card">
+            <h3>Cooperativa 3</h3>
+            <p><strong>Status:</strong> Ativa</p>
+            <p><strong>Número de solicitações:</strong> 10</p>
+            <div class="card-actions">
+                <button class="action-btn view-btn"><i class="bi bi-eye"></i> Ver Detalhes</button>
+                <button class="action-btn edit-btn"><i class="bi bi-pencil-square"></i> Editar</button>
+            </div>
+        </div>
+</div>
+
+{% endblock %}

@@ -3,6 +3,7 @@
 {% block title %}AgroConecta — Cadastro da Cooperativa{% endblock %}
 
 {% block content %}
+<script src="https://unpkg.com/imask"></script>
 {% if messages %}
   <script>
       {% for message in messages %}
@@ -43,7 +44,7 @@
         <input type="text" name="nome_fantasia"
                class="campo" placeholder="Nome Completo">
 
-        <input type="text" name="cnpj"
+        <input type="text" name="cnpj" id="cnpj"
                class="campo" placeholder="CNPJ">
 
         <input type="email" name="email"
@@ -93,4 +94,11 @@
     />
   </div>
 </main>
+<script>
+  const cnpjInput = document.getElementById('cnpj');
+
+  IMask(cnpjInput, {
+    mask: '00.000.000/0000-00'
+  });
+</script>
 {% endblock %}
