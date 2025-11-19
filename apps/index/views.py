@@ -351,7 +351,7 @@ def editar_cooperativa(request, cnpj):
     }
     return render(request, "cadastro_cooperativa/cadastro_cooperativa.html", context)
 
-def detalhe_cooperativa(request, cnpj):
+def ver_cooperativa(request, cnpj):
     """
     Mostra os detalhes de uma cooperativa específica:
     dados básicos, endereço, telefones e solicitações.
@@ -384,7 +384,7 @@ def detalhe_cooperativa(request, cnpj):
         "total_solicitacoes": total_solicitacoes,
     }
 
-    return render(request, "GestaoCooperativa/detalhe_cooperativa.html", context)
+    return render(request, "VerCooperativa/VerCooperativa.html", context)
 
 def gestao_sementes(request):
     # Conta quantas solicitações cada cooperativa tem
@@ -467,3 +467,6 @@ def detalhes_semente(request, id):
 
 def home(request):
     return render(request, "Home/Home.html")
+
+def gestao_sementes(request):
+    return render(request, "GestaoSementes/GestaoSementes.html")

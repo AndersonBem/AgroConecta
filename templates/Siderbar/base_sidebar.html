@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/Siderbar.css' %}">
 </head>
 
-<body>
+<body class="{% block body_class %}{% endblock %}">
 
     <!-- SIDEBAR FIXA -->
     {% include 'Siderbar/Siderbar.html' %}
