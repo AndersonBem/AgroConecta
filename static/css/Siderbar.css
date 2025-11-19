@@ -277,271 +277,38 @@ ul li.item-menu a .icon i {
         padding: 18px 0;
     }
 }
-/* ====================================================== */
-/*        ESTILOS EXCLUSIVOS PARA A HOME (ISOLADOS)       */
-/* ====================================================== */
+/* ======== HOME PAGE ======== */
 
-/* Mantém o margin-left da sidebar e evita o fundo branco */
-body.home-active .main-content {
-    padding: 0 !important;
-    margin-left: 300px !important; /* ✔ manter sidebar */
-    width: calc(100% - 300px) !important; /* ✔ usar toda área restante */
+.home-page .main-content {
+    background: transparent !important;   /* Remove o branco */
+    padding: 0 !important;                /* Evita bordas brancas */
+}
+
+/* Regra geral do layout */
+.main-content {
+    margin-left: 300px;
+    padding: 30px;
     min-height: 100vh;
-    background: transparent !important;
+    width: calc(100% - 300px);
 }
 
-body.home-active {
-    background: transparent !important;
-}
-
-.home-page {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* Fundo inteiro da home */
 .home-container {
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 60px);
     display: flex;
     justify-content: center;
     align-items: center;
-    background: radial-gradient(
-        circle at top left,
-        #0d4f3f 10%,     /* verde mais escuro e agradável */
-        #064331 45%,   
-        #022d26 100%)
+    margin: 0;
+    background: radial-gradient(circle at top left, #4da37a 0, #064331 55%, #022d26 100%);
 }
 
-/* Logo centralizada */
 .home-logo {
     width: 350px;
     max-width: 80%;
     height: auto;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
 }
 
-/* =============================== */
-/*   DETALHES DA COOPERATIVA       */
-/* =============================== */
-
-.cooperativa-detalhe-container {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.10);
-    max-width: 1100px;
-    margin: auto;
-    border-top: 6px solid var(--verde-2);
-}
-
-.cooperativa-detalhe-container h1 {
-    font-size: 2rem;
-    color: var(--verde-1);
-    margin-bottom: 20px;
-    font-weight: 700;
-}
-
-/* Blocos (dados, endereço, telefones etc.) */
-.coop-bloco {
-    background: #f8fbf9;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 25px;
-    border-left: 5px solid var(--verde-2);
-}
-
-.coop-bloco h2 {
-    font-size: 1.4rem;
-    color: var(--verde-1);
-    margin-bottom: 12px;
-}
-
-.coop-bloco p, 
-.coop-bloco li {
-    font-size: 1rem;
-    color: #444;
-    margin-bottom: 6px;
-}
-
-.coop-bloco ul {
-    padding-left: 15px;
-}
-
-/* ------------------------- */
-/*      TABELA               */
-/* ------------------------- */
-
-.tabela-solicitacoes {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    font-size: 0.95rem;
-}
-
-.tabela-solicitacoes th {
-    background: var(--verde-1);
-    color: white;
-    padding: 10px;
-    text-align: left;
-}
-
-.tabela-solicitacoes td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-.tabela-solicitacoes tr:hover {
-    background-color: #e8f5ef;
-}
-
-/* ------------------------- */
-/*      AÇÕES (botões)      */
-/* ------------------------- */
-
-.coop-acoes {
-    display: flex;
-    gap: 15px;
-    margin-top: 30px;
-}
-
-.btn {
-    padding: 12px 20px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 600;
-    transition: 0.3s ease;
-    display: inline-block;
-}
-
-.btn-editar {
-    background: var(--verde-2);
-    color: var(--texto);
-}
-
-.btn-editar:hover {
-    background: var(--verde-1);
-}
-
-.btn-voltar {
-    background: white;
-    border: 2px solid var(--verde-2);
-    color: var(--verde-2);
-}
-
-.btn-voltar:hover {
-    background: var(--verde-2);
-    color: white;
-}
-
-/* Ajuste para mobile */
-@media (max-width: 700px) {
-
-    .cooperativa-detalhe-container {
-        padding: 20px;
-    }
-
-    .coop-acoes {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .btn {
-        width: 100%;
-        text-align: center;
-    }
-}
-/* ====================================================== */
-/*         ESTILOS EXCLUSIVOS – GESTÃO DE SEMENTES        */
-/* ====================================================== */
-
-body.sementes-active .main-content {
-    margin-left: 300px; /* mantém alinhamento com sidebar */
-    padding: 40px;
-}
-
-/* Container geral */
-.sementes-page {
-    position: relative;
-    min-height: 100vh;
-    padding: 50px;
-
-    /* mesmo estilo da Home */
-    background: linear-gradient(135deg, #1d6b57 0%, #064331 40%, #022d26 100%);
-    color: #fff;
-}
-
-/* Caixa central */
-.sementes-container {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-/* Título */
-.sementes-container .titulo {
-    font-size: 32px;
-    font-weight: 700;
-    margin-bottom: 10px;
-}
-
-/* Subtítulo */
-.sementes-container .subtitulo {
-    font-size: 18px;
-    font-weight: 600;
-    margin-top: 10px;
-}
-
-/* Lista de armazéns */
-.descricao-lista {
-    margin-top: 20px;
-    text-align: left;
-    font-size: 18px;
-    margin-left: 32%;
-}
-
-/* Botões */
-.botoes-acoes {
-    margin-top: 40px;
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-}
-
-.btn-editar,
-.btn-deletar {
-    display: inline-block;
-    padding: 12px 40px;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: 600;
-    color: white;
-    cursor: pointer;
-    transition: 0.2s;
-    text-decoration: none;
-}
-
-.btn-editar {
-    background: #11b63a;
-}
-
-.btn-editar:hover {
-    background: #0e9c31;
-}
-
-.btn-deletar {
-    background: #d74444;
-}
-
-.btn-deletar:hover {
-    background: #c13a3a;
-}
-
-/* Mascote */
-.mascote {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    width: 230px;
-    pointer-events: none; /* não interfere nos cliques */
+.home-page{
+    padding:0;
 }
