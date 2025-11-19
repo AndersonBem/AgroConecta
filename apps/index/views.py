@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password,check_password
 from django.db import connection
-from .models import (Gestor, Cooperativa, OperadorArmazem, Telefone, Solicitacao)
+from .models import (Gestor, Cooperativa, OperadorArmazem, Telefone, TipoSemente,
+                     Solicitacao)
 from django.db.models import Count
 
 # Create your views here.
@@ -384,6 +385,85 @@ def detalhe_cooperativa(request, cnpj):
     }
 
     return render(request, "GestaoCooperativa/detalhe_cooperativa.html", context)
+
+def gestao_sementes(request):
+    # Conta quantas solicitações cada cooperativa tem
+    sementes = TipoSemente.objects.all
+    
+
+    context = {"sementes": sementes}
+    return render(request, "GestaoSementes/GestaoSementes.html", context)
+
+def cadastrar_semente(request):
+    if request.method == "POST":
+        nome = request.POST.get("nome", "").strip()
+        descricao = request.POST.get("descricao", "").strip()
+
+        erros = []
+
+        if not nome:
+            erros.append("O nome da semente é obrigatório.")
+
+        if TipoSemente.objects.filter(nome=nome).exists():
+            erros.append("Já existe uma semente cadastrada com esse nome.")
+
+        if erros:
+            for e in erros:
+                messages.error(request, e)
+            return render(request, "semente/cadastrar_semente.html")
+
+        TipoSemente.objects.create(
+            nome=nome,
+            descricao=descricao if descricao else None
+        )
+
+        messages.success(request, "Semente cadastrada com sucesso!")
+        return redirect("gestao_sementes")
+
+    return render(request, "cadastro_semente/cadastro_semente.html")
+
+def editar_semente(request, id):
+    # Busca a semente pelo ID ou retorna 404
+    semente = get_object_or_404(TipoSemente, idtiposemente=id)
+
+    if request.method == "POST":
+        nome = request.POST.get("nome", "").strip()
+        descricao = request.POST.get("descricao", "").strip()
+
+        erros = []
+
+        # Nome obrigatório
+        if not nome:
+            erros.append("O nome da semente é obrigatório.")
+
+        # Verifica duplicidade (exceto ela mesma)
+        if TipoSemente.objects.filter(nome=nome).exclude(idtiposemente=id).exists():
+            erros.append("Já existe uma semente cadastrada com esse nome.")
+
+        if erros:
+            for e in erros:
+                messages.error(request, e)
+            return render(request, "semente/editar_semente.html", {"semente": semente})
+
+        # Atualiza
+        semente.nome = nome
+        semente.descricao = descricao if descricao else None
+        semente.save()
+
+        messages.success(request, "Semente atualizada com sucesso!")
+
+        return redirect("gestao_sementes")  # ajuste conforme sua lista
+
+    return render(request, "semente/editar_semente.html", {"semente": semente})
+
+def detalhes_semente(request, id):
+    # busca a semente pelo ID (idtiposemente é a PK)
+    semente = get_object_or_404(TipoSemente, idtiposemente=id)
+
+    contexto = {
+        "semente": semente,
+    }
+    return render(request, "semente/detalhes_semente.html", contexto)
 
 def home(request):
     return render(request, "Home/Home.html")
