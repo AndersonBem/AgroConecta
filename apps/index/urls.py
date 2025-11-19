@@ -1,4 +1,6 @@
-from apps.index.views import index, login_view, cadastro_cooperativa, cadastro_gestor, gestao_cooperativas,home, editar_cooperativa
+from apps.index.views import (
+    index, login_view, cadastro_cooperativa, cadastro_gestor, 
+    gestao_cooperativas,home, editar_cooperativa, detalhe_cooperativa)
 from django.urls import path
 
 
@@ -9,6 +11,7 @@ urlpatterns = [
         path("cooperativas/<path:cnpj>/editar/", editar_cooperativa, name="editar_cooperativa"),
         path('cadastro_gestor/', cadastro_gestor, name='cadastro_gestor'),
         path('gestao_cooperativa/', gestao_cooperativas, name='gestao_cooperativa'),
-        path('home/', home, name='home')
+        path('home/', home, name='home'),
+        path("detalhescooperativas/<path:cnpj>/", detalhe_cooperativa, name="detalhe_cooperativa"),
         
     ]   

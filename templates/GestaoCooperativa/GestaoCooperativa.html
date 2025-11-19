@@ -38,9 +38,9 @@
                 </p>
 
                 <div class="card-actions">
-                    <a href="" class="action-btn view-btn">
-                        <i class="bi bi-eye"></i> Ver Detalhes
-                    </a>
+                <a href="{% url 'detalhe_cooperativa' coop.cnpj %}" class="action-btn view-btn">
+                    <i class="bi bi-eye"></i> Ver Detalhes
+                </a>
                 <a href="{% url 'editar_cooperativa' coop.cnpj %}" class="action-btn edit-btn">
                     <i class="bi bi-pencil-square"></i> Editar
                 </a>
