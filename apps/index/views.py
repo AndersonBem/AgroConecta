@@ -198,3 +198,10 @@ def cadastro_gestor(request):
 
         return redirect("login_view")
     return render(request, "cadastro_gestor/cadastro_gestor.html")
+
+def gestao_cooperativa(request):
+    return render(request, "GestaoCooperativa/GestaoCooperativa.html")
+
+
+def home(request):
+    return render(request, "Home/Home.html")
