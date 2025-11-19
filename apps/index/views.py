@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password,check_password
 from django.db import connection
-from .models import Gestor, Cooperativa, OperadorArmazem, Telefone
+from .models import (Gestor, Cooperativa, OperadorArmazem, Telefone, Solicitacao)
 from django.db.models import Count
 
 # Create your views here.
@@ -350,7 +350,40 @@ def editar_cooperativa(request, cnpj):
     }
     return render(request, "cadastro_cooperativa/cadastro_cooperativa.html", context)
 
+def detalhe_cooperativa(request, cnpj):
+    """
+    Mostra os detalhes de uma cooperativa específica:
+    dados básicos, endereço, telefones e solicitações.
+    """
 
+    # Cooperativa + endereço (FK Endereco)
+    cooperativa = get_object_or_404(
+        Cooperativa.objects.select_related("endereco_idendereco"),
+        cnpj=cnpj
+    )
+
+    # Telefones ligados à cooperativa
+    telefones = Telefone.objects.filter(cooperativa_cnpj=cooperativa)
+
+    # Solicitações da cooperativa (pode limitar pra não vir milhões)
+    solicitacoes_qs = (
+        Solicitacao.objects
+        .filter(cooperativa_cnpj=cooperativa)
+        .select_related("safra_idsafra", "status_idstatus")  # ajuste nomes se forem diferentes
+        .order_by("-idsolicitacao")                          # ou "-idSolicitacao", depende do model
+    )
+
+    total_solicitacoes = solicitacoes_qs.count()
+    solicitacoes = solicitacoes_qs[:10]  # por exemplo: mostra só as 10 mais recentes
+
+    context = {
+        "coop": cooperativa,
+        "telefones": telefones,
+        "solicitacoes": solicitacoes,
+        "total_solicitacoes": total_solicitacoes,
+    }
+
+    return render(request, "GestaoCooperativa/detalhe_cooperativa.html", context)
 
 def home(request):
     return render(request, "Home/Home.html")
