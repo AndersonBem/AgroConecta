@@ -467,3 +467,6 @@ def detalhes_semente(request, id):
 
 def home(request):
     return render(request, "Home/Home.html")
+
+def gestao_sementes2(request):
+    return render(request,"GestaoSementes/GestaoSementes2.html" )

@@ -452,96 +452,336 @@ body.home-active {
     }
 }
 /* ====================================================== */
-/*         ESTILOS EXCLUSIVOS – GESTÃO DE SEMENTES        */
+/* ESTILO EXCLUSIVO – GESTÃO DE SEMENTES                 */
 /* ====================================================== */
 
+
+/* ----------- Fundo geral ----------- */
 body.sementes-active .main-content {
-    margin-left: 300px; /* mantém alinhamento com sidebar */
-    padding: 40px;
+    margin-left: 300px;
+    padding: 0;
+    background-color: transparent;
 }
 
-/* Container geral */
 .sementes-page {
     position: relative;
     min-height: 100vh;
-    padding: 50px;
-
-    /* mesmo estilo da Home */
+    padding: 40px;
     background: linear-gradient(135deg, #1d6b57 0%, #064331 40%, #022d26 100%);
     color: #fff;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Caixa central */
-.sementes-container {
-    text-align: center;
-    max-width: 700px;
+/* ----------- Card Geral ----------- */
+.sementes-card {
+    background-color: #ffffff;
+    color: #333;
+    padding: 35px;
+    border-radius: 18px;
+    max-width: 1050px;
     margin: 0 auto;
+    box-shadow: 0px 5px 18px rgba(0,0,0,0.25);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
 }
 
-/* Título */
-.sementes-container .titulo {
-    font-size: 32px;
+/* ----------- Conteúdo ----------- */
+.sementes-content {
+    flex-grow: 1;
+    max-width: 70%;
+}
+
+.sementes-card .titulo {
+    font-size: 30px;
     font-weight: 700;
+    color: #064331;
     margin-bottom: 10px;
 }
 
-/* Subtítulo */
-.sementes-container .subtitulo {
-    font-size: 18px;
-    font-weight: 600;
+.sementes-card .subtitulo {
+    font-size: 17px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* ----------- Cards de Armazéns ----------- */
+.armazens-container h3 {
+    font-size: 20px;
+    color: #064331;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.armazens-container {
     margin-top: 10px;
 }
 
-/* Lista de armazéns */
-.descricao-lista {
-    margin-top: 20px;
-    text-align: left;
-    font-size: 18px;
-    margin-left: 32%;
+.armazem-card {
+    background: #f3f7f4;
+    padding: 12px 18px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border-left: 6px solid #1d6b57;
+    font-weight: 600;
+    transition: 0.2s ease;
+    cursor: pointer;
 }
 
-/* Botões */
+.armazem-card:hover {
+    background: #e9f3ef;
+    transform: translateX(4px);
+}
+
+/* ----------- Botões ----------- */
+.btn-padrao {
+    padding: 12px 40px !important;
+    border-radius: 30px !important;
+    font-size: 17px !important;
+    font-weight: 700;
+    text-decoration: none;
+    color: #fff !important;
+
+    display: inline-flex !important;   /* Garante alinhamento */
+    align-items: center !important;    /* Centraliza verticalmente */
+    justify-content: center !important;/* Centraliza horizontalmente */
+
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+    transition: 0.2s ease;
+    min-width: 150px;                  /* Mesmo tamanho entre botões */
+    height: 45px;                      /* Corrige altura */
+    line-height: normal !important;    /* Impede texto de ficar torto */
+}
+
+/* Botão Editar */
+.btn-editar {
+    background: var(--verde-2) !important;
+}
+
+/* Hover do Editar */
+.btn-editar:hover {
+    background: var(--verde-1) !important;
+}
+
+/* Botão Deletar */
+.btn-deletar {
+    background: #d74444 !important;
+}
+.btn-deletar:hover {
+    background: #b83737 !important;
+}
+
+/* Container */
 .botoes-acoes {
-    margin-top: 40px;
+    margin-top: 35px;
     display: flex;
     gap: 20px;
-    justify-content: center;
 }
 
-.btn-editar,
-.btn-deletar {
-    display: inline-block;
-    padding: 12px 40px;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: 600;
-    color: white;
-    cursor: pointer;
-    transition: 0.2s;
+/* ----------- Mascote ----------- */
+.mascote {
+    width: 210px;
+    align-self: flex-end;
+}
+
+
+/* ====================================================== */
+/* ESTILOS EXCLUSIVOS – GESTÃO DE SEMENTES (LISTA)       */
+/* ====================================================== */
+
+/* 1. Configuração da área principal para a lista */
+body.sementes-lista-active .main-content {
+    /* Garante que o conteúdo ocupe todo o espaço após o sidebar */
+    margin-left: 300px; 
+    padding: 0; 
+    background-color: transparent; 
+}
+
+/* 2. Container geral da lista (define o fundo verde escuro) */
+.lista-page {
+    position: relative;
+    min-height: 100vh;
+    padding: 40px; 
+    
+    /* Fundo verde escuro gradiente (igual ao de Cooperativas/Detalhes Semente) */
+    background: linear-gradient(135deg, #1d6b57 0%, #064331 40%, #022d26 100%);
+    color: #fff;
+    width: 100%;
+    box-sizing: border-box; 
+}
+
+/* 3. Estilo do Cabeçalho (Título e Botão Adicionar) */
+.header-lista {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.titulo-lista {
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.emoji-folha {
+    font-size: 28px;
+    margin-left: 5px;
+}
+
+/* Botão "Adicionar Nova Semente" (igual ao de Cooperativas) */
+.btn-adicionar-novo {
+    background-color: #11b63a; /* Verde */
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
     text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.btn-adicionar-novo:hover {
+    background-color: #0e9c31; 
+}
+
+.icone-adicionar {
+    font-size: 20px;
+    margin-right: 8px;
+    line-height: 1;
+}
+
+/* 4. Estilo dos Cards de Semente (Blocos Brancos) */
+.card-item-semente {
+    background-color: #fff;
+    color: #333;
+    padding: 20px 30px;
+    border-radius: 10px;
+    margin-bottom: 20px; /* Espaçamento entre os cards */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.semente-nome {
+    font-size: 20px;
+    font-weight: 700;
+    color: #064331; /* Cor do título */
+    margin-bottom: 10px;
+}
+
+.semente-info p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.semente-info strong {
+    font-weight: 600;
+}
+
+/* 5. Botões dentro do Card */
+.semente-botoes {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 15px; /* Espaçamento entre os botões */
+}
+
+.btn-detalhes, .btn-editar {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.btn-detalhes {
+    /* Estilo "Ver Detalhes" (pode ser verde claro ou cinza) */
+    background-color: #f0f0f0; 
+    color: #064331; 
+}
+.btn-detalhes:hover {
+    background-color: #ddd;
 }
 
 .btn-editar {
-    background: #11b63a;
+    /* Estilo "Editar" (Verde padrão) */
+    background: #11b63a; 
+    color: white;
 }
-
 .btn-editar:hover {
     background: #0e9c31;
 }
 
-.btn-deletar {
-    background: #d74444;
-}
-
-.btn-deletar:hover {
-    background: #c13a3a;
-}
-
-/* Mascote */
-.mascote {
+/* 6. Mascote no canto inferior direito (estilo absoluto) */
+.mascote-lista {
     position: absolute;
     bottom: 20px;
     right: 20px;
-    width: 230px;
-    pointer-events: none; /* não interfere nos cliques */
+    width: 200px; /* Tamanho do mascote */
+    pointer-events: none; 
+    z-index: 10; /* Garante que fique acima dos outros elementos */
+}
+/* ====================================================== */
+/* RESPONSIVIDADE (< 600px) — CORREÇÃO DA MARGEM BRANCA   */
+/* ====================================================== */
+
+@media (max-width: 600px) {
+
+    /* Remove qualquer espaço do sidebar */
+    body.sementes-active .main-content,
+    body.sementes-lista-active .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    /* Ajusta o container das páginas */
+    .sementes-page,
+    .lista-page {
+        padding: 20px 10px !important;
+        min-height: 100vh !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Card dos detalhes */
+    .sementes-card {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 20px !important;
+
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    /* Esconde mascotes no mobile */
+    .mascote,
+    .mascote-lista {
+        display: none !important;
+    }
+
+    /* Lista de armazéns */
+    .descricao-lista {
+        width: 100% !important;
+        text-align: left !important;
+    }
+
+    /* Botões */
+    .botoes-acoes {
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+    }
+
+    .btn-editar,
+    .btn-deletar {
+        min-width: 120px;
+        padding: 10px 20px !important;
+        text-align: center;
+    }
 }
