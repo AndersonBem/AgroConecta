@@ -4,6 +4,7 @@
 
 {% block content %}
 <script src="https://unpkg.com/imask"></script>
+
 {% if messages %}
   <script>
       {% for message in messages %}
@@ -11,7 +12,6 @@
       {% endfor %}
   </script>
 {% endif %}
-
 
 <main class="cadastro-gestor cadastro-coop">
   <div class="cadastro-gestor__card">
@@ -33,45 +33,68 @@
 
     <!-- conteúdo central -->
     <section class="cadastro-gestor__content">
-      <h1 class="cadastro-gestor__title">Crie Seu Cadastro</h1>
+      <h1 class="cadastro-gestor__title">
+        {% if modo == "editar" %}
+          Editar Cooperativa
+        {% else %}
+          Crie Seu Cadastro
+        {% endif %}
+      </h1>
 
       <form class="cadastro-gestor__form" method="post">
         {% csrf_token %}
 
+        <!-- Usuário -->
         <input type="text" name="usuario"
-               class="campo" placeholder="Usuário">
+               class="campo" placeholder="Usuário"
+               value="{% if coop %}{{ coop.usuario }}{% endif %}">
 
+        <!-- Nome fantasia (razaoSocial no banco) -->
         <input type="text" name="nome_fantasia"
-               class="campo" placeholder="Nome Completo">
+               class="campo" placeholder="Nome Completo"
+               value="{% if coop %}{{ coop.razaosocial }}{% endif %}">
 
+        <!-- CNPJ (read-only) -->
         <input type="text" name="cnpj" id="cnpj"
-               class="campo" placeholder="CNPJ">
+               class="campo" placeholder="CNPJ"
+               value="{% if coop %}{{ coop.cnpj }}{% endif %}"
+               {% if modo == "editar" %}readonly{% endif %}>
 
+        <!-- E-mail institucional -->
         <input type="email" name="email"
-               class="campo" placeholder="E-mail">
+               class="campo" placeholder="E-mail"
+               value="{% if coop %}{{ coop.emailinstitucional }}{% endif %}">
 
+        <!-- Telefone (vem da variável 'telefone' do contexto) -->
         <input type="tel" name="telefone"
-               class="campo" placeholder="Telefone">
+               class="campo" placeholder="Telefone"
+               value="{{ telefone|default_if_none:'' }}">
 
+        <!-- Rua -->
         <input type="text" name="endereco"
-               class="campo" placeholder="Endereço">
+               class="campo" placeholder="Endereço"
+               value="{% if coop and coop.endereco_idendereco %}{{ coop.endereco_idendereco.rua }}{% endif %}">
 
         <!-- linha de endereço: nº, bairro, cidade, CEP -->
         <div class="cadastro-gestor__row cadastro-gestor__row--endereco">
           <input type="text" name="numero"
-                 class="campo campo--num" placeholder="nº">
+                 class="campo campo--num" placeholder="nº"
+                 value="{% if coop and coop.endereco_idendereco %}{{ coop.endereco_idendereco.numero }}{% endif %}">
 
           <input type="text" name="bairro"
-                 class="campo" placeholder="Bairro">
+                 class="campo" placeholder="Bairro"
+                 value="{% if coop and coop.endereco_idendereco %}{{ coop.endereco_idendereco.bairro }}{% endif %}">
 
           <input type="text" name="cidade"
-                 class="campo" placeholder="Cidade">
+                 class="campo" placeholder="Cidade"
+                 value="{% if coop and coop.endereco_idendereco %}{{ coop.endereco_idendereco.cidade }}{% endif %}">
 
           <input type="text" name="cep"
-                 class="campo campo--cep" placeholder="CEP">
+                 class="campo campo--cep" placeholder="CEP"
+                 value="{% if coop and coop.endereco_idendereco %}{{ coop.endereco_idendereco.cep }}{% endif %}">
         </div>
 
-        <!-- linha de senha / confirmar senha -->
+        <!-- linha de senha / confirmar senha (sempre em branco) -->
         <div class="cadastro-gestor__row">
           <input type="password" name="senha"
                  class="campo" placeholder="Senha">
@@ -81,7 +104,11 @@
         </div>
 
         <button type="submit" class="cadastro-gestor__submit">
-          Confirmar Cadastro ✔
+          {% if modo == "editar" %}
+            Atualizar Cadastro ✔
+          {% else %}
+            Confirmar Cadastro ✔
+          {% endif %}
         </button>
       </form>
     </section>
@@ -94,11 +121,13 @@
     />
   </div>
 </main>
+
 <script>
   const cnpjInput = document.getElementById('cnpj');
-
-  IMask(cnpjInput, {
-    mask: '00.000.000/0000-00'
-  });
+  if (cnpjInput) {
+    IMask(cnpjInput, {
+      mask: '00.000.000/0000-00'
+    });
+  }
 </script>
 {% endblock %}
