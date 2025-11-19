@@ -69,7 +69,7 @@ def login_view(request):
                 f"Login realizado com sucesso como {tipo_usuario.title()}!"
             )
 
-            return redirect("index")
+            return redirect("home")
         else:
             messages.error(request, "Usuário ou senha incorretos.")
 
