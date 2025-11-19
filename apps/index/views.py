@@ -384,7 +384,7 @@ def detalhe_cooperativa(request, cnpj):
         "total_solicitacoes": total_solicitacoes,
     }
 
-    return render(request, "GestaoCooperativa/detalhe_cooperativa.html", context)
+    return render(request, "verCooperativa/verCooperativa.html", context)
 
 def gestao_sementes(request):
     # Conta quantas solicitações cada cooperativa tem
