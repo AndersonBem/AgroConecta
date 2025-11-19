@@ -350,7 +350,7 @@ def editar_cooperativa(request, cnpj):
     }
     return render(request, "cadastro_cooperativa/cadastro_cooperativa.html", context)
 
-def detalhe_cooperativa(request, cnpj):
+def ver_cooperativa(request, cnpj):
     """
     Mostra os detalhes de uma cooperativa específica:
     dados básicos, endereço, telefones e solicitações.
@@ -383,7 +383,7 @@ def detalhe_cooperativa(request, cnpj):
         "total_solicitacoes": total_solicitacoes,
     }
 
-    return render(request, "GestaoCooperativa/detalhe_cooperativa.html", context)
+    return render(request, "VerCooperativa/VerCooperativa.html", context)
 
 def home(request):
     return render(request, "Home/Home.html")

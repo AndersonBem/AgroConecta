@@ -1,0 +1,96 @@
+{% extends "Siderbar/base_sidebar.html" %}
+
+{% block title %}Detalhes da Cooperativa - AgroConecta{% endblock %}
+
+{% block content %}
+<div class="cooperativa-detalhe-container">
+    <h1>Gestão cooperativa  {{ coop.razaosocial }}</h1>
+
+    <section class="coop-bloco">
+        <h2>Dados da cooperativa</h2>
+        <p><strong>CNPJ:</strong> {{ coop.cnpj }}</p>
+        <p><strong>Razão social:</strong> {{ coop.razaosocial }}</p>
+        <p><strong>Responsável:</strong> {{ coop.nomeresponsavel }}</p>
+        <p><strong>CPF responsável:</strong> {{ coop.cpfresponsavel|default:"—" }}</p>
+        <p><strong>E-mail institucional:</strong> {{ coop.emailinstitucional }}</p>
+        <p><strong>Usuário:</strong> {{ coop.usuario }}</p>
+    </section>
+
+    <section class="coop-bloco">
+        <h2>Endereço</h2>
+        {% if coop.endereco_idendereco %}
+            <p>{{ coop.endereco_idendereco.rua }}, {{ coop.endereco_idendereco.numero }}</p>
+            <p>{{ coop.endereco_idendereco.bairro }}  {{ coop.endereco_idendereco.cidade }}/{{ coop.endereco_idendereco.uf }}</p>
+            <p>CEP: {{ coop.endereco_idendereco.cep }}</p>
+        {% else %}
+            <p>Endereço não cadastrado.</p>
+        {% endif %}
+    </section>
+
+    <section class="coop-bloco">
+        <h2>Telefones</h2>
+        {% if telefones %}
+            <ul>
+                {% for tel in telefones %}
+                    <li>{{ tel.numero }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Nenhum telefone cadastrado.</p>
+        {% endif %}
+    </section>
+
+    <section class="coop-bloco">
+        <h2>Solicitações</h2>
+        <p><strong>Total:</strong> {{ total_solicitacoes }}</p>
+
+        {% if solicitacoes %}
+            <table class="tabela-solicitacoes">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Safra</th>
+                        <th>Status</th>
+                        <th>Quantidade (kg)</th>
+                        <th>Nº produtores beneficiados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in solicitacoes %}
+                        <tr>
+                            <td>{{ s.idsolicitacao }}</td>
+                            <td>
+                                {% if s.safra_idsafra %}
+                                    {{ s.safra_idsafra.ano }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if s.status_idstatus %}
+                                    {{ s.status_idstatus.nome }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+                            <td>{{ s.quantidade }}</td>
+                            <td>{{ s.numeroprodutoresbeneficiados }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Não há solicitações registradas para esta cooperativa.</p>
+        {% endif %}
+    </section>
+
+    <div class="coop-acoes">
+        <a href="{% url 'editar_cooperativa' coop.cnpj %}" class="btn btn-editar">
+            Editar cooperativa
+        </a>
+        <a href="{% url 'gestao_cooperativa' %}" class="btn btn-voltar">
+            Voltar para lista
+        </a>
+    </div>
+</div>
+{% endblock %}
