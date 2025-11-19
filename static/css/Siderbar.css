@@ -451,3 +451,97 @@ body.home-active {
         text-align: center;
     }
 }
+/* ====================================================== */
+/*         ESTILOS EXCLUSIVOS – GESTÃO DE SEMENTES        */
+/* ====================================================== */
+
+body.sementes-active .main-content {
+    margin-left: 300px; /* mantém alinhamento com sidebar */
+    padding: 40px;
+}
+
+/* Container geral */
+.sementes-page {
+    position: relative;
+    min-height: 100vh;
+    padding: 50px;
+
+    /* mesmo estilo da Home */
+    background: linear-gradient(135deg, #1d6b57 0%, #064331 40%, #022d26 100%);
+    color: #fff;
+}
+
+/* Caixa central */
+.sementes-container {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Título */
+.sementes-container .titulo {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+/* Subtítulo */
+.sementes-container .subtitulo {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* Lista de armazéns */
+.descricao-lista {
+    margin-top: 20px;
+    text-align: left;
+    font-size: 18px;
+    margin-left: 32%;
+}
+
+/* Botões */
+.botoes-acoes {
+    margin-top: 40px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.btn-editar,
+.btn-deletar {
+    display: inline-block;
+    padding: 12px 40px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+    text-decoration: none;
+}
+
+.btn-editar {
+    background: #11b63a;
+}
+
+.btn-editar:hover {
+    background: #0e9c31;
+}
+
+.btn-deletar {
+    background: #d74444;
+}
+
+.btn-deletar:hover {
+    background: #c13a3a;
+}
+
+/* Mascote */
+.mascote {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 230px;
+    pointer-events: none; /* não interfere nos cliques */
+}

@@ -1,0 +1,37 @@
+{% extends "Siderbar/base_sidebar.html" %}
+{% load static %}
+
+{% block title %}Gestão de Sementes - AgroConecta{% endblock %}
+{% block body_class %}sementes-active{% endblock %}
+
+{% block content %}
+
+<div class="sementes-page">
+
+    <div class="sementes-container">
+
+        <h1 class="titulo">Semente</h1>
+
+        <p class="subtitulo">Descrição</p>
+
+        <div class="descricao-lista">
+            <strong>Armazéns:</strong><br>
+            <span>armazem 1</span><br>
+            <span>armazem 2</span><br>
+            <span>armazem 3</span><br>
+            <span>armazem 4</span>
+        </div>
+
+        <div class="botoes-acoes">
+            <a href="#" class="btn-editar">Editar</a>
+            <a href="#" class="btn-deletar">Deletar</a>
+        </div>
+
+    </div>
+
+    <!-- Mascote no canto inferior direito -->
+    <img src="{% static 'img/fazendeiro.svg' %}" class="mascote" alt="Mascote Agro">
+
+</div>
+
+{% endblock %}

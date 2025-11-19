@@ -387,3 +387,6 @@ def ver_cooperativa(request, cnpj):
 
 def home(request):
     return render(request, "Home/Home.html")
+
+def gestao_sementes(request):
+    return render(request, "GestaoSementes/GestaoSementes.html")
