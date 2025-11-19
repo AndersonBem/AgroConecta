@@ -1,0 +1,30 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}Cadastro de Sementes{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+<script>
+    {% for message in messages %}
+        alert("{{ message|escapejs }}");
+    {% endfor %}
+</script>
+{% endif %}
+
+<h1>Cadastro de Sementes 🌱</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Nome da semente:</label>
+    <input type="text" name="nome" class="campo" placeholder="Nome">
+
+    <label>Descrição:</label>
+    <textarea name="descricao" class="campo" placeholder="Descrição opcional"></textarea>
+
+    <button type="submit" class="btn">Cadastrar ✔</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}Detalhes da Semente{% endblock %}
+
+{% block content %}
+<h1>Detalhes da Semente 🌱</h1>
+
+<div class="card">
+    <p><strong>ID:</strong> {{ semente.idtiposemente }}</p>
+    <p><strong>Nome:</strong> {{ semente.nome }}</p>
+    <p><strong>Descrição:</strong> {{ semente.descricao|default:"(sem descrição)" }}</p>
+</div>
+
+<a href="{% url 'gestao_sementes' %}" class="btn">Voltar para lista</a>
+<a href="{% url 'editar_semente' semente.pk %}" class="btn">Editar</a>
+{% endblock %}
