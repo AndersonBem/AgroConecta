@@ -4,44 +4,53 @@
 
 {% block content %}
 
+{% if messages %}
+  <script>
+      {% for message in messages %}
+          alert("{{ message|escapejs }}");
+      {% endfor %}
+  </script>
+{% endif %}
+
 <div class="cooperativas-container">
     <header class="cooperativas-header">
         <h1>Gestão de Cooperativas 🌱</h1>
-        <button class="add-cooperativa-btn">
+
+        <a href="{% url 'cadastro_cooperativa' %}" class="add-cooperativa-btn">
             <i class="bi bi-plus-circle"></i> Adicionar Nova Cooperativa
-        </button>
+        </a>
     </header>
 
     <div class="cooperativas-list-grid">
-        <div class="cooperativa-card">
-            <h3>Cooperativa 1</h3>
-            <p><strong>Status:</strong> Ativa</p>
-            <p><strong>Número de solicitações:</strong> 45</p>
-            <div class="card-actions">
-                <button class="action-btn view-btn"><i class="bi bi-eye"></i> Ver Detalhes</button>
-                <button class="action-btn edit-btn"><i class="bi bi-pencil-square"></i> Editar</button>
+        {% for coop in cooperativas %}
+            <div class="cooperativa-card">
+                <h3>{{ coop.razaosocial }}</h3>
+
+                <p><strong>CNPJ:</strong> {{ coop.cnpj }}</p>
+                <p><strong>Responsável:</strong> {{ coop.nomeresponsavel }}</p>
+
+                {# por enquanto status fixo, depois você pode trazer do banco #}
+                <p><strong>Status:</strong> Ativa</p>
+
+                <p>
+                    <strong>Número de solicitações:</strong>
+                    {{ coop.total_solicitacoes }}
+                </p>
+
+                <div class="card-actions">
+                    <a href="" class="action-btn view-btn">
+                        <i class="bi bi-eye"></i> Ver Detalhes
+                    </a>
+                <a href="{% url 'editar_cooperativa' coop.cnpj %}" class="action-btn edit-btn">
+                    <i class="bi bi-pencil-square"></i> Editar
+                </a>
+                </div>
             </div>
-        </div>
-         <div class="cooperativa-card">
-            <h3>Cooperativa 2</h3>
-            <p><strong>Status:</strong> Ativa</p>
-            <p><strong>Número de solicitações:</strong> 38</p>
-            <div class="card-actions">
-                <button class="action-btn view-btn"><i class="bi bi-eye"></i> Ver Detalhes</button>
-                <button class="action-btn edit-btn"><i class="bi bi-pencil-square"></i> Editar</button>
-            </div>
-        </div>
-        </div>
-        <div class="cooperativas-list-grid">
-        <div class="cooperativa-card">
-            <h3>Cooperativa 3</h3>
-            <p><strong>Status:</strong> Ativa</p>
-            <p><strong>Número de solicitações:</strong> 10</p>
-            <div class="card-actions">
-                <button class="action-btn view-btn"><i class="bi bi-eye"></i> Ver Detalhes</button>
-                <button class="action-btn edit-btn"><i class="bi bi-pencil-square"></i> Editar</button>
-            </div>
-        </div>
+        {% empty %}
+            <p>Não há cooperativas cadastradas ainda.</p>
+        {% endfor %}
+    </div>
 </div>
+
 
 {% endblock %}

@@ -103,3 +103,96 @@ BEGIN
 END$$
 
 delimiter ;
+
+DELIMITER $$
+
+CREATE PROCEDURE updCooperativa_tel_endereco(
+    IN p_cnpj             VARCHAR(18),
+    IN p_razaoSocial      VARCHAR(60),
+    IN p_nomeResponsavel  VARCHAR(60),
+    IN p_cpfResponsavel   VARCHAR(14),
+    IN p_emailInst        VARCHAR(80),
+    IN p_senha_hash       VARCHAR(128),
+    IN p_usuario          VARCHAR(20),
+    IN p_telefone         VARCHAR(15),
+
+    IN p_uf               CHAR(2),
+    IN p_cidade           VARCHAR(45),
+    IN p_bairro           VARCHAR(45),
+    IN p_rua              VARCHAR(45),
+    IN p_numero           INT,
+    IN p_comp             VARCHAR(45),
+    IN p_cep              VARCHAR(9)
+)
+BEGIN
+    DECLARE v_idEnd INT;
+    DECLARE v_idTel INT;
+
+    
+    SELECT Endereco_idEndereco
+      INTO v_idEnd
+      FROM Cooperativa
+     WHERE CNPJ = p_cnpj
+     LIMIT 1;
+
+    IF v_idEnd IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Cooperativa não encontrada para o CNPJ informado.';
+    END IF;
+
+    
+    UPDATE Endereco
+       SET UF     = p_uf,
+           cidade = p_cidade,
+           bairro = p_bairro,
+           rua    = p_rua,
+           numero = p_numero,
+           comp   = p_comp,
+           cep    = p_cep
+     WHERE idEndereco = v_idEnd;
+
+    
+    UPDATE Cooperativa
+       SET razaoSocial       = p_razaoSocial,
+           nomeResponsavel   = p_nomeResponsavel,
+           cpfResponsavel    = p_cpfResponsavel,
+           emailInstitucional= p_emailInst,
+           senha_hash        = p_senha_hash,
+           usuario           = p_usuario
+     WHERE CNPJ = p_cnpj;
+
+   
+    SELECT idTelefone
+      INTO v_idTel
+      FROM Telefone
+     WHERE Cooperativa_CNPJ = p_cnpj
+     ORDER BY idTelefone
+     LIMIT 1;
+
+  
+    IF p_telefone IS NULL OR p_telefone = '' THEN
+
+        DELETE FROM Telefone
+         WHERE Cooperativa_CNPJ = p_cnpj;
+
+    ELSE
+       
+        IF v_idTel IS NULL THEN
+
+            INSERT INTO Telefone (numero, Cooperativa_CNPJ)
+            VALUES (p_telefone, p_cnpj);
+
+       
+        ELSE
+
+            UPDATE Telefone
+               SET numero = p_telefone
+             WHERE idTelefone = v_idTel;
+
+        END IF;
+    END IF;
+
+END$$
+
+DELIMITER ;
+

@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password,check_password
 from django.db import connection
-from .models import Gestor, Cooperativa, OperadorArmazem
+from .models import Gestor, Cooperativa, OperadorArmazem, Telefone
+from django.db.models import Count
 
 # Create your views here.
 def index(request):
@@ -155,8 +156,13 @@ def cadastro_cooperativa(request):
         messages.success(request, "Cooperativa cadastrada com sucesso! Agora você já pode fazer login.")
         return redirect("login_view")
 
-    # GET
-    return render(request, "cadastro_cooperativa/cadastro_cooperativa.html")
+   # GET → só abrir o formulário em modo criação
+    context = {
+        "modo": "criar",
+        "coop": None,
+        "telefone": "",
+    }
+    return render(request, "cadastro_cooperativa/cadastro_cooperativa.html", context)
 
 def cadastro_gestor(request):
     if request.method == "POST":
@@ -199,8 +205,151 @@ def cadastro_gestor(request):
         return redirect("login_view")
     return render(request, "cadastro_gestor/cadastro_gestor.html")
 
-def gestao_cooperativa(request):
-    return render(request, "GestaoCooperativa/GestaoCooperativa.html")
+def gestao_cooperativas(request):
+    # Conta quantas solicitações cada cooperativa tem
+    cooperativas = (
+        Cooperativa.objects
+        .annotate(total_solicitacoes=Count('solicitacao'))  # nome da relação reversa
+        .order_by('razaosocial')
+    )
+
+    context = {
+        "cooperativas": cooperativas,
+        
+    }
+    return render(request, "GestaoCooperativa/GestaoCooperativa.html", context)
+
+def editar_cooperativa(request, cnpj):
+    # busca cooperativa ou 404
+    coop = get_object_or_404(Cooperativa, pk=cnpj)
+
+    # telefone principal (pega o primeiro cadastrado)
+    telefone_atual = (
+        Telefone.objects
+        .filter(cooperativa_cnpj=coop)
+        .values_list("numero", flat=True)
+        .first()
+    )
+
+    if request.method == "POST":
+        # ---------- 1. Coleta dados do formulário ----------
+        usuario       = request.POST.get("usuario", "").strip()
+        nome_fantasia = request.POST.get("nome_fantasia", "").strip()
+        # cnpj_form   = request.POST.get("cnpj", "").strip()  # não vamos permitir mudar o CNPJ
+        email         = request.POST.get("email", "").strip()
+        telefone      = request.POST.get("telefone", "").strip()
+        endereco      = request.POST.get("endereco", "").strip()  # rua
+        numero        = request.POST.get("numero", "").strip()
+        bairro        = request.POST.get("bairro", "").strip()
+        cidade        = request.POST.get("cidade", "").strip()
+        cep           = request.POST.get("cep", "").strip()
+
+        senha         = request.POST.get("senha") or ""
+        confirmar     = request.POST.get("confirmar_senha") or ""
+
+        erros = []
+
+        # ---------- 2. Validações básicas ----------
+        if not all([usuario, nome_fantasia, email, endereco,
+                    numero, bairro, cidade, cep]):
+            erros.append("Preencha todos os campos obrigatórios (exceto senha).")
+
+        # senha opcional: se preencher, tem que conferir
+        if senha or confirmar:
+            if senha != confirmar:
+                erros.append("As senhas não conferem.")
+        # se não preencher, mantemos a senha atual
+
+        # CNPJ: não permitimos alterar (melhor deixar read-only no template)
+        # if cnpj_form != coop.cnpj:
+        #     erros.append("O CNPJ não pode ser alterado.")
+
+        # email duplicado (exceto a própria cooperativa)
+        if (
+            Cooperativa.objects
+            .filter(emailinstitucional=email)
+            .exclude(pk=coop.pk)
+            .exists()
+        ):
+            erros.append("Já existe outra cooperativa registrada com esse e-mail.")
+
+        # usuario duplicado (exceto a própria cooperativa)
+        if (
+            Cooperativa.objects
+            .filter(usuario=usuario)
+            .exclude(pk=coop.pk)
+            .exists()
+        ):
+            erros.append("Já existe outra cooperativa registrada com esse usuário.")
+
+        # número do endereço
+        if not numero.isdigit():
+            erros.append("O número do endereço deve conter apenas dígitos.")
+
+        # se houver erros, mostra e volta pro template com dados atuais
+        if erros:
+            for e in erros:
+                messages.error(request, e)
+
+            context = {
+                "modo": "editar",
+                "coop": coop,
+                "telefone": telefone,
+            }
+            return render(request, "cadastro_cooperativa/cadastro_cooperativa.html", context)
+
+        # ---------- 3. Definição da senha_hash ----------
+        if senha:
+            # usuário digitou nova senha -> gera novo hash
+            senha_hash = make_password(senha)
+        else:
+            # mantém a senha atual
+            senha_hash = coop.senha_hash
+
+        # ---------- 4. Campos que não vêm do formulário ----------
+        # por enquanto vamos manter o nomeResponsavel e cpfResponsavel atuais
+        nome_responsavel = coop.nomeresponsavel
+        cpf_responsavel  = coop.cpfresponsavel
+
+        # UF e complemento (por enquanto fixos / vazios)
+        uf   = "PE"
+        comp = ""
+
+        # ---------- 5. Chama a procedure de UPDATE ----------
+        with connection.cursor() as cursor:
+            cursor.callproc(
+                "updCooperativa_tel_endereco",
+                [
+                    coop.cnpj,                # p_cnpj - não alteramos
+                    nome_fantasia,           # p_razaoSocial
+                    nome_responsavel,        # p_nomeResponsavel
+                    cpf_responsavel,         # p_cpfResponsavel
+                    email,                   # p_emailInst
+                    senha_hash,              # p_senha_hash
+                    usuario,                 # p_usuario
+                    telefone,                # p_telefone
+
+                    uf,                      # p_uf
+                    cidade,                  # p_cidade
+                    bairro,                  # p_bairro
+                    endereco,                # p_rua
+                    int(numero),             # p_numero
+                    comp,                    # p_comp
+                    cep,                     # p_cep
+                ]
+            )
+
+        messages.success(request, "Cooperativa atualizada com sucesso!")
+        return redirect("gestao_cooperativa")
+
+    # ---------- GET: só exibe o formulário preenchido ----------
+    context = {
+        "modo": "editar",
+        "coop": coop,
+        "telefone": telefone_atual or "",
+    }
+    return render(request, "cadastro_cooperativa/cadastro_cooperativa.html", context)
+
 
 
 def home(request):
