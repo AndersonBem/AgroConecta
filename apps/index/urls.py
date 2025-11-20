@@ -1,7 +1,8 @@
 from apps.index.views import (
     index, login_view, cadastro_cooperativa, cadastro_gestor, 
     gestao_cooperativas,home, editar_cooperativa, detalhe_cooperativa,
-    gestao_sementes, cadastrar_semente,editar_semente, detalhes_semente,gestao_sementes2)
+    gestao_sementes, cadastrar_semente,editar_semente, detalhes_semente,gestao_sementes2, perfil_gestor,
+    gestao_armazens,ver_armazens)
 from django.urls import path
 
 
@@ -18,5 +19,8 @@ urlpatterns = [
         path('cadastrar_sementes/', cadastrar_semente, name='cadastrar_semente'),
         path("sementes/<path:id>/editar/", editar_semente, name="editar_semente"),
         path("sementes/<int:id>/detalhes/", detalhes_semente, name="detalhes_semente"),
-         path('gestao_sementes2/', gestao_sementes2, name='gestao_sementes2')
+         path('gestao_sementes2/', gestao_sementes2, name='gestao_sementes2'),
+        path("perfil_gestor/",perfil_gestor, name='perfil_gestor'),
+        path("gestao_armazens/",gestao_armazens, name='gestao_armazens'),
+        path("ver-armazens/<int:armazem_id>/", ver_armazens, name='ver_armazens')
     ]   

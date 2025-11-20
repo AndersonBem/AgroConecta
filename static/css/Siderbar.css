@@ -277,6 +277,73 @@ ul li.item-menu a .icon i {
         padding: 18px 0;
     }
 }
+/* sidebar.css - Estilos para o novo Header */
+
+/* Container do Topo (Logo e Perfil) */
+.sidebar-header {
+    display: flex;
+    justify-content: space-between; /* Distribui a logo na esquerda e o perfil na direita */
+    align-items: center;
+    padding: 5px 50px 15px 50px; /* Adicione padding para dar espaço */
+}
+
+/* Estilo da Logo e Ícone de Perfil */
+.logo-icon, .profile-icon {
+    width: 60px; /* Tamanho dos ícones (ajuste conforme a imagem) */
+    height: 60px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* Opcional: Para deixar o ícone de perfil redondo */
+.profile-icon {
+    border-radius: 50%; 
+}
+
+/* Linha Divisória */
+.sidebar-divider {
+    border: 0;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.2); /* Linha divisória sutil */
+    margin: 10px 0 20px 0;
+}
+
+/* Ajuste o 'btn-expandir' se ele estiver muito deslocado agora */
+.btn-expandir {
+    /* Mantenha os estilos existentes, mas verifique se o posicionamento está ok */
+    /* ... */
+}
+/* 1. Estilos dos Ícones (Geral) */
+.logo-icon, .profile-icon {
+    width: 60px; 
+    height: 60px;
+    object-fit: cover;
+    cursor: pointer;
+    /* Adiciona uma transição suave para qualquer mudança de estilo */
+    transition: opacity 0.3s ease-in-out; 
+}
+
+/* Opcional: Para deixar o ícone de perfil redondo */
+.profile-icon {
+    border-radius: 50%; 
+}
+
+/* ---------------------------------------------------- */
+
+/* 2. EFEITO HOVER */
+
+/* Quando o mouse passar em cima do link da logo */
+.logo-link:hover .logo-icon {
+    opacity: 0.7; /* Diminui a opacidade para dar a sensação de clique/interação */
+    background: var(--verde-2);
+}
+
+/* Quando o mouse passar em cima do link do perfil */
+.profile-link:hover .profile-icon {
+    opacity: 0.7; /* Diminui a opacidade */
+    background: var(--verde-2);
+}
+
 /* ====================================================== */
 /*        ESTILOS EXCLUSIVOS PARA A HOME (ISOLADOS)       */
 /* ====================================================== */
@@ -784,4 +851,143 @@ body.sementes-lista-active .main-content {
         padding: 10px 20px !important;
         text-align: center;
     }
+}
+
+/* ====================================================== */
+/* 7. ESTILOS EXCLUSIVOS – PERFIL DO GESTOR               */
+/* ====================================================== */
+
+/* Fundo da tela de perfil */
+body.perfil-gestor-active .main-content {
+    background: radial-gradient(circle at top left, #4da37a 0, #064331 55%, #022d26 100%);
+    color: var(--texto);
+    min-height: 100vh;
+    padding: 30px;
+}
+
+/* Container do perfil */
+.gestor-profile-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Título Principal */
+.profile-title {
+    font-size: 2.2rem;
+    color: var(--verde-1);
+    margin-bottom: 30px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
+}
+
+/* Card de Detalhes Pessoais */
+.profile-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Card da Tabela (Armazéns) — fundo branco */
+.armazem-list-card {
+    background-color: white;
+    color: #333; /* <-- COR CORRIGIDA (texto escuro no card branco) */
+}
+
+/* Título do card da tabela */
+.armazem-list-card .card-title {
+    color: var(--verde-1);
+    border-left-color: var(--verde-1);
+}
+
+/* Forçando texto escuro dentro do card branco */
+.armazem-list-card *,
+.armazem-list-card .data-group p,
+.armazem-list-card strong {
+    color: var(--verde-1); /* <-- GARANTE VISIBILIDADE */
+}
+
+/* Reutilizando e adaptando a estrutura da tabela */
+.data-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 0.95rem;
+}
+
+.data-table-container th {
+    background: #e8f5ef;
+    color: var(--verde-1);
+    padding: 10px;
+    text-align: left;
+}
+
+.data-table-container td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    color: #333; /* <-- MAIS LEGÍVEL */
+}
+
+/* Botões de Ação */
+.action-buttons {
+    display: flex;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+/* Botão Base */
+.btn-action {
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.1s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botão Editar */
+.btn-edit {
+    background-color: var(--verde-2); 
+    color: var(--texto);
+}
+
+.btn-edit:hover {
+    background-color: var(--verde-1);
+    transform: translateY(-1px);
+}
+
+/* Botão Deletar */
+.btn-delete {
+    background-color: #e57373; 
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #c62828;
+    transform: translateY(-1px);
+}
+
+
+
+/* RESPONSIVO */
+@media (max-width: 600px) {
+    body.perfil-gestor-active .main-content {
+        margin-left: 90px;
+        width: calc(100% - 90px);
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-action {
+        width: 100%;
+        text-align: center;
+    }
+
 }

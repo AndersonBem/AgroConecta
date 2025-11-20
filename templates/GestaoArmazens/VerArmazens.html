@@ -1,0 +1,70 @@
+{% extends "Siderbar/base_sidebar.html" %}
+{% load static %}
+
+{% block title %}Detalhes do Armazém - AgroConecta{% endblock %}
+
+{% block content %}
+
+<div class="cooperativa-detalhe-container armazem-detalhe-container">
+    
+    <h1>Detalhes do Armazém: {{ armazem.nome }}</h1>
+
+    <div class="coop-bloco">
+        <h2>Dados do Armazém</h2>
+        <p><strong>Nome:</strong> {{ armazem.nome }}</p>
+        <p><strong>Gestor Responsável:</strong> {{ armazem.gestor.nome }}</p>
+        <p><strong>Capacidade Total (kg):</strong> {{ armazem.capacidade_total }}</p>
+        <p><strong>Capacidade Ocupada (kg):</strong> {{ armazem.capacidade_ocupada }}</p>
+        <p><strong>Descrição:</strong> {{ armazem.descricao }}</p>
+    </div>
+    
+    <div class="coop-bloco">
+        <h2>Endereço</h2>
+        <p><strong>Rua:</strong> {{ armazem.endereco.rua }}</p>
+        <p><strong>Bairro:</strong> {{ armazem.endereco.bairro }}</p>
+        <p><strong>CEP:</strong> {{ armazem.endereco.cep }}</p>
+        <p><strong>Cidade/Estado:</strong> {{ armazem.endereco.cidade }} / {{ armazem.endereco.estado }}</p>
+    </div>
+
+    <div class="coop-bloco lotes-sementes-bloco">
+        <h2>Lotes e Sementes Armazenados</h2>
+        
+        <div class="lotes-sementes-grid">
+            <div class="lotes-col">
+                <h3>Lotes Armazenados ({{ lotes|length }})</h3>
+                <ul>
+                {% for lote in lotes %}
+                    <li><a href="#">{{ lote.nome }} ({{ lote.quantidade }} kg)</a></li>
+                {% empty %}
+                    <li>Nenhum lote armazenado.</li>
+                {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="sementes-col">
+                <h3>Tipos de Sementes ({{ tipos_sementes|length }})</h3>
+                <ul>
+                {% for semente in tipos_sementes %}
+                    <li>{{ semente.nome }}</li>
+                {% empty %}
+                    <li>Nenhum tipo de semente.</li>
+                {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+        <div class="lote-action">
+             <a href="#" class="btn-adicionar-lote">
+                <i class="bi bi-plus-circle"></i> Adicionar Lote
+            </a>
+        </div>
+    </div>
+    
+    <div class="coop-acoes">
+        <a href="#" class="btn btn-editar">Editar Armazém</a>
+        <a href="{% url 'gestao_armazens' %}" class="btn btn-voltar">Voltar para a Lista</a>
+        </div>
+
+</div>
+
+{% endblock content %}
