@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.hashers import make_password,check_password
 from django.db import connection
 from .models import (Gestor, Cooperativa, OperadorArmazem, Telefone, TipoSemente,
-                     Solicitacao)
+                     Solicitacao,Armazem)
 from django.db.models import Count
 
 # Create your views here.
@@ -467,3 +467,50 @@ def detalhes_semente(request, id):
 
 def home(request):
     return render(request, "Home/Home.html")
+
+def gestao_sementes2(request):
+    return render(request,"GestaoSementes/GestaoSementes2.html" )
+
+def perfil_gestor(request):
+    return render(request,"PerfilGestor/PerfilGestor.html")
+
+def gestao_armazens(request):
+    return render(request,"GestaoArmazens/GestaoArmazens.html")
+
+def ver_armazens(request, armazem_id):
+    """
+    Mostra os detalhes de um armazém específico,
+    incluindo dados, endereço, lotes e tipos de semente.
+    """
+    # 1. Busca o Armazém pelo ID
+    # Assumindo que o ID é a chave primária e o Armazem tem FK para Endereco
+    armazem = get_object_or_404(
+        Armazem.objects.select_related('endereco'),
+        pk=armazem_id
+    )
+
+    # 2. Busca os Lotes armazenados
+    # Assumindo que o modelo Lote tem um campo armazem_id que referencia o Armazem
+    lotes = (
+        Lote.objects
+        .filter(armazem_id=armazem)
+        .order_by('-data_entrada')
+    )
+
+    # 3. Tipos de Semente armazenados (únicos)
+    # Assumindo que Lote tem FK para TipoSemente
+    tipos_sementes = (
+        TipoSemente.objects
+        .filter(lote__armazem_id=armazem)
+        .distinct()
+    )
+
+    context = {
+        'armazem': armazem,
+        'lotes': lotes,
+        'tipos_sementes': tipos_sementes,
+        'body_class_name': 'armazem-detalhe-active', # Opcional: para customizar o CSS se quiser
+    }
+
+    # Renderiza o template de detalhes do Armazém
+    return render(request, "GestaoArmazens/VerArmazens.html", context) # Ajustei o nome do arquivo para minusculo

@@ -1,0 +1,72 @@
+{% extends "Siderbar/base_sidebar.html" %}
+{% load static %} 
+
+{% block title %}Perfil do Gestor - AgroConecta{% endblock %}
+
+{% block body_class %}
+class="perfil-gestor-active" 
+{% endblock body_class %}
+
+{% block content %}
+
+<div class="gestor-profile-container">
+    
+    <h1 class="profile-title">Perfil: Gestor 1</h1>
+
+    <!-- CARD: Dados do Gestor -->
+    <div class="profile-card personal-details">
+        <h2 class="card-title">Dados do Gestor</h2>
+        
+        <div class="data-group">
+            <p><strong>Nome:</strong> Gestor 1 (Nome Completo)</p>
+            <p><strong>CPF:</strong> 999.888.777-01</p>
+            <p><strong>E-mail:</strong> gestor@agroconecta.com</p>
+            <p><strong>Telefone:</strong> (99) 99999-9999</p>
+        </div>
+    </div>
+    
+    <!-- CARD: Armazéns -->
+    <div class="profile-card armazem-list-card">
+        <h2 class="card-title">Armazéns sob Gestão</h2>
+        
+        <div class="data-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome do Armazém</th>
+                        <th>Capacidade (kg)</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>101</td>
+                        <td>Armazém Central Caruaru</td>
+                        <td>5000</td>
+                        <td>Ativo</td>
+                        <td><a href="#" class="table-action-btn">Ver</a></td>
+                    </tr>
+                    <tr>
+                        <td>105</td>
+                        <td>Armazém Sertão</td>
+                        <td>2500</td>
+                        <td>Ativo</td>
+                        <td><a href="#" class="table-action-btn">Ver</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Botões -->
+    <div class="action-buttons">
+        <a href="#" class="btn-action btn-edit">Editar Perfil</a>
+        <button class="btn-action btn-delete">Deletar Gestor</button>
+    </div>
+    
+
+</div>
+
+{% endblock content %}

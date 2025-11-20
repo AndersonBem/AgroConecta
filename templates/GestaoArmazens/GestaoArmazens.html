@@ -1,0 +1,44 @@
+{% extends "Siderbar/base_sidebar.html" %}
+{% load static %} 
+
+{% block title %}Gestão de Armazéns - AgroConecta{% endblock %}
+
+{% block content %}
+
+<div class="gestao-armazens-container">
+    <header class="cooperativas-header">
+        <h1>Gestão de Armazéns 📦</h1>
+
+        <a href="#" class="add-cooperativa-btn">
+            <i class="bi bi-plus-circle"></i> Adicionar Novo Armazém
+        </a>
+    </header>
+
+    <div class="armazens-list-grid">
+        
+        {# Loop para exibir os armazéns #}
+        {% for armazem in armazens %}
+            <div class="armazem-card cooperativa-card">
+                <h3>{{ armazem.nome }}</h3>
+
+                <p><strong>Gestor Responsável:</strong> {{ armazem.gestor.nome }}</p>
+                <p><strong>Capacidade Atual (kg):</strong> {{ armazem.capacidade_atual }} / {{ armazem.capacidade_total }}</p>
+                <p><strong>Status:</strong> {{ armazem.status }}</p>
+
+                <div class="card-actions">
+                    <a href="#" class="action-btn view-btn">
+                        <i class="bi bi-eye"></i> Ver Detalhes
+                    </a>
+                    <a href="#" class="action-btn edit-btn">
+                        <i class="bi bi-pencil-square"></i> Editar
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <p>Não há armazéns cadastrados ou sob sua gestão ainda.</p>
+        {% endfor %}
+        
+    </div>
+</div>
+
+{% endblock content %}

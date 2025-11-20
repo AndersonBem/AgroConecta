@@ -1,5 +1,21 @@
+{% load static %}
 
 <nav class="sidebar">
+    
+    <div class="sidebar-header">
+        
+        <a href="{% url 'home' %}" class="logo-link">
+            <img src="{% static 'img/image.png' %}" alt="Logo AgroConecta" class="logo-icon">
+        </a>
+        
+        <a href="{% url 'perfil_gestor' %}" class="profile-link">
+            <img src="{% static 'img/avatar.svg' %}" alt="Perfil do Gestor" class="profile-icon">
+        </a>
+        
+    </div>
+    
+    <hr class="sidebar-divider">
+
     <div class="btn-expandir">
         <i class="bi bi-list"></i>
     </div>
@@ -7,14 +23,14 @@
     <ul>
         <li class="item-menu">
             <a href="{% url 'gestao_cooperativa' %}">
-                <span class="icon"><i class="bi bi-building-fill"></i></i></span>
+                <span class="icon"><i class="bi bi-building-fill"></i></span>
                 <span class="txt-link">Gestão Cooperativas</span>
             </a>
         </li>
         <li class="item-menu">
-            <a href="#">
+            <a href="{% url 'gestao_armazens' %}">
                 <span class="icon"><i class="bi bi-layout-text-sidebar"></i></span>
-                <span class="txt-link">Gestão de armazens</span>
+                <span class="txt-link">Gestão de armazéns</span>
             </a>
         </li>
         <li class="item-menu">
@@ -36,7 +52,7 @@
             </a>
         </li>
         <li class="item-menu">
-            <a href="#">
+            <a href="#"> 
                 <span class="icon"><i class="bi bi-ui-radios-grid"></i></span>
                 <span class="txt-link">Dashboard</span>
             </a>
