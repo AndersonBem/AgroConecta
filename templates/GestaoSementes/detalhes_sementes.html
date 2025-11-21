@@ -6,30 +6,44 @@
 
 {% block content %}
 
+{% if messages %}
+<script>
+    {% for message in messages %}
+        alert("{{ message|escapejs }}");
+    {% endfor %}
+</script>
+{% endif %}
+
 <div class="sementes-page">
 
     <div class="sementes-card">
 
         <div class="sementes-content">
 
-            <h1 class="titulo">Sementes</h1>
-            <p class="subtitulo">Descrição</p>
+            <h1 class="titulo">{{ semente.nome }}</h1>
+            <p class="subtitulo">{{ semente.descricao }}</p>
 
             <div class="armazens-container">
                 <h3>Armazéns:</h3>
 
-                <div class="armazem-card">Armazém 1
-                </div>
-
-                <div class="armazem-card">Armazém 2</div>
-                <div class="armazem-card">Armazém 3</div>
-                <div class="armazem-card">Armazém 4</div>
+                    {% if armazens %}
+                        {% for nome in armazens %}
+                            <div class="armazem-card">
+                                {{ nome }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Esta semente ainda não está cadastrada em nenhum armazém.</p>
+                    {% endif %}
 
             </div>
 
             <div class="botoes-acoes">
-                <a href="#" class="btn-padrao btn-editar">Editar</a>
-                <a href="#" class="btn-padrao btn-deletar">Deletar</a>
+                <a href="{% url 'editar_semente' semente.idtiposemente %}" class="btn-padrao btn-editar">Editar</a>
+                <a href="{% url 'deletar_semente' semente.idtiposemente %}"
+                class="btn-padrao btn-deletar">
+                    Deletar
+                </a>
             </div>
 
         </div>

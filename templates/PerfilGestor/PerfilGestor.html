@@ -9,19 +9,27 @@ class="perfil-gestor-active"
 
 {% block content %}
 
+{% if messages %}
+  <script>
+      {% for message in messages %}
+          alert("{{ message|escapejs }}");
+      {% endfor %}
+  </script>
+{% endif %}
+
 <div class="gestor-profile-container">
     
-    <h1 class="profile-title">Perfil: Gestor 1</h1>
+    <h1 class="profile-title">Perfil: {{ gestor.nome }}</h1>
 
     <!-- CARD: Dados do Gestor -->
     <div class="profile-card personal-details">
         <h2 class="card-title">Dados do Gestor</h2>
         
         <div class="data-group">
-            <p><strong>Nome:</strong> Gestor 1 (Nome Completo)</p>
-            <p><strong>CPF:</strong> 999.888.777-01</p>
-            <p><strong>E-mail:</strong> gestor@agroconecta.com</p>
-            <p><strong>Telefone:</strong> (99) 99999-9999</p>
+            <p><strong>Nome:</strong> {{ gestor.nome }}</p>
+            <p><strong>CPF:</strong> {{ gestor.cpf }}</p>
+            <p><strong>E-mail:</strong> {{ gestor.email }}</p>
+            <p><strong>Telefone:</strong> {{ telefone_principal|default:"Não informado" }}</p>
         </div>
     </div>
     
@@ -41,30 +49,32 @@ class="perfil-gestor-active"
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>101</td>
-                        <td>Armazém Central Caruaru</td>
-                        <td>5000</td>
-                        <td>Ativo</td>
-                        <td><a href="#" class="table-action-btn">Ver</a></td>
-                    </tr>
-                    <tr>
-                        <td>105</td>
-                        <td>Armazém Sertão</td>
-                        <td>2500</td>
-                        <td>Ativo</td>
-                        <td><a href="#" class="table-action-btn">Ver</a></td>
-                    </tr>
+                    {% for arm in armazens %}
+                        <tr>
+                            <td>{{ arm.idarmazem }}</td>
+                            <td>{{ arm.nome }}</td>
+                            {# não temos capacidade no model, então deixo traço #}
+                            <td>-</td>
+                            <td>Ativo</td>
+                            <td>
+                                <a href="{% url 'ver_armazens' arm.idarmazem %}" class="table-action-btn">Ver</a>
+                                {# futuramente você pode trocar por {% url 'detalhe_armazem' arm.idarmazem %} #}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5">Nenhum armazém associado a este gestor.</td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
 
     <!-- Botões -->
-    <div class="action-buttons">
-        <a href="#" class="btn-action btn-edit">Editar Perfil</a>
-        <button class="btn-action btn-delete">Deletar Gestor</button>
-    </div>
+        <div class="action-buttons">
+            <a href="{% url 'editar_perfil_gestor' %}" class="btn-action btn-edit">Editar Perfil</a>
+        </div>
     
 
 </div>

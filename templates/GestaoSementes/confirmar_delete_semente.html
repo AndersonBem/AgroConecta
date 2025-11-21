@@ -1,0 +1,66 @@
+{% extends "Siderbar/base_sidebar.html" %}
+{% load static %}
+
+{% block title %}Confirmar Exclusão de Semente{% endblock %}
+{% block body_class %}sementes-active{% endblock %}
+
+{% block content %}
+
+<div class="sementes-page">
+  <div class="sementes-card">
+
+    <div class="sementes-content">
+      <h1 class="titulo">Excluir "{{ semente.nome }}"</h1>
+
+      {% if lotes %}
+        <p class="subtitulo">
+          Esta semente está associada aos seguintes lotes:
+        </p>
+
+        <ul class="lista-lotes">
+          {% for lote in lotes %}
+            <li>
+              <strong>Lote #{{ lote.idlote }}</strong> —
+              Peso: {{ lote.peso }} kg —
+              Armazém: {{ lote.armazem_idarmazem.nome }}
+            </li>
+          {% endfor %}
+        </ul>
+
+        <form method="post">
+          {% csrf_token %}
+          <label>
+            <input type="checkbox" name="apagar_lotes" value="sim">
+            Apagar também todos os lotes associados
+          </label>
+
+          <div class="botoes-acoes">
+            <button type="submit" class="btn-padrao btn-deletar">Confirmar Exclusão</button>
+            <a href="{% url 'detalhes_semente' semente.idtiposemente %}" class="btn-padrao btn-cancelar">
+              Cancelar
+            </a>
+          </div>
+        </form>
+
+      {% else %}
+
+        <p class="subtitulo">Esta semente não possui lotes associados. Deseja excluir?</p>
+
+        <form method="post">
+          {% csrf_token %}
+          <div class="botoes-acoes">
+            <button type="submit" class="btn-padrao btn-deletar">Confirmar Exclusão</button>
+            <a href="{% url 'detalhes_semente' semente.idtiposemente %}" class="btn-padrao btn-cancelar">
+              Cancelar
+            </a>
+          </div>
+        </form>
+
+      {% endif %}
+    </div>
+
+    <img src="{% static 'img/fazendeiro.svg' %}" class="mascote" alt="Mascote Agro">
+  </div>
+</div>
+
+{% endblock %}

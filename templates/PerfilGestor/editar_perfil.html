@@ -1,0 +1,81 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block title %}AgroConecta — Editar Perfil do Gestor{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+  <script>
+      {% for message in messages %}
+          alert("{{ message|escapejs }}");
+      {% endfor %}
+  </script>
+{% endif %}
+
+<main class="cadastro-gestor">
+  <div class="cadastro-gestor__card">
+
+    <!-- topo com logo e ícone de usuário -->
+    <header class="cadastro-gestor__topbar">
+      <div class="topbar-left">
+        <img src="{% static 'img/logo-agroconecta.svg' %}" alt="Logo AgroConecta"
+             class="topbar-logo">
+        <span class="topbar-title">AgroConecta</span>
+      </div>
+
+      <div class="topbar-right">
+        <div class="user-icon">
+          <img src="{% static 'img/icon_user.png' %}" alt="Perfil">
+        </div>
+      </div>
+    </header>
+
+    <!-- conteúdo central -->
+    <section class="cadastro-gestor__content">
+      <h1 class="cadastro-gestor__title">Editar Perfil</h1>
+
+      <form class="cadastro-gestor__form" method="post">
+        {% csrf_token %}
+
+        <input type="text" name="usuario"
+               class="campo" placeholder="Usuário"
+               value="{{ gestor.usuario|default_if_none:'' }}">
+
+        <input type="text" name="nome_completo"
+               class="campo" placeholder="Nome Completo"
+               value="{{ gestor.nome|default_if_none:'' }}">
+
+        <input type="text" name="cpf"
+               class="campo" placeholder="CPF"
+               value="{{ gestor.cpf|default_if_none:'' }}"
+               readonly>
+
+        <input type="email" name="email"
+               class="campo" placeholder="E-mail"
+               value="{{ gestor.email|default_if_none:'' }}">
+
+        <input type="tel" name="telefone"
+               class="campo" placeholder="Telefone"
+               value="{{ telefone|default_if_none:'' }}">
+
+        <input type="password" name="senha"
+               class="campo" placeholder="Nova Senha (opcional)">
+
+        <input type="password" name="confirmar_senha"
+               class="campo" placeholder="Confirmar Nova Senha (opcional)">
+
+        <button type="submit" class="cadastro-gestor__submit">
+          Salvar Alterações ✔
+        </button>
+      </form>
+    </section>
+
+    <!-- personagem agricultor -->
+    <img
+      src="{% static 'img/fazendeiro.svg' %}"
+      alt="Personagem agricultor"
+      class="cadastro-gestor__farmer"
+    />
+  </div>
+</main>
+{% endblock %}
