@@ -5,6 +5,14 @@
 
 {% block content %}
 
+{% if messages %}
+  <script>
+      {% for message in messages %}
+          alert("{{ message|escapejs }}");
+      {% endfor %}
+  </script>
+{% endif %}
+
 <div class="gestao-armazens-container">
     <header class="cooperativas-header">
         <h1>Gestão de Armazéns 📦</h1>
@@ -22,14 +30,14 @@
                 <h3>{{ armazem.nome }}</h3>
 
                 <p><strong>Gestor Responsável:</strong> {{ armazem.gestor.nome }}</p>
-                <p><strong>Capacidade Atual (kg):</strong> {{ armazem.capacidade_atual }} / {{ armazem.capacidade_total }}</p>
+                <p><strong>Capacidade Atual (kg):</strong> {{ armazem.capacidade_atual }}</p>
                 <p><strong>Status:</strong> {{ armazem.status }}</p>
 
                 <div class="card-actions">
-                    <a href="#" class="action-btn view-btn">
+                    <a href="{% url 'ver_armazens' armazem.id %}" class="action-btn view-btn">
                         <i class="bi bi-eye"></i> Ver Detalhes
                     </a>
-                    <a href="#" class="action-btn edit-btn">
+                    <a href="{% url 'editar_armazem' armazem.id %}" class="action-btn edit-btn">
                         <i class="bi bi-pencil-square"></i> Editar
                     </a>
                 </div>

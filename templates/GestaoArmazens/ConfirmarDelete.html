@@ -1,0 +1,48 @@
+{% extends "Siderbar/base_sidebar.html" %}
+{% load static %}
+
+{% block title %}Confirmar Exclusão - AgroConecta{% endblock %}
+
+{% block content %}
+
+<div class="delete-container">
+
+    <h1>Excluir Armazém: {{ armazem.nome }}</h1>
+
+    {% if lotes %}
+        <div class="alert-warning">
+            <p><strong>Atenção:</strong> Este armazém possui <strong>{{ lotes|length }}</strong> lotes associados.</p>
+
+            <ul>
+                {% for lote in lotes %}
+                    <li>Lote #{{ lote.idlote }} — {{ lote.peso }} kg</li>
+                {% endfor %}
+            </ul>
+
+            <p>Para continuar, você deve confirmar se quer excluir também todos os lotes.</p>
+        </div>
+    {% else %}
+        <p class="alert-info">
+            Não há lotes associados. Deseja excluir o armazém?
+        </p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {% if lotes %}
+            <label style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
+                <input type="checkbox" name="apagar_lotes" value="1">
+                Confirmo que desejo excluir todos os lotes deste armazém
+            </label>
+        {% endif %}
+
+        <button class="btn btn-danger" type="submit">Excluir</button>
+
+        <a href="{% url 'ver_armazens' armazem.idarmazem %}" class="btn btn-secondary">
+            Cancelar
+        </a>
+    </form>
+</div>
+
+{% endblock %}

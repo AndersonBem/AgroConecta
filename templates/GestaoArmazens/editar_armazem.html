@@ -1,7 +1,7 @@
 {% extends "Siderbar/base_sidebar.html" %}
 {% load static %}
 
-{% block title %}Cadastro de Armazém - AgroConecta{% endblock %}
+{% block title %}Editar Armazém - AgroConecta{% endblock %}
 
 {% block content %}
 
@@ -18,7 +18,7 @@
     <div class="main-container">
 
         <header class="page-header">
-            <h1>Cadastrar Novo Armazém 📦</h1>
+            <h1>Editar Armazém ✏️</h1>
             <a href="{% url 'gestao_armazens' %}" class="btn-voltar">
                 <i class="bi bi-arrow-left-circle"></i> Voltar para Gestão de Armazéns
             </a>
@@ -34,20 +34,20 @@
                     <div class="form-group col-50">
                         <label class="form-label">Nome do Armazém *</label>
                         <input type="text" name="nome" class="input-rounded"
-                               placeholder="Ex: Armazém Regional Sul" required>
+                               value="{{ armazem.nome }}">
                     </div>
 
                     <div class="form-group col-50">
                         <label class="form-label">Descrição</label>
                         <textarea name="descricao" class="textarea-rounded"
-                                  placeholder="Breve descrição sobre o armazém." rows="4"></textarea>
+                                  rows="4">{{ armazem.descricao }}</textarea>
                     </div>
                 </div>
-                
+
                 <hr class="divider-light">
 
                 <h2 class="section-title">Gestor Responsável</h2>
-                <p><strong>Gestor logado:</strong> {{ gestor.nome }} (CPF: {{ gestor.cpf }})</p>
+                <p><strong>Gestor:</strong> {{ armazem.gestor_cpf.nome }} (CPF: {{ armazem.gestor_cpf.cpf }})</p>
 
                 <hr class="divider-light">
 
@@ -56,41 +56,48 @@
                 <div class="form-row">
                     <div class="form-group col-70">
                         <label class="form-label">Rua *</label>
-                        <input type="text" name="rua" class="input-rounded" required>
+                        <input type="text" name="rua" class="input-rounded"
+                               value="{{ endereco.rua }}">
                     </div>
 
                     <div class="form-group col-30">
                         <label class="form-label">Número *</label>
-                        <input type="text" name="numero" class="input-rounded" required>
+                        <input type="text" name="numero" class="input-rounded"
+                               value="{{ endereco.numero }}">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-50">
                         <label class="form-label">Bairro *</label>
-                        <input type="text" name="bairro" class="input-rounded" required>
+                        <input type="text" name="bairro" class="input-rounded"
+                               value="{{ endereco.bairro }}">
                     </div>
 
                     <div class="form-group col-50">
                         <label class="form-label">Cidade *</label>
-                        <input type="text" name="cidade" class="input-rounded" required>
+                        <input type="text" name="cidade" class="input-rounded"
+                               value="{{ endereco.cidade }}">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-30">
                         <label class="form-label">UF *</label>
-                        <input type="text" name="uf" class="input-rounded" maxlength="2" placeholder="Ex: PE" required>
+                        <input type="text" name="uf" class="input-rounded" maxlength="2"
+                               value="{{ endereco.uf }}">
                     </div>
 
                     <div class="form-group col-40">
                         <label class="form-label">CEP *</label>
-                        <input type="text" name="cep" class="input-rounded" placeholder="Ex: 50000-000" required>
+                        <input type="text" name="cep" class="input-rounded"
+                               value="{{ endereco.cep }}">
                     </div>
 
                     <div class="form-group col-30">
                         <label class="form-label">Complemento</label>
-                        <input type="text" name="comp" class="input-rounded" placeholder="Bloco, sala, referência...">
+                        <input type="text" name="comp" class="input-rounded"
+                               value="{{ endereco.comp }}">
                     </div>
                 </div>
 
@@ -99,18 +106,24 @@
                 <h2 class="section-title">Operador de Armazém (opcional)</h2>
 
                 <div class="form-group">
-                    <label class="form-label">Selecione um Operador (opcional)</label>
+                    <label class="form-label">Selecione um Operador</label>
                     <select name="operador_id" class="input-rounded">
                         <option value="">Nenhum operador vinculado</option>
                         {% for op in operadores %}
-                            <option value="{{ op.idoperadorarmazem }}">{{ op.nome }} ({{ op.email }})</option>
+                            <option value="{{ op.idoperadorarmazem }}"
+                              {% if armazem.operadorarmazem_idoperadorarmazem and op.idoperadorarmazem == armazem.operadorarmazem_idoperadorarmazem.idoperadorarmazem %}
+                                  selected
+                              {% endif %}
+                            >
+                                {{ op.nome }} ({{ op.email }})
+                            </option>
                         {% endfor %}
                     </select>
                 </div>
-                
+
                 <div class="submit-area">
                     <button type="submit" class="btn-success btn-full-width">
-                        <i class="bi bi-save"></i> Cadastrar Armazém
+                        <i class="bi bi-save"></i> Salvar Alterações ✔
                     </button>
                 </div>
 

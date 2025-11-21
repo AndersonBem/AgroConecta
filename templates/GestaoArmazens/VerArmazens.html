@@ -73,7 +73,10 @@
     </div>
     
     <div class="coop-acoes">
-        <a href="#" class="btn btn-editar">Editar Armazém</a>
+        <a href="{% url 'editar_armazem' armazem.idarmazem %}" class="btn btn-editar">Editar Armazém</a>
+        <a href="{% url 'deletar_armazem' armazem.idarmazem %}" class="btn btn-deletar">
+            Deletar
+        </a>
         <a href="{% url 'gestao_armazens' %}" class="btn btn-voltar">Voltar para a Lista</a>
     </div>
 

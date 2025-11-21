@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.hashers import make_password,check_password
 from django.db import connection
 from .models import (Gestor, Cooperativa, OperadorArmazem, Telefone, TipoSemente,
-                     Solicitacao,Armazem, Lote)
+                     Solicitacao,Armazem, Lote, Endereco)
 from django.db.models import Count, Sum
 
 # Create your views here.
@@ -652,8 +652,38 @@ def editar_perfil_gestor(request):
 
 
 def gestao_armazens(request):
+    # Busca todos os armazéns
+    armazens = Armazem.objects.select_related("gestor_cpf").all()
 
-    return render(request,"GestaoArmazens/GestaoArmazens.html")
+    lista_armazens = []
+
+    for armazem in armazens:
+        # Soma dos pesos dos lotes daquele armazém
+        capacidade_atual = (
+            Lote.objects
+            .filter(armazem_idarmazem=armazem.idarmazem)
+            .aggregate(total=Sum("peso"))["total"] or 0
+        )
+
+        # Capacidade total ainda não existe no seu banco → deixo como 0
+        capacidade_total = 0  
+
+        status = "Ativo" if capacidade_atual > 0 else "Vazio"
+
+        lista_armazens.append({
+            "id": armazem.idarmazem,
+            "nome": armazem.nome,
+            "gestor": armazem.gestor_cpf,
+            "capacidade_atual": capacidade_atual,
+            "capacidade_total": capacidade_total,
+            "status": status,
+        })
+
+    context = {
+        "armazens": lista_armazens
+    }
+
+    return render(request, "GestaoArmazens/GestaoArmazens.html", context)
 
 def ver_armazens(request, armazem_id):
     
@@ -690,7 +720,240 @@ def ver_armazens(request, armazem_id):
 
 
 def cadastrar_armazens(request):
-    return render(request,"GestaoArmazens/CadastrarArmazens.html")
+    # garante que é gestor logado
+    if request.session.get("user_tipo") != "gestor":
+        messages.error(request, "Você precisa estar logado como gestor para cadastrar armazéns.")
+        return redirect("login_view")
+
+    cpf = request.session.get("user_id")
+    gestor = Gestor.objects.filter(cpf=cpf).first()
+    if not gestor:
+        messages.error(request, "Gestor não encontrado. Faça login novamente.")
+        return redirect("login_view")
+
+    if request.method == "POST":
+        nome = request.POST.get("nome", "").strip()
+        descricao = request.POST.get("descricao", "").strip()
+
+        # endereço
+        rua   = request.POST.get("rua", "").strip()
+        numero = request.POST.get("numero", "").strip()
+        bairro = request.POST.get("bairro", "").strip()
+        cidade = request.POST.get("cidade", "").strip()
+        uf     = request.POST.get("uf", "").strip()
+        cep    = request.POST.get("cep", "").strip()
+        comp   = request.POST.get("comp", "").strip()
+
+        # operador (opcional)
+        operador_id = request.POST.get("operador_id", "").strip()
+
+        erros = []
+
+        if not nome:
+            erros.append("O nome do armazém é obrigatório.")
+
+        # valida campos de endereço
+        if not rua or not numero or not bairro or not cidade or not uf or not cep:
+            erros.append("Preencha todos os campos obrigatórios de endereço.")
+
+        # número
+        try:
+            numero_int = int(numero)
+        except ValueError:
+            erros.append("Número do endereço inválido.")
+            numero_int = None
+
+        # UF com 2 letras
+        if uf and len(uf) != 2:
+            erros.append("UF deve ter exatamente 2 letras.")
+
+        # valida operador se vier preenchido
+        operador = None
+        if operador_id:
+            try:
+                operador = OperadorArmazem.objects.get(idoperadorarmazem=int(operador_id))
+            except (ValueError, OperadorArmazem.DoesNotExist):
+                erros.append("Operador de armazém selecionado é inválido.")
+
+        if erros:
+            for e in erros:
+                messages.error(request, e)
+
+            operadores = OperadorArmazem.objects.all()
+            context = {
+                "gestor": gestor,
+                "operadores": operadores,
+                # se quiser, dá pra mandar os dados de volta pra repovoar os campos
+            }
+            return render(request, "GestaoArmazens/CadastrarArmazens.html", context)
+
+        # cria endereço
+        endereco = Endereco.objects.create(
+            uf=uf.upper(),
+            cidade=cidade,
+            bairro=bairro,
+            rua=rua,
+            numero=numero_int,
+            comp=comp or None,
+            cep=cep,
+        )
+
+        # cria armazém
+        Armazem.objects.create(
+            nome=nome,
+            descricao=descricao,
+            gestor_cpf=gestor,                      # FK pelo objeto
+            endereco_idendereco=endereco,          # FK pelo objeto
+            operadorarmazem_idoperadorarmazem=operador  # pode ser None
+        )
+
+        messages.success(request, "Armazém cadastrado com sucesso!")
+        return redirect("gestao_armazens")
+
+    # GET → mostra formulário
+    operadores = OperadorArmazem.objects.all()
+    context = {
+        "gestor": gestor,
+        "operadores": operadores,
+    }
+    return render(request, "GestaoArmazens/CadastrarArmazens.html", context)
+
+
+def editar_armazem(request, id):
+    # busca o armazém com as FKs necessárias
+    armazem = get_object_or_404(
+        Armazem.objects.select_related(
+            "gestor_cpf",
+            "endereco_idendereco",
+            "operadorarmazem_idoperadorarmazem",
+        ),
+        pk=id,
+    )
+
+    endereco = armazem.endereco_idendereco
+    operadores = OperadorArmazem.objects.all()
+
+    if request.method == "POST":
+        nome = request.POST.get("nome", "").strip()
+        descricao = request.POST.get("descricao", "").strip()
+
+        # endereço
+        rua = request.POST.get("rua", "").strip()
+        numero = request.POST.get("numero", "").strip()
+        bairro = request.POST.get("bairro", "").strip()
+        cidade = request.POST.get("cidade", "").strip()
+        uf = request.POST.get("uf", "").strip()
+        cep = request.POST.get("cep", "").strip()
+        comp = request.POST.get("comp", "").strip()
+
+        # operador (opcional)
+        operador_id = request.POST.get("operador_id", "").strip()
+
+        erros = []
+
+        if not nome:
+            erros.append("O nome do armazém é obrigatório.")
+
+        if not rua or not numero or not bairro or not cidade or not uf or not cep:
+            erros.append("Preencha todos os campos obrigatórios de endereço.")
+
+        try:
+            numero_int = int(numero)
+        except ValueError:
+            erros.append("Número do endereço inválido.")
+            numero_int = None
+
+        if uf and len(uf) != 2:
+            erros.append("UF deve ter exatamente 2 letras.")
+
+        operador = None
+        if operador_id:
+            try:
+                operador = OperadorArmazem.objects.get(
+                    idoperadorarmazem=int(operador_id)
+                )
+            except (ValueError, OperadorArmazem.DoesNotExist):
+                erros.append("Operador de armazém selecionado é inválido.")
+
+        if erros:
+            for e in erros:
+                messages.error(request, e)
+
+            context = {
+                "armazem": armazem,
+                "endereco": endereco,
+                "operadores": operadores,
+            }
+            return render(request, "GestaoArmazens/editar_armazem.html", context)
+
+        # Atualiza endereço existente
+        endereco.rua = rua
+        endereco.numero = numero_int
+        endereco.bairro = bairro
+        endereco.cidade = cidade
+        endereco.uf = uf.upper()
+        endereco.cep = cep
+        endereco.comp = comp or None
+        endereco.save()
+
+        # Atualiza armazém
+        armazem.nome = nome
+        armazem.descricao = descricao
+        armazem.operadorarmazem_idoperadorarmazem = operador  # pode ser None
+        armazem.save()
+
+        messages.success(request, "Armazém atualizado com sucesso!")
+        return redirect("ver_armazens", armazem_id=armazem.idarmazem)
+
+    # GET → mostra o formulário preenchido
+    context = {
+        "armazem": armazem,
+        "endereco": endereco,
+        "operadores": operadores,
+    }
+    return render(request, "GestaoArmazens/editar_armazem.html", context)
+
+def deletar_armazem(request, armazem_id):
+
+    armazem = get_object_or_404(
+        Armazem.objects.select_related("endereco_idendereco", "gestor_cpf"),
+        pk=armazem_id
+    )
+
+    lotes = Lote.objects.filter(armazem_idarmazem=armazem)
+
+    # -------- GET → mostrar tela de confirmação --------
+    if request.method == "GET":
+        return render(
+            request,
+            "GestaoArmazens/ConfirmarDelete.html",
+            {"armazem": armazem, "lotes": lotes},
+        )
+
+    # -------- POST → tentativa de exclusão --------
+    apagar_lotes = request.POST.get("apagar_lotes")
+
+    # se tem lotes e usuário NÃO marcou "apagar lotes"
+    if lotes.exists() and not apagar_lotes:
+        messages.error(
+            request,
+            "Este armazém possui lotes associados. Confirme se deseja apagá-los."
+        )
+        return render(
+            request,
+            "GestaoArmazens/ConfirmarDelete.html",
+            {"armazem": armazem, "lotes": lotes},
+        )
+
+    # se usuário confirmar apagar lotes
+    if apagar_lotes:
+        lotes.delete()
+
+    # agora pode excluir o armazém
+    armazem.delete()
+
+    messages.success(request, "Armazém deletado com sucesso!")
+    return redirect("gestao_armazens")
 
 
 def gestao_lotes(request):
