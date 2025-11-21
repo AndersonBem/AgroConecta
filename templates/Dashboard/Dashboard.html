@@ -1,0 +1,37 @@
+{% extends "Siderbar/base_sidebar.html" %}
+{% load static %}
+
+{% block title %}Dashboard - AgroConecta{% endblock %}
+{% block content %}
+
+<div class="dashboard-container">
+    <header class="dashboard-header">
+        <h1>Dashboard Analítico 📊</h1>
+        <p>Visão geral de sementes, lotes e armazenamento.</p>
+    </header>
+
+    <div class="charts-grid">
+        
+        <div class="chart-card">
+            <h2>Sementes por Armazém (kg)</h2>
+            <canvas id="sementeArmazemChart"></canvas>
+        </div>
+        
+        <div class="chart-card">
+            <h2>Status das Solicitações</h2>
+            <canvas id="solicitacoesChart"></canvas>
+        </div>
+        
+        <div class="chart-card chart-full-width">
+            <h2>Registro de Lotes (Últimos 6 Meses)</h2>
+            <canvas id="lotesTempoChart"></canvas>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<script src="{% static 'js/dashboard_charts.js' %}"></script>
+
+{% endblock content %}

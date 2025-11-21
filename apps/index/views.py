@@ -519,3 +519,7 @@ def gestao_lotes(request):
 
 def cadastrar_lotes(request):
     return render(request,"GestaoLotes/CadastrarLotes.html")
+
+
+def dashboard(request):
+    return render(request,"Dashboard/Dashboard.html")

@@ -1302,5 +1302,58 @@ body.perfil-gestor-active .main-content {
 }
 
 
-/*  TELA DE SOLICITAÇÕES  */
+/* =======================================
+   ESTILOS DO DASHBOARD
+   ======================================= */
+
+.dashboard-container {
+    background-color: var(--texto-soft); /* Fundo claro */
+    padding: 30px;
+    min-height: 100vh;
+}
+
+.dashboard-header h1 {
+    color: var(--verde-1);
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.dashboard-header p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* GRID para organizar os gráficos */
+.charts-grid {
+    display: grid;
+    /* 2 colunas para gráficos menores e uma linha de quebra para o maior */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 25px;
+}
+
+/* Faz o terceiro gráfico ocupar as duas colunas */
+.chart-full-width {
+    grid-column: 1 / 3;
+}
+
+/* Estilo do Card do Gráfico */
+.chart-card {
+    background-color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
+}
+
+.chart-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.chart-card h2 {
+    font-size: 1.25rem;
+    color: var(--verde-1);
+    margin-bottom: 15px;
+    border-bottom: 1px dashed #eee;
+    padding-bottom: 8px;
+}
 
