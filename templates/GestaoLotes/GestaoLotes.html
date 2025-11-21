@@ -1,0 +1,51 @@
+{% extends "Siderbar/base_sidebar.html" %}
+{% load static %}
+
+{% block title %}Gestão de Lotes - AgroConecta{% endblock %}
+{% block body_class %}lotes-lista-active{% endblock %} 
+{% block content %}
+
+<div class="lista-page">
+
+    <div class="header-lista">
+        <h1 class="titulo-lista">Gestão de Lotes <span class="emoji-folha">🚜</span></h1>
+        
+        <a href="{% url 'cadastrar_lotes' %}" class="btn-adicionar-novo">
+            <span class="icone-adicionar">+</span> Cadastrar Novo Lote
+        </a>
+    </div>
+
+    <div class="lista-cards">
+
+        {# INÍCIO DO LOOP: Exibe os lotes #}
+        {% for lote in lotes %}
+            <div class="card-item-lote">
+                <h2 class="lote-nome">Lote {{ lote.id }} - {{ lote.tipo_semente.nome }}</h2>
+                
+                <div class="lote-info">
+                    <p><strong>Tipo Semente:</strong> {{ lote.tipo_semente.nome }}</p>
+                    <p><strong>Data Vencimento:</strong> {{ lote.data_vencimento|date:"d/m/Y" }}</p>
+                    <p><strong>Peso (kg):</strong> {{ lote.peso }}kg</p>
+                    <p><strong>Armazém:</strong> {{ lote.armazem.nome }}</p>
+                    <p><strong>Operador Responsável:</strong> {{ lote.operador.nome }}</p>
+                </div>
+
+                <div class="lote-botoes">
+                    <a href="#" class="btn-detalhes">Ver Detalhes</a>
+                    <a href="#" class="btn-editar">Editar</a>
+                </div>
+            </div>
+        {% empty %}
+            <p style="color: white; font-size: 1.1em; text-align: center; margin-top: 50px;">
+                Nenhum lote foi cadastrado ainda. Use o botão "Cadastrar Novo Lote" para começar.
+            </p>
+        {% endfor %}
+        {# FIM DO LOOP #}
+
+    </div>
+    
+    <img src="{% static 'img/fazendeiro.svg' %}" class="mascote-lista" alt="Mascote Agro">
+
+</div>
+
+{% endblock %}
