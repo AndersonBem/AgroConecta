@@ -468,8 +468,6 @@ def detalhes_semente(request, id):
 def home(request):
     return render(request, "Home/Home.html")
 
-def gestao_sementes2(request):
-    return render(request,"GestaoSementes/GestaoSementes2.html" )
 
 def perfil_gestor(request):
     return render(request,"PerfilGestor/PerfilGestor.html")
@@ -531,3 +529,7 @@ def gestao_lotes(request):
 
 def cadastrar_lotes(request):
     return render(request,"GestaoLotes/CadastrarLotes.html")
+
+
+def dashboard(request):
+    return render(request,"Dashboard/Dashboard.html")
