@@ -233,6 +233,19 @@ ul li.item-menu a .icon i {
 
 @media (max-width: 600px) {
 
+    .sidebar-header {
+        flex-direction: column; /* Empilha verticalmente */
+        align-items: center;    /* Centraliza o conteúdo (Logo e Avatar) */
+        padding: 10px 0 10px 0; /* Ajusta o padding vertical para centralizar */
+    }
+
+    /* 2. Reduz o tamanho da Logo e do Perfil para caber na sidebar estreita (90px) */
+    .logo-icon, .profile-icon {
+        width: 40px; 
+        height: 40px;
+        margin: 5px 0; /* Adiciona espaçamento vertical entre eles */
+    }
+
     /* Sidebar fica mais estreita */
     nav.sidebar {
         width: 90px;
@@ -1139,109 +1152,254 @@ body.perfil-gestor-active .main-content {
 
 
 
-/* =======================================
-   ESTILO EXCLUSIVO: CADASTRO DE LOTE
-   ======================================= */
+/* ========================================================
+   0. CORREÇÃO DE CONFLITO GLOBAL (Zera o padding do Main-Content)
+   ======================================================== */
 
-.lote-cadastro-container {
+/* ANULA o padding de 30px do .main-content APENAS quando a página de Lotes está ativa. */
+body.lotes-lista-active .main-content {
+    padding: 0 !important;
+}
+
+/* =========================================================
+   1. ESTILO GERAL DA PÁGINA (LISTA DE LOTES)
+   ========================================================= */
+
+.lista-page {
+    position: relative;
+    min-height: 100vh;
+    
+    /* ZERAMOS O PADDING AQUI para que o fundo gradiente ocupe 100% da área */
+    padding: 0; 
+    
+    /* Fundo Gradiente Consistente */
     background: linear-gradient(135deg, #1d6b57 0%, #064331 40%, #022d26 100%);
-    padding: 40px 30px;
+    color: #fff;
+    width: 100%;
+    box-sizing: border-box; 
+}
+
+/* 2. HEADER (Título e Botão Adicionar) */
+.header-lista {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    
+    /* 🟢 ADICIONA O ESPAÇAMENTO LATERAL E SUPERIOR AQUI (40px) 🟢 */
+    padding: 40px 30px 0 30px; 
+}
+
+.titulo-lista {
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.emoji-folha {
+    font-size: 28px;
+    margin-left: 5px;
+}
+
+.btn-adicionar-novo {
+    background-color: #11b63a; /* Verde */
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.btn-adicionar-novo:hover {
+    background-color: #0e9c31; 
+}
+
+.icone-adicionar {
+    font-size: 20px;
+    margin-right: 8px;
+    line-height: 1;
+}
+
+/* 3. LISTA DE CARDS (Espaçamento e Layout) */
+.lista-cards {
+    /* Container que envolve os cards - recebe padding lateral */
+    padding: 0 30px 40px 30px; 
+}
+
+/* Estilo dos Cards de Lote */
+.card-item-lote {
+    background-color: #fff;
+    color: #333;
+    padding: 20px 30px;
+    border-radius: 10px;
+    margin-bottom: 20px; /* Espaçamento entre os cards */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-left: 6px solid #489372; /* Cor de destaque */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-item-lote:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.lote-nome {
+    font-size: 20px;
+    font-weight: 700;
+    color: #064331;
+    margin-bottom: 10px;
+}
+
+.lote-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.lote-info strong {
+    font-weight: 600;
+    color: #064331;
+}
+
+/* 4. BOTÕES DENTRO DO CARD */
+.lote-botoes {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 15px;
+}
+
+/* Reutilizando estilos de botão */
+.btn-detalhes, .btn-editar {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s;
+    border: 1px solid transparent; /* Base para o hover */
+}
+
+.btn-detalhes {
+    background-color: #f0f0f0; 
+    color: #064331; 
+}
+.btn-detalhes:hover {
+    background-color: #ddd;
+}
+
+.btn-editar {
+    background: #11b63a; 
+    color: white;
+}
+.btn-editar:hover {
+    background: #0e9c31;
+}
+
+/* 5. Mascote (Ajuste de posição para o container agora com padding zero) */
+.mascote-lista {
+    position: absolute;
+    bottom: 40px; /* Adiciona o espaço do padding */
+    right: 40px; /* Adiciona o espaço do padding */
+    width: 200px;
+    pointer-events: none; 
+    z-index: 10;
+}
+/* ========================================================
+   ESTILOS CADASTRO DE LOTE (COMPLETO E CORRIGIDO)
+   ======================================================== */
+
+/* 1. CORREÇÃO DE MARGEM GLOBAL (Resolver o espaço branco) */
+body.lote-cadastro-ativa .main-content {
+    padding: 0 !important;
+}
+
+/* 2. CONTAINER PRINCIPAL (Restaura o fundo e estilo) */
+.lote-cadastro-container {
+    /* Fundo Gradiente Restaurado */
+    background: radial-gradient(circle at top left, #4da37a 0, #064331 55%, #022d26 100%);
+    padding: 0; 
     min-height: 100vh;
 }
 
-/* Estilo do cabeçalho da página */
-.page-header {
+/* 3. HEADER (Ajusta espaçamento e cores do texto) */
+.lote-cadastro-container .page-header {
     display: flex; 
     justify-content: space-between;
     align-items: center;
     margin-bottom: 40px; 
+    /* Padding interno para afastar o conteúdo das bordas da tela */
+    padding: 40px 30px 0 30px; 
 }
 
-.page-header h1 {
+.lote-cadastro-container .page-header h1 {
     font-weight: 700;
-    color: #ffffff;
+    color: #ffffff; /* Restaurado para branco */
     font-size: 2rem;
 }
 
-.btn-voltar {
+.lote-cadastro-container .btn-voltar {
     background: transparent;
     border: none;
-    color: #ffffff !important;
+    color: #ccffcc !important; /* Restaurado para cor clara */
     text-decoration: none;
     padding: 10px 15px;
 }
-.btn-voltar:hover {
-    color: #ccffcc !important;
-    text-decoration: underline;
+.lote-cadastro-container .btn-voltar:hover {
+    color: #ffffff !important;
 }
 
-/* Centralização do Formulário */
-.form-wrapper {
+/* 4. FORMULÁRIO E TIPOGRAFIA (Aplica cores brancas/claras para o texto) */
+
+.lote-cadastro-container .form-wrapper {
     max-width: 850px; 
     margin: 0 auto; 
-    padding: 20px;
+    padding: 20px 30px; /* Mantém o padding interno */
 }
 
-/* Títulos de Seção */
-.section-title {
-    color: #ccffcc; /* Verde claro para contraste */
+.lote-cadastro-container .section-title {
+    color: #ccffcc; /* Títulos em verde claro */
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 2.5rem; 
     text-align: center;
 }
 
-/* Linha de separação */
-.divider-light {
-    border: 0;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.1);
-    margin: 3rem 0; 
+.lote-cadastro-container .form-label,
+.lote-cadastro-container .form-text {
+    color: #ffffff; /* Labels brancos */
+}
+.lote-cadastro-container .form-text {
+    color: #ccffcc; /* Texto de dica claro */
 }
 
-/* =======================================
-   2. LAYOUT DE COLUNAS (FLEXBOX PURO)
-   ======================================= */
 
-/* Define a linha do formulário como um container Flex */
-.form-row {
+/* 5. INPUTS E ESTILO */
+
+.lote-cadastro-container .form-row {
     display: flex;
-    gap: 30px; /* Espaço entre as colunas */
+    gap: 30px; 
+    margin-bottom: 20px; 
 }
 
-/* Define as colunas (50% da largura) */
-.col-50 {
-    flex: 1 1 50%;
-}
-
-/* 🟢 NOVA CLASSE: 3 Colunas (33.33%) */
-.col-33 {
-    flex: 1 1 33.33%; 
-}
-
-/* Espaçamento para grupos de campos */
-.form-group {
+.lote-cadastro-container .form-group {
     margin-bottom: 2.5rem; 
 }
 
-/* =======================================
-   3. ESTILO DOS INPUTS
-   ======================================= */
+.col-50 { flex: 1 1 50%; }
+.col-33 { flex: 1 1 33.33%; }
 
-.form-label {
-    color: #ffffff;
-    font-size: 1rem;
-    margin-bottom: 8px; 
-    display: block;
-    font-weight: 600; 
-}
 
-/* Inputs e Textareas Arredondados e Flutuantes */
-.input-rounded,
-.textarea-rounded {
+.lote-cadastro-container .input-rounded,
+.lote-cadastro-container .textarea-rounded,
+.lote-cadastro-container .select-field { 
     width: 100%;
     border-radius: 2rem; 
-    background: #ffffff;
+    background: #ffffff; /* Fundo branco do input */
     border: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     padding: 1rem 1.5rem; 
@@ -1249,35 +1407,25 @@ body.perfil-gestor-active .main-content {
     box-sizing: border-box; 
 }
 
-.input-rounded:focus,
-.textarea-rounded:focus {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(40, 167, 69, 0.4); 
-    outline: none; 
+/* Ajuste Fino do SELECT (Setinha e Padding) */
+.lote-cadastro-container .select-field {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 1rem 2.5rem 1rem 1.5rem !important; 
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="rgba(0,0,0,0.5)" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 18px center; 
+    background-size: 14px;
+    cursor: pointer;
 }
 
-.textarea-rounded {
-    border-radius: 1.5rem; 
-    min-height: 120px; 
-    resize: vertical;
-}
-
-/* Texto de Ajuda (Form Text) */
-.form-text {
-    color: #ccffcc; 
-    font-size: 0.9rem;
-    padding-left: 10px;
-    margin-top: 5px;
-    display: block;
-}
-
-/* =======================================
-   4. BOTÃO DE SUBMISSÃO
-   ======================================= */
-.submit-area {
+/* 6. BOTÃO DE SUBMISSÃO */
+.lote-cadastro-container .submit-area {
     margin-top: 40px; 
 }
 
-.btn-success {
+.lote-cadastro-container .btn-success {
     background-color: #28a745;
     border: none;
     color: #ffffff;
@@ -1288,19 +1436,9 @@ body.perfil-gestor-active .main-content {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     transition: all 0.2s ease;
 }
-
-.btn-success:hover {
+.lote-cadastro-container .btn-success:hover {
     background-color: #1e7e34;
-    cursor: pointer;
 }
-
-.btn-full-width {
-    width: 100%;
-}
-.btn-success i.bi {
-    margin-right: 8px;
-}
-
 
 /* =======================================
    ESTILOS DO DASHBOARD
@@ -1356,4 +1494,160 @@ body.perfil-gestor-active .main-content {
     border-bottom: 1px dashed #eee;
     padding-bottom: 8px;
 }
+/* =========================================================
+   RESPONSIVIDADE: DASHBOARD
+   ========================================================= */
 
+@media (max-width: 992px) { /* Começamos a adaptar em telas de tablet para dar mais espaço */
+    
+    .charts-grid {
+        /* Força todos os gráficos a se empilharem em uma única coluna */
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* O gráfico que antes ocupava 2 colunas agora só ocupa 1 (com a nova regra) */
+    .chart-full-width {
+        grid-column: 1 / 1; 
+    }
+    
+    /* Garante que o card do gráfico ocupe 100% da largura do contêiner */
+    .chart-card {
+        width: 100%;
+        margin: 0 auto;
+    }
+}
+
+/* ========================================================
+   1. CORREÇÃO DE CONFLITO GLOBAL (Zera o padding do Main-Content)
+   ======================================================== */
+
+/* Esta regra anula o padding de 30px do .main-content APENAS nas páginas de Solicitação. */
+body.solicitacao-active .main-content {
+    padding: 0 !important;
+}
+
+
+/* =========================================================
+   2. ESTILO EXCLUSIVO: SOLICITAÇÃO
+   ========================================================= */
+
+.solicitacao-container {
+    /* Fundo Gradiente Consistente */
+    background: radial-gradient(circle at top left, #4da37a 0, #064331 55%, #022d26 100%);
+    padding: 0; /* Zerado para que a correção funcione */
+    width: 100%; 
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.page-header-solicitacao {
+    /* Estilo do Título Principal */
+    padding: 50px 30px 20px 30px; 
+    color: white;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.page-header-solicitacao h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.form-wrapper-solicitacao {
+    max-width: 700px; 
+    margin: 0 auto;
+    /* Reintroduz o padding interno para espaçar o conteúdo do fundo */
+    padding: 30px; 
+    background: transparent;
+}
+
+/* 3. LAYOUT E INPUTS (Reutilizando e Adaptando) */
+
+.form-row {
+    display: flex;
+    gap: 30px; 
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 25px; 
+}
+
+.col-50 {
+    flex: 1 1 50%;
+}
+
+.form-group-full {
+    margin-bottom: 25px;
+}
+
+.input-rounded,
+.textarea-full,
+.select-field {
+    width: 100%;
+    border-radius: 2rem; 
+    background: #ffffff;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 1rem 1.5rem; 
+    font-size: 1.1rem;
+    box-sizing: border-box; 
+    color: #333;
+}
+
+/* Estilo do Select (para ocultar seta nativa e alinhar) */
+.select-field {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="rgba(0,0,0,0.5)" d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 18px center; 
+    background-size: 14px;
+    cursor: pointer;
+}
+
+/* 4. BOTÃO DE UPLOAD E SUBMISSÃO */
+
+.input-file-hidden {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.btn-upload {
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    background-color: #28a745; 
+    color: white !important;
+    padding: 1rem 1.5rem;
+    border-radius: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.btn-upload:hover {
+    background-color: #1e7e34;
+}
+
+.btn-submit {
+    width: 100%;
+    background-color: #28a745;
+    padding: 1.25rem 2rem;
+    font-size: 1.35rem;
+    font-weight: 600;
+    border-radius: 2rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-submit:hover {
+    background-color: #1e7e34;
+}

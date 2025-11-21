@@ -31,18 +31,38 @@ body {
 }
 
 /* triângulo geral */
+/* triângulo geral */
+/* triângulo geral */
 .hero__triangle {
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 6rem; /* afasta a logo do topo */
-  z-index: 2;
-  padding-bottom: 6rem;
-}
+ position: relative;
+ min-height: 100vh;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ 
+ /* 🟢 CHAVE 1: CENTRALIZAÇÃO PARA HOME/INDEX 🟢 */
+ justify-content: center; /* Alinha o conteúdo ao centro verticalmente */
+ 
+ /* ❌ REMOVER: padding-top: 6rem; (ou qualquer valor que empurre para baixo) */
+ /* 🟢 NOVO: Padding top zero para permitir centralização perfeita do topo 🟢 */
+ padding-top: 0; 
+ 
+ z-index: 2;
+ padding-bottom: 6rem;
 
+}
+/* ========================================================
+   SOBRESCRITA: ALINHAMENTO PARA PÁGINA DE LOGIN
+   ======================================================== */
+
+.hero__triangle--login {
+    /* Anula a centralização e alinha o conteúdo ao topo */
+    justify-content: flex-start; 
+
+    /* Adiciona um padding top para empurrar a Logo/Card para baixo 
+       (Ajuste o valor 15vh conforme necessário para a melhor estética) */
+    padding-top: 15vh;
+}
 /* triângulo em si */
 .hero__triangle::before {
   content: "";
@@ -63,7 +83,17 @@ body {
   height: auto;
   margin-bottom: 2rem;
   filter: drop-shadow(0 6px 16px rgba(0,0,0,.35));
+  border-radius: 10px;
   
+}
+/* 🟢 NOVO CÓDIGO: Sobrescreve o tamanho APENAS na tela de Login 🟢 */
+/* Esta regra diz: Encontre a Logo dentro do Triângulo, quando ela for seguida
+   pelo Card de Login, reduza seu tamanho. */
+
+
+.hero__triangle .hero__logo:has(~ .login-card) {
+    width: clamp(80px, 8vw, 120px); /* Tamanho reduzido para Login */
+    margin-bottom: 1.5rem; 
 }
 
 
@@ -121,7 +151,7 @@ body {
 .login-card {
   position: relative;
   z-index: 5;               /* acima do triângulo */
-  margin-top: 2rem;
+  margin-top: 3.5rem;
   background: #004137;      /* um pouco mais claro que o triângulo */
   width: 330px;
   padding: 25px 25px 50px 25px;
