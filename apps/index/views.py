@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.hashers import make_password,check_password
 from django.db import connection
 from .models import (Gestor, Cooperativa, OperadorArmazem, Telefone, TipoSemente,
-                     Solicitacao,Armazem)
+                     Solicitacao,Armazem, Lote)
 from django.db.models import Count
 
 # Create your views here.
@@ -352,10 +352,6 @@ def editar_cooperativa(request, cnpj):
     return render(request, "cadastro_cooperativa/cadastro_cooperativa.html", context)
 
 def detalhe_cooperativa(request, cnpj):
-    """
-    Mostra os detalhes de uma cooperativa específica:
-    dados básicos, endereço, telefones e solicitações.
-    """
 
     # Cooperativa + endereço (FK Endereco)
     cooperativa = get_object_or_404(
@@ -387,7 +383,6 @@ def detalhe_cooperativa(request, cnpj):
     return render(request, "verCooperativa/verCooperativa.html", context)
 
 def gestao_sementes(request):
-    # Conta quantas solicitações cada cooperativa tem
     sementes = TipoSemente.objects.all
     
 
@@ -463,7 +458,7 @@ def detalhes_semente(request, id):
     contexto = {
         "semente": semente,
     }
-    return render(request, "semente/detalhes_semente.html", contexto)
+    return render(request, "GestaoSementes/detalhes_sementes.html", contexto)
 
 def home(request):
     return render(request, "Home/Home.html")
@@ -512,11 +507,6 @@ def ver_armazens(request, armazem_id):
 
     # Renderiza o template de detalhes do Armazém
     return render(request, "GestaoArmazens/VerArmazens.html", context) # Ajustei o nome do arquivo para minusculo
-
-
-
-
-
 
 
 def cadastrar_armazens(request):

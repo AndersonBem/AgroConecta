@@ -2,6 +2,7 @@ from apps.index.views import (
     index, login_view, cadastro_cooperativa, cadastro_gestor, 
     gestao_cooperativas,home, editar_cooperativa, detalhe_cooperativa,
     gestao_sementes, cadastrar_semente,editar_semente, detalhes_semente, perfil_gestor,
+    gestao_armazens,ver_armazens,cadastrar_armazens,gestao_lotes,cadastrar_lotes)
     gestao_armazens,ver_armazens,cadastrar_armazens,gestao_lotes,cadastrar_lotes,dashboard)
 from django.urls import path
 
