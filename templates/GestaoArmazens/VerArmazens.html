@@ -5,6 +5,14 @@
 
 {% block content %}
 
+{% if messages %}
+  <script>
+      {% for message in messages %}
+          alert("{{ message|escapejs }}");
+      {% endfor %}
+  </script>
+{% endif %}
+
 <div class="cooperativa-detalhe-container armazem-detalhe-container">
     
     <h1>Detalhes do Armazém: {{ armazem.nome }}</h1>
@@ -12,18 +20,18 @@
     <div class="coop-bloco">
         <h2>Dados do Armazém</h2>
         <p><strong>Nome:</strong> {{ armazem.nome }}</p>
-        <p><strong>Gestor Responsável:</strong> {{ armazem.gestor.nome }}</p>
-        <p><strong>Capacidade Total (kg):</strong> {{ armazem.capacidade_total }}</p>
-        <p><strong>Capacidade Ocupada (kg):</strong> {{ armazem.capacidade_ocupada }}</p>
-        <p><strong>Descrição:</strong> {{ armazem.descricao }}</p>
+        <p><strong>Gestor Responsável:</strong> {{ armazem.gestor_cpf.nome }}</p>
+        <p><strong>Descrição:</strong> {{ armazem.descricao|default:"(sem descrição)" }}</p>
     </div>
     
     <div class="coop-bloco">
         <h2>Endereço</h2>
-        <p><strong>Rua:</strong> {{ armazem.endereco.rua }}</p>
-        <p><strong>Bairro:</strong> {{ armazem.endereco.bairro }}</p>
-        <p><strong>CEP:</strong> {{ armazem.endereco.cep }}</p>
-        <p><strong>Cidade/Estado:</strong> {{ armazem.endereco.cidade }} / {{ armazem.endereco.estado }}</p>
+        <p><strong>Rua:</strong> {{ armazem.endereco_idendereco.rua }}</p>
+        <p><strong>Bairro:</strong> {{ armazem.endereco_idendereco.bairro }}</p>
+        <p><strong>CEP:</strong> {{ armazem.endereco_idendereco.cep }}</p>
+        <p><strong>Cidade/UF:</strong> 
+            {{ armazem.endereco_idendereco.cidade }} / {{ armazem.endereco_idendereco.uf }}
+        </p>
     </div>
 
     <div class="coop-bloco lotes-sementes-bloco">
@@ -34,7 +42,11 @@
                 <h3>Lotes Armazenados ({{ lotes|length }})</h3>
                 <ul>
                 {% for lote in lotes %}
-                    <li><a href="#">{{ lote.nome }} ({{ lote.quantidade }} kg)</a></li>
+                    <li>
+                        Lote #{{ lote.idlote }} —
+                        {{ lote.peso }} kg —
+                        Entrada: {{ lote.dataentrada|date:"d/m/Y" }}
+                    </li>
                 {% empty %}
                     <li>Nenhum lote armazenado.</li>
                 {% endfor %}
@@ -63,7 +75,7 @@
     <div class="coop-acoes">
         <a href="#" class="btn btn-editar">Editar Armazém</a>
         <a href="{% url 'gestao_armazens' %}" class="btn btn-voltar">Voltar para a Lista</a>
-        </div>
+    </div>
 
 </div>
 

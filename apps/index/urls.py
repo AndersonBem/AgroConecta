@@ -2,8 +2,9 @@ from apps.index.views import (
     index, login_view, cadastro_cooperativa, cadastro_gestor, 
     gestao_cooperativas,home, editar_cooperativa, detalhe_cooperativa,
     gestao_sementes, cadastrar_semente,editar_semente, detalhes_semente, perfil_gestor,
-    gestao_armazens,ver_armazens,cadastrar_armazens,gestao_lotes,cadastrar_lotes)
-    gestao_armazens,ver_armazens,cadastrar_armazens,gestao_lotes,cadastrar_lotes,dashboard)
+    gestao_armazens,ver_armazens,cadastrar_armazens,gestao_lotes,cadastrar_lotes,
+    gestao_armazens,ver_armazens,cadastrar_armazens,gestao_lotes,cadastrar_lotes, dashboard,
+    deletar_semente, editar_perfil_gestor)
 from django.urls import path
 
 
@@ -21,10 +22,13 @@ urlpatterns = [
         path("sementes/<path:id>/editar/", editar_semente, name="editar_semente"),
         path("sementes/<int:id>/detalhes/", detalhes_semente, name="detalhes_semente"),
         path("perfil_gestor/",perfil_gestor, name='perfil_gestor'),
+        path("perfil_gestor/editar/", editar_perfil_gestor, name="editar_perfil_gestor"),
         path("gestao_armazens/",gestao_armazens, name='gestao_armazens'),
         path("ver-armazens/<int:armazem_id>/", ver_armazens, name='ver_armazens'),
         path("cadastrar_armazens/",cadastrar_armazens, name='cadastrar_armazens'),
         path("gestao_lotes/",gestao_lotes, name='gestao_lotes'),
         path("cadastrar_lotes/",cadastrar_lotes, name='cadastrar_lotes'),
-        path("dashboard/",dashboard, name='dashboard')
+        path("dashboard/",dashboard, name='dashboard'),
+        path("sementes/<int:id>/deletar/", deletar_semente, name="deletar_semente"),
+
     ]

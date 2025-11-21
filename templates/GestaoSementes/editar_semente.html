@@ -1,0 +1,31 @@
+{% extends "base/base.html" %}
+{% load static %}
+
+{% block title %}Editar Semente{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+<script>
+    {% for message in messages %}
+        alert("{{ message|escapejs }}");
+    {% endfor %}
+</script>
+{% endif %}
+
+<h1>Editar Semente 🌱</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <label>Nome da Semente:</label>
+    <input type="text" name="nome" class="campo"
+           value="{{ semente.nome }}">
+
+    <label>Descrição:</label>
+    <textarea name="descricao" class="campo">{{ semente.descricao }}</textarea>
+
+    <button type="submit" class="btn">Salvar Alterações ✔</button>
+</form>
+
+{% endblock %}

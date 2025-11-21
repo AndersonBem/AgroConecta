@@ -5,51 +5,57 @@
 {% block body_class %}sementes-lista-active{% endblock %} 
 {% block content %}
 
+{% if messages %}
+<script>
+    {% for message in messages %}
+        alert("{{ message|escapejs }}");
+    {% endfor %}
+</script>
+{% endif %}
+
 <div class="lista-page">
 
     <div class="header-lista">
         <h1 class="titulo-lista">Gestão de Sementes <span class="emoji-folha">🌱</span></h1>
         
-        <a href="#" class="btn-adicionar-novo">
+        <a href="{% url 'cadastrar_semente' %}" class="btn-adicionar-novo">
             <span class="icone-adicionar">+</span> Adicionar Nova Semente
         </a>
     </div>
 
     <div class="lista-cards">
+        {% for seed in sementes %}
+                <div class="card-item-semente">
 
-        <div class="card-item-semente">
-            <h2 class="semente-nome">Semente 1</h2>
-            
-            <div class="semente-info">
-                <p><strong>Descrição:</strong> Trigo de alto rendimento.</p>
-                <p><strong>Armazéns Associados:</strong> Armazem A, Armazem B</p>
-                <p><strong>Quantidade Total:</strong> 3000kg</p>
-                <p><strong>Status:</strong> Disponível</p>
-            </div>
+                    <h2 class="semente-nome">{{ seed.obj.nome }}</h2>
 
-            <div class="semente-botoes">
-                <a href="{% url 'detalhes_sementes' 1 %}" class="btn-detalhes">Ver Detalhes</a>
-                <a href="{% url 'editar_semente' 1 %}" class="btn-editar">Editar</a>
-            </div>
+                    <div class="semente-info">
+                        <p><strong>Descrição:</strong> {{ seed.obj.descricao }}</p>
+
+                        <p>
+                            <strong>Armazéns Associados:</strong>
+                            {% if seed.armazens %}
+                                {{ seed.armazens|join:", " }}
+                            {% else %}
+                                Nenhum armazém possui esta semente
+                            {% endif %}
+                        </p>
+
+                        <p><strong>Quantidade Total:</strong> {{ seed.total_kg }} kg</p>
+
+                        <p><strong>Status:</strong> {{ seed.status }}</p>
+                    </div>
+
+                    <div class="semente-botoes">
+                        <a href="{% url 'detalhes_semente' seed.obj.idtiposemente %}" class="btn-detalhes">Ver Detalhes</a>
+                        <a href="{% url 'editar_semente' seed.obj.idtiposemente %}" class="btn-editar">Editar</a>
+                    </div>
+                </div>
+            {% empty %}
+                <p>Não há sementes cadastradas ainda.</p>
+            {% endfor %}
         </div>
-        
-        <div class="card-item-semente">
-            <h2 class="semente-nome">Semente 2</h2>
-            
-            <div class="semente-info">
-                <p><strong>Descrição:</strong> Milho resistente a secas.</p>
-                <p><strong>Armazéns Associados:</strong> Armazem C</p>
-                <p><strong>Quantidade Total:</strong> 20kg</p>
-                <p><strong>Status:</strong> Em Falta</p>
-            </div>
 
-            <div class="semente-botoes">
-                <a href="{% url 'detalhes_semente' 2 %}" class="btn-detalhes">Ver Detalhes</a>
-                <a href="{% url 'editar_semente' 2 %}" class="btn-editar">Editar</a>
-            </div>
-        </div>
-
-        </div>
     
     <img src="{% static 'img/fazendeiro.svg' %}" class="mascote-lista" alt="Mascote Agro">
 

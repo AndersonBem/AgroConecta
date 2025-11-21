@@ -4,7 +4,7 @@ from django.contrib.auth.hashers import make_password,check_password
 from django.db import connection
 from .models import (Gestor, Cooperativa, OperadorArmazem, Telefone, TipoSemente,
                      Solicitacao,Armazem, Lote)
-from django.db.models import Count
+from django.db.models import Count, Sum
 
 # Create your views here.
 def index(request):
@@ -383,11 +383,36 @@ def detalhe_cooperativa(request, cnpj):
     return render(request, "verCooperativa/verCooperativa.html", context)
 
 def gestao_sementes(request):
-    sementes = TipoSemente.objects.all
-    
 
-    context = {"sementes": sementes}
-    return render(request, "GestaoSementes/GestaoSementes.html", context)
+    sementes = TipoSemente.objects.all()
+
+    sementes_info = []
+
+    for seed in sementes:
+        # Lotes dessa semente
+        lotes = Lote.objects.filter(tiposemente_idtiposemente=seed.idtiposemente)
+
+        # Soma total em Kg
+        total_kg = lotes.aggregate(total=Sum("peso"))["total"] or 0
+
+        # Armazéns que possuem essa semente
+        armazens = Armazem.objects.filter(
+            idarmazem__in=lotes.values("armazem_idarmazem")
+        ).values_list("nome", flat=True).distinct()
+
+        # Status
+        status = "Em estoque" if lotes.exists() else "Em falta"
+
+        sementes_info.append({
+            "obj": seed,
+            "total_kg": total_kg,
+            "armazens": list(armazens),
+            "status": status,
+        })
+
+    return render(request, "GestaoSementes/GestaoSementes.html", {
+        "sementes": sementes_info
+    })
 
 def cadastrar_semente(request):
     if request.method == "POST":
@@ -405,7 +430,7 @@ def cadastrar_semente(request):
         if erros:
             for e in erros:
                 messages.error(request, e)
-            return render(request, "semente/cadastrar_semente.html")
+            return render(request, "GestaoSementes/cadastrar_semente.html")
 
         TipoSemente.objects.create(
             nome=nome,
@@ -415,7 +440,7 @@ def cadastrar_semente(request):
         messages.success(request, "Semente cadastrada com sucesso!")
         return redirect("gestao_sementes")
 
-    return render(request, "cadastro_semente/cadastro_semente.html")
+    return render(request, "GestaoSementes/cadastrar_semente.html")
 
 def editar_semente(request, id):
     # Busca a semente pelo ID ou retorna 404
@@ -438,7 +463,7 @@ def editar_semente(request, id):
         if erros:
             for e in erros:
                 messages.error(request, e)
-            return render(request, "semente/editar_semente.html", {"semente": semente})
+            return render(request, "GestaoSementes/editar_semente.html", {"semente": semente})
 
         # Atualiza
         semente.nome = nome
@@ -449,64 +474,219 @@ def editar_semente(request, id):
 
         return redirect("gestao_sementes")  # ajuste conforme sua lista
 
-    return render(request, "semente/editar_semente.html", {"semente": semente})
+    return render(request, "GestaoSementes/editar_semente.html", {"semente": semente})
 
 def detalhes_semente(request, id):
     # busca a semente pelo ID (idtiposemente é a PK)
     semente = get_object_or_404(TipoSemente, idtiposemente=id)
 
+    # lotes dessa semente
+    lotes = Lote.objects.filter(tiposemente_idtiposemente=semente.idtiposemente)
+
+    # armazéns que possuem essa semente
+    armazens = Armazem.objects.filter(
+        idarmazem__in=lotes.values("armazem_idarmazem")
+    ).values_list("nome", flat=True).distinct()
+
     contexto = {
         "semente": semente,
+        "armazens": armazens,  # <- manda pro template
     }
     return render(request, "GestaoSementes/detalhes_sementes.html", contexto)
+
+def deletar_semente(request, id):
+    semente = get_object_or_404(TipoSemente, idtiposemente=id)
+
+    # Lotes associados a essa semente
+    lotes = Lote.objects.filter(tiposemente_idtiposemente=id).select_related("armazem_idarmazem")
+
+    if request.method == "POST":
+        apagar_lotes = request.POST.get("apagar_lotes") == "sim"
+
+        # Se há lotes, só permite excluir se o usuário optar por excluir os lotes também
+        if lotes.exists():
+            if not apagar_lotes:
+                messages.error(
+                    request,
+                    "Esta semente possui lotes associados. "
+                    "Marque a opção para apagar também os lotes, se quiser prosseguir."
+                )
+                return redirect("deletar_semente", id=id)
+
+            # Apaga todos os lotes dessa semente
+            lotes.delete()
+
+        # Agora pode apagar a semente
+        semente.delete()
+        messages.success(request, "Semente (e lotes associados, se houveram) deletada com sucesso!")
+        return redirect("gestao_sementes")
+
+    # GET → mostra tela de confirmação com a lista de lotes
+    context = {
+        "semente": semente,
+        "lotes": lotes,
+    }
+    return render(request, "GestaoSementes/confirmar_delete_semente.html", context)
 
 def home(request):
     return render(request, "Home/Home.html")
 
 
 def perfil_gestor(request):
-    return render(request,"PerfilGestor/PerfilGestor.html")
+    # pega dados da sessão
+    tipo_usuario = request.session.get("user_tipo")
+    user_id = request.session.get("user_id")   # para Gestor é o CPF
+
+    # se não estiver logado
+    if not tipo_usuario or not user_id:
+        messages.error(request, "Faça login para acessar seu perfil.")
+        return redirect("login_view")
+
+    # se não for gestor, bloqueia esse perfil
+    if tipo_usuario != "gestor":
+        messages.error(request, "Apenas gestores podem acessar essa página.")
+        return redirect("home")  # ou outra página padrão
+
+    # busca o gestor logado
+    gestor = get_object_or_404(Gestor, pk=user_id)
+
+    # telefone(s) do gestor
+    telefones = Telefone.objects.filter(gestor_cpf=gestor.cpf).values_list(
+        "numero", flat=True
+    )
+    telefone_principal = telefones[0] if telefones else None
+
+    # armazéns sob gestão desse gestor
+    armazens = Armazem.objects.filter(gestor_cpf=gestor)
+
+    context = {
+        "gestor": gestor,
+        "telefone_principal": telefone_principal,
+        "armazens": armazens,
+    }
+    return render(request, "PerfilGestor/PerfilGestor.html", context)
+
+def editar_perfil_gestor(request):
+    # garante que o usuário logado é um gestor
+    if request.session.get("user_tipo") != "gestor":
+        messages.error(request, "Você precisa estar logado como gestor para editar o perfil.")
+        return redirect("login_view")
+
+    cpf = request.session.get("user_id")
+    gestor = get_object_or_404(Gestor, pk=cpf)
+
+    telefone_obj = Telefone.objects.filter(gestor_cpf=gestor).first()
+    telefone_atual = telefone_obj.numero if telefone_obj else ""
+
+    if request.method == "POST":
+        nome = request.POST.get("nome_completo", "").strip()
+        usuario = request.POST.get("usuario", "").strip()
+        email = request.POST.get("email", "").strip()
+        telefone = request.POST.get("telefone", "").strip()
+        senha = request.POST.get("senha") or ""
+        confirmar = request.POST.get("confirmar_senha") or ""
+
+        erros = []
+
+        if not nome or not usuario or not email:
+            erros.append("Nome, usuário e e-mail são obrigatórios.")
+
+        # e-mail já usado por outro gestor
+        if Gestor.objects.filter(email=email).exclude(pk=gestor.cpf).exists():
+            erros.append("Já existe um gestor com esse e-mail.")
+
+        # usuário já usado por outro gestor
+        if Gestor.objects.filter(usuario=usuario).exclude(pk=gestor.cpf).exists():
+            erros.append("Já existe um gestor com esse usuário.")
+
+        # validação de senha (se o usuário preencheu)
+        if senha or confirmar:
+            if senha != confirmar:
+                erros.append("A nova senha e a confirmação não conferem.")
+
+        if erros:
+            for e in erros:
+                messages.error(request, e)
+            # re-renderiza com os dados atuais
+            context = {
+                "gestor": gestor,
+                "telefone": telefone_atual,
+            }
+            return render(request, "PerfilGestor/editar_perfil.html", context)
+
+        # atualiza campos básicos
+        gestor.nome = nome
+        gestor.usuario = usuario
+        gestor.email = email
+
+        # se o usuário informou uma nova senha, gera o hash
+        if senha:
+            gestor.senha_hash = make_password(senha)
+
+        gestor.save()
+
+        # Atualiza/cria/deleta telefone
+        if telefone:
+            if telefone_obj:
+                telefone_obj.numero = telefone
+                telefone_obj.save()
+            else:
+                Telefone.objects.create(
+                    numero=telefone,
+                    gestor_cpf=gestor
+                )
+        else:
+            # se esvaziou o telefone e existia um, apaga
+            if telefone_obj:
+                telefone_obj.delete()
+
+        messages.success(request, "Perfil atualizado com sucesso!")
+        return redirect("perfil_gestor")
+
+    # GET: mostra o formulário preenchido
+    context = {
+        "gestor": gestor,
+        "telefone": telefone_atual,
+    }
+    return render(request, "PerfilGestor/editar_perfil.html", context)
+
 
 def gestao_armazens(request):
+
     return render(request,"GestaoArmazens/GestaoArmazens.html")
 
 def ver_armazens(request, armazem_id):
-    """
-    Mostra os detalhes de um armazém específico,
-    incluindo dados, endereço, lotes e tipos de semente.
-    """
-    # 1. Busca o Armazém pelo ID
-    # Assumindo que o ID é a chave primária e o Armazem tem FK para Endereco
+    
     armazem = get_object_or_404(
-        Armazem.objects.select_related('endereco'),
+        Armazem.objects.select_related(
+            "gestor_cpf",          
+            "endereco_idendereco", 
+            "operadorarmazem_idoperadorarmazem"  
+        ),
         pk=armazem_id
     )
 
-    # 2. Busca os Lotes armazenados
-    # Assumindo que o modelo Lote tem um campo armazem_id que referencia o Armazem
+    
     lotes = (
         Lote.objects
-        .filter(armazem_id=armazem)
-        .order_by('-data_entrada')
+        .filter(armazem_idarmazem=armazem)   
+        .order_by("-dataentrada")           
     )
 
-    # 3. Tipos de Semente armazenados (únicos)
-    # Assumindo que Lote tem FK para TipoSemente
+
     tipos_sementes = (
         TipoSemente.objects
-        .filter(lote__armazem_id=armazem)
+        .filter(lote__armazem_idarmazem=armazem)
         .distinct()
     )
 
     context = {
-        'armazem': armazem,
-        'lotes': lotes,
-        'tipos_sementes': tipos_sementes,
-        'body_class_name': 'armazem-detalhe-active', # Opcional: para customizar o CSS se quiser
+        "armazem": armazem,
+        "lotes": lotes,
+        "tipos_sementes": tipos_sementes,
     }
 
-    # Renderiza o template de detalhes do Armazém
-    return render(request, "GestaoArmazens/VerArmazens.html", context) # Ajustei o nome do arquivo para minusculo
+    return render(request, "GestaoArmazens/VerArmazens.html", context)
 
 
 def cadastrar_armazens(request):
