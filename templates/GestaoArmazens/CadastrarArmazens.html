@@ -1,0 +1,79 @@
+{% extends "Siderbar/base_sidebar.html" %}
+{% load static %}
+
+{% block title %}Cadastro de Armazém - AgroConecta{% endblock %}
+
+{% block content %}
+
+<div class="armazem-page">
+
+    <div class="main-container">
+
+        <header class="page-header">
+            <h1>Cadastrar Novo Armazém 📦</h1>
+            <a href="{% url 'gestao_armazens' %}" class="btn-voltar">
+                <i class="bi bi-arrow-left-circle"></i> Voltar para Gestão de Armazéns
+            </a>
+        </header>
+        
+        <div class="form-wrapper">
+            <form method="POST" class="custom-form">
+                {% csrf_token %}
+
+                <h2 class="section-title">Dados do Armazém</h2>
+
+                <div class="form-row">
+                    <div class="form-group col-50">
+                        <label class="form-label">Nome do Armazém *</label>
+                        <input type="text" name="nome" class="input-rounded"
+                               placeholder="Ex: Armazém Regional Sul" required>
+                    </div>
+
+                    <div class="form-group col-50">
+                        <label class="form-label">Descrição</label>
+                        <textarea name="descricao" class="textarea-rounded"
+                                  placeholder="Breve descrição sobre o armazém." rows="4"></textarea>
+                    </div>
+                </div>
+                
+                <hr class="divider-light">
+
+                <h2 class="section-title">Supervisão</h2>
+
+                <div class="form-group">
+                    <label class="form-label">Gestor Responsável (CPF) *</label>
+                    <input type="text" name="Gestor_CPF" class="input-rounded"
+                           placeholder="Ex: 001.001.001-01" required>
+                    <small class="form-text">O CPF do gestor deve estar cadastrado no sistema.</small>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group col-50">
+                        <label class="form-label">ID do Endereço *</label>
+                        <input type="number" name="Endereco_idEndereco" class="input-rounded"
+                               placeholder="Ex: 13" required>
+                        <small class="form-text">Código numérico do endereço já cadastrado.</small>
+                    </div>
+
+                    <div class="form-group col-50">
+                        <label class="form-label">ID do Operador de Armazém *</label>
+                        <input type="number" name="OperadorArmazem_idOperadorArmazem" class="input-rounded"
+                               placeholder="Ex: 1" required>
+                        <small class="form-text">Código numérico do operador responsável.</small>
+                    </div>
+                </div>
+                
+                <div class="submit-area">
+                    <button type="submit" class="btn-success btn-full-width">
+                        <i class="bi bi-save"></i> Cadastrar Armazém
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock content %}

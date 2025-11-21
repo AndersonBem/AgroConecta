@@ -1,0 +1,103 @@
+{% extends "Siderbar/base_sidebar.html" %}
+{% load static %}
+
+{% block title %}Cadastro de Lote - AgroConecta{% endblock %}
+{% block content %}
+
+<div class="lote-cadastro-container">
+    
+    <header class="page-header">
+        <h1>Cadastrar Novo Lote 🚜</h1>
+        <a href="{% url 'gestao_lotes' %}" class="btn-voltar">
+            <i class="bi bi-arrow-left-circle"></i> Voltar para Gestão de Lotes
+        </a>
+    </header>
+    
+    <div class="form-wrapper">
+        <form method="POST" class="custom-form">
+            {% csrf_token %}
+
+            <h2 class="section-title">Informações do Lote</h2>
+
+            <div class="form-row">
+                
+                <div class="form-group col-33">
+                    <label for="id_dataEntrada" class="form-label">Data de Entrada *</label>
+                    <input type="date" id="id_dataEntrada" name="dataEntrada" class="input-rounded" required>
+                </div>
+
+                <div class="form-group col-33">
+                    <label for="id_dataVencimento" class="form-label">Data de Vencimento *</label>
+                    <input type="date" id="id_dataVencimento" name="dataVencimento" class="input-rounded" required>
+                </div>
+                
+                <div class="form-group col-33">
+                    <label for="id_peso" class="form-label">Peso (kg) *</label>
+                    <input type="number" id="id_peso" name="peso" class="input-rounded"
+                            placeholder="Ex: 1050" min="1" required>
+                </div>
+            </div>
+            
+            <hr class="divider-light">
+
+            <h2 class="section-title">Associações e Códigos</h2>
+            
+            <div class="form-row">
+                
+                <div class="form-group col-50">
+                    <label for="id_armazem" class="form-label">ID do Armazém *</label>
+                    <input type="number" id="id_armazem" class="input-rounded"
+                            name="Armazem_idArmazem" placeholder="Ex: 1" required>
+                    <small class="form-text">Armazém onde o lote será estocado.</small>
+                </div>
+
+                <div class="form-group col-50">
+                    <label for="id_semente" class="form-label">Tipo de Semente *</label>
+                    
+                    <select id="id_semente" name="TipoSemente_idTipoSemente" class="input-rounded select-field" required>
+                        <option value="" disabled selected>Selecione (ID - Nome)</option>
+                        
+                        {# LOOP SOBRE OS DADOS DO BANCO: TIPOSEMENTE #}
+                        {% for semente in tipos_semente %}
+                            <option value="{{ semente.idTipoSemente }}">
+                                {{ semente.idTipoSemente }} - {{ semente.nome }}
+                            </option>
+                        {% empty %}
+                            <option value="" disabled>Nenhuma semente cadastrada</option>
+                        {% endfor %}
+                        
+                    </select>
+                    <small class="form-text">Qual tipo de semente este lote contém.</small>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                
+                <div class="form-group col-50">
+                    <label for="id_qr_payload" class="form-label">QR Code Payload</label>
+                    <input type="text" id="id_qr_payload" class="input-rounded"
+                            name="qr_payload" placeholder="Ex: QR0001">
+                    <small class="form-text">Identificador único (geralmente gerado automaticamente).</small>
+                </div>
+
+                <div class="form-group col-50">
+                    <label for="id_lotecol" class="form-label">Código do Lote</label>
+                    <input type="text" id="id_lotecol" class="input-rounded"
+                            name="Lotecol" placeholder="Ex: Lote-001">
+                    <small class="form-text">Código interno de referência (LoteCol).</small>
+                </div>
+
+            </div>
+            
+            <div class="submit-area">
+                <button type="submit" class="btn-success btn-full-width">
+                    <i class="bi bi-save"></i> Cadastrar Lote
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+{% endblock content %}

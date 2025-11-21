@@ -514,3 +514,20 @@ def ver_armazens(request, armazem_id):
 
     # Renderiza o template de detalhes do Armazém
     return render(request, "GestaoArmazens/VerArmazens.html", context) # Ajustei o nome do arquivo para minusculo
+
+
+
+
+
+
+
+def cadastrar_armazens(request):
+    return render(request,"GestaoArmazens/CadastrarArmazens.html")
+
+
+def gestao_lotes(request):
+    return render(request,"GestaoLotes/GestaoLotes.html")
+
+
+def cadastrar_lotes(request):
+    return render(request,"GestaoLotes/CadastrarLotes.html")

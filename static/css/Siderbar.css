@@ -991,3 +991,316 @@ body.perfil-gestor-active .main-content {
     }
 
 }
+/* ========================================================= */
+/* PÁGINA DO ARMAZÉM: CADASTRO (Fundo Claro com Inputs Brancos) */
+/* ========================================================= */
+
+.armazem-page {
+    /* Mantém o fundo externo levemente verde/claro, mas elimina a cor extra */
+    background: transparent;
+    padding: 30px;
+    min-height: 100vh;
+}
+
+/* ================================
+   1. CONTAINER E ESTRUTURA
+================================ */
+.armazem-page .main-container {
+    /* Remove o fundo redundante para eliminar o efeito de 'camadas brancas' */
+    background: transparent;
+    padding: 0;
+    max-width: 900px;
+    margin: 0 auto; /* Centraliza o conteúdo */
+}
+
+/* ================================
+   HEADER
+================================ */
+.armazem-page .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+    padding-top: 10px;
+    padding-left: 20px;
+}
+
+.armazem-page .page-header h1 {
+    color: #146c43; /* Título em verde escuro */
+    font-weight: 700;
+    
+
+}
+
+/* Link Voltar (correção da visibilidade) */
+.armazem-page .btn-voltar {
+    font-size: 16px;
+    color: #146c43 !important; /* Cor escura para alto contraste */
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.armazem-page .btn-voltar:hover {
+    color: #4D4492; /* Hover destacado */
+}
+
+/* ================================
+   FORM WRAPPER
+================================ */
+.armazem-page .form-wrapper {
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+/* ================================
+   TIPOGRAFIA E VISIBILIDADE
+================================ */
+.armazem-page .section-title {
+    color: #146c43;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 8px;
+    text-align: left;
+}
+
+.armazem-page .form-label {
+    color: #333;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.armazem-page .form-text {
+    color: #6c757d;
+    font-size: 0.85rem;
+    display: block;
+    margin-top: 5px;
+}
+
+/* ================================
+   LAYOUT E INPUTS
+================================ */
+.armazem-page .form-group {
+    margin-bottom: 25px;
+}
+
+.armazem-page .form-row {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.armazem-page .col-50 {
+    flex: 1 1 calc(50% - 15px);
+}
+
+.armazem-page .input-rounded,
+.armazem-page .textarea-rounded {
+    width: 100%;
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: 0.2s;
+}
+
+.armazem-page .input-rounded:focus,
+.armazem-page .textarea-rounded:focus {
+    border-color: #198754;
+}
+
+/* ================================
+   BOTÃO
+================================ */
+.armazem-page .btn-success {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: #198754;
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 600;
+}
+
+
+.armazem-page .btn-success:hover {
+    background: #146c43;
+}
+
+
+
+/* =======================================
+   ESTILO EXCLUSIVO: CADASTRO DE LOTE
+   ======================================= */
+
+.lote-cadastro-container {
+    background: linear-gradient(135deg, #1d6b57 0%, #064331 40%, #022d26 100%);
+    padding: 40px 30px;
+    min-height: 100vh;
+}
+
+/* Estilo do cabeçalho da página */
+.page-header {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px; 
+}
+
+.page-header h1 {
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 2rem;
+}
+
+.btn-voltar {
+    background: transparent;
+    border: none;
+    color: #ffffff !important;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+.btn-voltar:hover {
+    color: #ccffcc !important;
+    text-decoration: underline;
+}
+
+/* Centralização do Formulário */
+.form-wrapper {
+    max-width: 850px; 
+    margin: 0 auto; 
+    padding: 20px;
+}
+
+/* Títulos de Seção */
+.section-title {
+    color: #ccffcc; /* Verde claro para contraste */
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem; 
+    text-align: center;
+}
+
+/* Linha de separação */
+.divider-light {
+    border: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    margin: 3rem 0; 
+}
+
+/* =======================================
+   2. LAYOUT DE COLUNAS (FLEXBOX PURO)
+   ======================================= */
+
+/* Define a linha do formulário como um container Flex */
+.form-row {
+    display: flex;
+    gap: 30px; /* Espaço entre as colunas */
+}
+
+/* Define as colunas (50% da largura) */
+.col-50 {
+    flex: 1 1 50%;
+}
+
+/* 🟢 NOVA CLASSE: 3 Colunas (33.33%) */
+.col-33 {
+    flex: 1 1 33.33%; 
+}
+
+/* Espaçamento para grupos de campos */
+.form-group {
+    margin-bottom: 2.5rem; 
+}
+
+/* =======================================
+   3. ESTILO DOS INPUTS
+   ======================================= */
+
+.form-label {
+    color: #ffffff;
+    font-size: 1rem;
+    margin-bottom: 8px; 
+    display: block;
+    font-weight: 600; 
+}
+
+/* Inputs e Textareas Arredondados e Flutuantes */
+.input-rounded,
+.textarea-rounded {
+    width: 100%;
+    border-radius: 2rem; 
+    background: #ffffff;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    padding: 1rem 1.5rem; 
+    font-size: 1.1rem;
+    box-sizing: border-box; 
+}
+
+.input-rounded:focus,
+.textarea-rounded:focus {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4), 0 0 0 3px rgba(40, 167, 69, 0.4); 
+    outline: none; 
+}
+
+.textarea-rounded {
+    border-radius: 1.5rem; 
+    min-height: 120px; 
+    resize: vertical;
+}
+
+/* Texto de Ajuda (Form Text) */
+.form-text {
+    color: #ccffcc; 
+    font-size: 0.9rem;
+    padding-left: 10px;
+    margin-top: 5px;
+    display: block;
+}
+
+/* =======================================
+   4. BOTÃO DE SUBMISSÃO
+   ======================================= */
+.submit-area {
+    margin-top: 40px; 
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: none;
+    color: #ffffff;
+    padding: 1rem 2rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    border-radius: 2rem;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+.btn-success:hover {
+    background-color: #1e7e34;
+    cursor: pointer;
+}
+
+.btn-full-width {
+    width: 100%;
+}
+.btn-success i.bi {
+    margin-right: 8px;
+}
+
+
+/*  TELA DE SOLICITAÇÕES  */
+
