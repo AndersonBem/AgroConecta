@@ -4,7 +4,7 @@ from apps.index.views import (
     gestao_sementes, cadastrar_semente,editar_semente, detalhes_semente, perfil_gestor,
     gestao_armazens,ver_armazens,cadastrar_armazens,gestao_lotes,cadastrar_lotes,
     gestao_armazens,ver_armazens,cadastrar_armazens,gestao_lotes,cadastrar_lotes, dashboard,
-    deletar_semente, editar_perfil_gestor)
+    deletar_semente, editar_perfil_gestor, gestao_solicitacoes)
 from django.urls import path
 
 
@@ -30,5 +30,6 @@ urlpatterns = [
         path("cadastrar_lotes/",cadastrar_lotes, name='cadastrar_lotes'),
         path("dashboard/",dashboard, name='dashboard'),
         path("sementes/<int:id>/deletar/", deletar_semente, name="deletar_semente"),
+        path("gestaosolicitacoes", gestao_solicitacoes, name="gestao_solicitacoes")
 
     ]
