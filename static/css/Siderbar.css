@@ -1150,6 +1150,22 @@ body.perfil-gestor-active .main-content {
     background: #146c43;
 }
 
+.coop-acoes .btn-deletar {
+    /* Define a cor do texto como branca */
+    color: white !important;
+    /* Remove a decoração de texto (sublinhado), embora geralmente não seja necessária para botões */
+    text-decoration: none;
+}
+
+.btn-adicionar-lote{
+    text-decoration: none;
+    border-radius: 30px !important;
+    font-size: 17px !important;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--verde-1) !important;
+
+}
 
 
 /* ========================================================
@@ -1651,3 +1667,670 @@ body.solicitacao-active .main-content {
 .btn-submit:hover {
     background-color: #1e7e34;
 }
+
+
+/* Container Principal  EXCLUIR ARMAZÉM */
+.confirm-deletion-page {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff; /* Fundo branco para contraste */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Título */
+.deletion-title {
+    color: #333;
+    font-size: 1.8em;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.armazem-name {
+    color: #00796b; /* Cor da sua identidade visual */
+    font-weight: bold;
+}
+
+/* Caixas de Alerta (Aviso/Informação) */
+.warning-box, .info-box {
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.warning-box {
+    background-color: #fff3cd; /* Amarelo suave de aviso */
+    border: 1px solid #ffeeba;
+    color: #856404;
+    flex-direction: column; /* Para colocar o conteúdo abaixo do ícone/título */
+}
+
+.info-box {
+    background-color: #d1ecf1; /* Azul suave de informação */
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+}
+
+.icon-warning {
+    font-size: 1.5em;
+    color: #dc3545; /* Vermelho forte para ênfase no perigo */
+}
+
+.icon-info {
+    font-size: 1.5em;
+    color: #007bff;
+}
+
+.warning-box p, .info-box p {
+    margin-top: 0;
+    line-height: 1.6;
+}
+
+/* Lista de Lotes */
+.lotes-list-box {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f7f7f7;
+    border-radius: 4px;
+    border-left: 5px solid #dc3545; /* Borda vermelha para chamar a atenção */
+}
+
+.lotes-list-box h3 {
+    margin-top: 0;
+    color: #dc3545;
+    font-size: 1em;
+}
+
+.lotes-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0 0 0;
+}
+
+.lotes-list li {
+    background-color: #fff;
+    padding: 8px 10px;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    border: 1px dashed #e0e0e0;
+}
+
+/* Checkbox de Confirmação */
+.confirmation-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    color: #333;
+}
+
+.confirmation-checkbox input[type="checkbox"] {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+/* Botões de Ação */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-danger {
+    background-color: #dc3545; /* Vermelho padrão para perigo */
+    color: white;
+    border: 1px solid #dc3545;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.btn-cancelar {
+    background-color: #6c757d; /* Cinza para botão de cancelar */
+    color: white;
+    border: 1px solid #6c757d;
+}
+
+.btn-cancelar:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+
+/* estilos cadastro sementes */
+
+/* Container da Página de Formulário */
+.form-page-container {
+    max-width: 700px; /* Limita a largura do formulário */
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff; /* Fundo branco para a área do formulário */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Sombra suave */
+}
+
+/* Título */
+.page-title {
+    color: #00796b; /* Cor principal, harmonizando com o ícone */
+    font-size: 2em;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+/* Formulário Principal */
+.app-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espaço entre os grupos de campos */
+}
+
+/* Grupo de Campos (Label + Input) */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 1em;
+}
+
+/* Estilo Comum para Inputs e Textareas */
+.form-campo {
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #f9f9f9; /* Levemente cinza para inputs */
+    color: #333;
+}
+
+.form-campo::placeholder {
+    color: #999;
+}
+
+.form-campo:focus {
+    border-color: #00796b; /* Cor de destaque ao focar */
+    box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.2);
+    outline: none;
+    background-color: #fff;
+}
+
+.textarea-field {
+    resize: vertical;
+    min-height: 100px; /* Altura mínima para a descrição */
+}
+
+/* Botão de Ação */
+.form-actions {
+    margin-top: 15px;
+    display: flex; /* Adiciona Flexbox para alinhar botões */
+    gap: 15px; /* Espaço entre os botões */
+    align-items: center;
+}
+
+.btn-primary {
+    background-color: #00796b; /* Cor principal para o botão de cadastro */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary:hover {
+    background-color: #006056;
+}
+
+/* Estilo para o botão de Voltar/Cancelar */
+.btn-cancelar-secondary {
+    background-color: #6c757d; /* Cinza escuro */
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none; /* Garante que não tenha sublinhado (pois é um <a>) */
+}
+
+.btn-cancelar-secondary:hover {
+    background-color: #5a6268;
+}
+
+
+/*cofirm/delete sementes */
+/* Container e Card */
+.delete-confirmation-page {
+    padding: 30px;
+}
+
+.confirmation-card {
+    display: flex;
+    max-width: 900px; /* Aumenta um pouco para acomodar o mascote */
+    margin: 40px auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.delete-content {
+    flex-grow: 1;
+}
+
+/* Título */
+.main-title {
+    color: #333;
+    font-size: 1.8em;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+.highlight-name {
+    color: #dc3545; /* Vermelho para dar ênfase ao item que será excluído */
+    font-weight: bold;
+}
+
+/* Alerta de Atenção */
+.delete-warning {
+    padding: 15px;
+    background-color: #f8d7da; /* Fundo vermelho suave */
+    color: #721c24; /* Texto vermelho escuro */
+    border: 1px solid #f5c6cb;
+    border-left: 5px solid #dc3545; /* Borda lateral forte */
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.delete-warning p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    line-height: 1.4;
+}
+
+.delete-warning i {
+    font-size: 1.5em;
+    color: #dc3545;
+}
+
+/* Lista de Lotes */
+.lotes-subtitle {
+    font-size: 1.1em;
+    color: #6c757d;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.lotes-list-details {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+    max-height: 200px; /* Limita a altura para listas grandes */
+    overflow-y: auto;
+}
+
+.lotes-list-details li {
+    padding: 10px 15px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.95em;
+}
+
+.lotes-list-details li:last-child {
+    border-bottom: none;
+}
+
+.armazem-name-small {
+    font-weight: normal;
+    color: #00796b;
+}
+
+/* Checkbox de Confirmação */
+.confirmation-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    color: #333;
+    font-weight: 500;
+}
+
+.confirmation-checkbox-label input[type="checkbox"] {
+    transform: scale(1.3);
+}
+
+/* Estilo para quando não houver lotes */
+.no-lotes-info {
+    padding: 15px;
+    background-color: #e2f0fb;
+    border: 1px solid #b3d7ff;
+    border-radius: 4px;
+    color: #004085;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Botões de Ação */
+.action-buttons-group {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-app {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-size: 1em;
+}
+
+.btn-delete-confirm {
+    background-color: #dc3545; /* Vermelho forte para DELETAR */
+    color: white;
+}
+
+.btn-delete-confirm:hover {
+    background-color: #c82333;
+}
+
+.btn-cancel {
+    background-color: #6c757d; /* Cinza para CANCELAR */
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+/* Mascote */
+.mascote-image {
+    width: 150px;
+    height: auto;
+    align-self: flex-end; /* Alinha o mascote na parte inferior do card */
+    margin-bottom: -30px; /* Traz a imagem um pouco para fora do card, se necessário */
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.1));
+}
+
+/* tela de solicitações */
+
+/* Container Geral da Gestão */
+.gestao-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+/* Header (Título e Botão de Adicionar) */
+.gestao-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+.gestao-titulo {
+    color: #333;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+/* Botão de Adicionar (Nova Solicitação) */
+.btn-adicionar {
+    background-color: #00796b; /* Seu verde principal */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.btn-adicionar:hover {
+    background-color: #006056;
+}
+
+/* Estilo para cada Item na Lista (similar ao Armazém) */
+.gestao-item {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.item-header-info {
+    flex-basis: 30%;
+}
+
+.item-titulo {
+    font-size: 1.2em;
+    color: #00796b;
+    margin: 0;
+}
+
+.item-safra {
+    font-size: 0.9em;
+    color: #6c757d;
+    font-weight: normal;
+}
+
+.item-details {
+    flex-basis: 45%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.9em;
+}
+
+/* Estilos de Status (Crucial para a nova tela) */
+.status-1, .status-2, .status-3, .status-4 {
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.status-1 { /* Ex: Pendente */
+    color: #856404;
+    background-color: #fff3cd;
+}
+
+.status-2 { /* Ex: Em Análise */
+    color: #0c5460;
+    background-color: #d1ecf1;
+}
+
+.status-3 { /* Ex: Aprovada */
+    color: #155724;
+    background-color: #d4edda;
+}
+
+.status-4 { /* Ex: Rejeitada */
+    color: #721c24;
+    background-color: #f8d7da;
+}
+
+/* Ações (Botões) */
+.item-acoes {
+    flex-basis: 20%;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-detalhes, .btn-editar-item {
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9em;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.2s;
+}
+
+.btn-detalhes {
+    background-color: #e9ecef;
+    color: #343a40;
+}
+
+.btn-detalhes:hover {
+    background-color: #d6d6d6;
+}
+
+.btn-editar-item {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.btn-editar-item:hover {
+    background-color: #e0a800;
+}
+
+
+/* CONTAINER GERAL - Fundo escuro verde */
+.solicitacao-container {
+    padding: 30px;
+    background-color: #004d40; /* Verde escuro forte (similar ao sidebar) */
+    min-height: calc(100vh - 80px); /* Garante que o fundo escuro ocupe a tela */
+}
+
+/* HEADER */
+.page-header-solicitacao h1 {
+    color: white;
+    text-align: center;
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* WRAPPER DO FORMULÁRIO - O cartão branco */
+.form-wrapper-solicitacao {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ESTRUTURA DE COLUNAS */
+.form-row {
+    display: flex;
+    gap: 30px; /* Espaço entre as colunas */
+    margin-bottom: 25px;
+}
+
+.form-group.col-50 {
+    flex-basis: 50%;
+    flex-grow: 1;
+}
+
+/* LABELS e TEXTO GERAL */
+.form-label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+/* CAMPOS ARREDONDADOS (input, select, textarea) */
+.input-rounded {
+    width: 100%;
+    padding: 12px 18px;
+    border: 1px solid #ccc;
+    border-radius: 30px; /* Borda bem arredondada */
+    font-size: 1em;
+    background-color: white;
+    color: #333;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: border-color 0.3s;
+}
+
+.input-rounded:focus {
+    border-color: #00796b;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 121, 107, 0.3);
+}
+
+.textarea-full {
+    border-radius: 15px; /* Arredondamento para textarea */
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* CORREÇÃO DO PLACEHOLDER (Guia de Informação) */
+.input-rounded::placeholder,
+.textarea-full::placeholder {
+    /* Cor cinza CLARO para ser visível no campo BRANCO */
+    color: #888888 !important; 
+    opacity: 1; 
+    font-style: italic;
+}
+
+/* DIVISOR */
+.divider-light {
+    border-top: 1px solid #eee;
+    margin: 30px 0;
+}
+

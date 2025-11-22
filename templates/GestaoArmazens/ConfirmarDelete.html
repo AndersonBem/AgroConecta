@@ -5,44 +5,60 @@
 
 {% block content %}
 
-<div class="delete-container">
+<div class="delete-container confirm-deletion-page">
 
-    <h1>Excluir Armazém: {{ armazem.nome }}</h1>
+    <h1 class="deletion-title">Excluir Armazém: <span class="armazem-name">{{ armazem.nome }}</span></h1>
 
-    {% if lotes %}
-        <div class="alert-warning">
-            <p><strong>Atenção:</strong> Este armazém possui <strong>{{ lotes|length }}</strong> lotes associados.</p>
-
-            <ul>
-                {% for lote in lotes %}
-                    <li>Lote #{{ lote.idlote }} — {{ lote.peso }} kg</li>
-                {% endfor %}
-            </ul>
-
-            <p>Para continuar, você deve confirmar se quer excluir também todos os lotes.</p>
-        </div>
-    {% else %}
-        <p class="alert-info">
-            Não há lotes associados. Deseja excluir o armazém?
-        </p>
-    {% endif %}
-
-    <form method="POST">
-        {% csrf_token %}
-
+    <div class="confirmation-content">
+        
         {% if lotes %}
-            <label style="display:flex;align-items:center;gap:6px;margin-bottom:10px;">
-                <input type="checkbox" name="apagar_lotes" value="1">
-                Confirmo que desejo excluir todos os lotes deste armazém
-            </label>
+            <div class="warning-box lotes-warning">
+                <i class="bi bi-exclamation-triangle-fill icon-warning"></i>
+                <p>
+                    <strong>Atenção:</strong> Este armazém possui <strong>{{ lotes|length }}</strong> lotes associados.
+                    Para continuar, você deve **confirmar que deseja excluir permanentemente** todos os itens listados.
+                </p>
+
+                <div class="lotes-list-box">
+                    <h3>Lotes a serem excluídos:</h3>
+                    <ul class="lotes-list">
+                        {% for lote in lotes %}
+                            <li>Lote #{{ lote.idlote }} — {{ lote.peso }} kg</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        {% else %}
+            <div class="info-box no-lotes">
+                 <i class="bi bi-question-circle-fill icon-info"></i>
+                <p>
+                    Não há lotes associados a este armazém. Deseja prosseguir com a exclusão do armazém <strong>{{ armazem.nome }}</strong>?
+                </p>
+            </div>
         {% endif %}
 
-        <button class="btn btn-danger" type="submit">Excluir</button>
+        <form method="POST" class="delete-form">
+            {% csrf_token %}
 
-        <a href="{% url 'ver_armazens' armazem.idarmazem %}" class="btn btn-secondary">
-            Cancelar
-        </a>
-    </form>
+            {% if lotes %}
+                <label class="confirmation-checkbox">
+                    <input type="checkbox" name="apagar_lotes" value="1" required>
+                    Confirmo que desejo excluir o armazém e **todos os {{ lotes|length }} lotes** associados.
+                </label>
+            {% endif %}
+
+            <div class="action-buttons">
+                <button class="btn btn-danger delete-btn" type="submit">
+                    <i class="bi bi-trash-fill"></i> Excluir Armazém
+                </button>
+
+                <a href="{% url 'ver_armazens' armazem.idarmazem %}" class="btn btn-cancelar">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
 
 {% endblock %}
