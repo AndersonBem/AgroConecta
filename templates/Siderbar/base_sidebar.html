@@ -7,18 +7,36 @@
     <title>{% block title %}AgroConecta{% endblock %}</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="{% static 'css/Siderbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Siderbar.css' %}"> 
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
 
-    <!-- SIDEBAR FIXA -->
     {% include 'Siderbar/Siderbar.html' %}
 
-    <!-- CONTEÚDO QUE TEM QUE RECEBER O margin-left -->
     <main class="main-content">
         {% block content %}{% endblock %}
     </main>
 
+    <script>
+        // O DOMContentLoaded garante que o HTML foi PARSEADO,
+        // mas carregar o script DEPOIS do elemento é a prática mais segura
+        // para garantir que o 'menu-toggle' já esteja no DOM.
+        
+        const toggleButton = document.getElementById('menu-toggle');
+        const body = document.body;
+
+        if (toggleButton) {
+            toggleButton.addEventListener('click', function() {
+                // Alterna a classe 'sidebar-expandida' no elemento <body>
+                body.classList.toggle('sidebar-expandida');
+                
+                // Atualiza o atributo de acessibilidade
+                const isExpanded = body.classList.contains('sidebar-expandida');
+                toggleButton.setAttribute('aria-expanded', isExpanded);
+            });
+        }
+        
+    </script>
 </body>
 </html>

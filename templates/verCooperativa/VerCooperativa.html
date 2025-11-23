@@ -46,39 +46,32 @@
 
         {% if solicitacoes %}
             <table class="tabela-solicitacoes">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Safra</th>
-                        <th>Status</th>
-                        <th>Quantidade (kg)</th>
-                        <th>Nº produtores beneficiados</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for s in solicitacoes %}
-                        <tr>
-                            <td>{{ s.idsolicitacao }}</td>
-                            <td>
-                                {% if s.safra_idsafra %}
-                                    {{ s.safra_idsafra.ano }}
-                                {% else %}
-                                    —
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if s.status_idstatus %}
-                                    {{ s.status_idstatus.nome }}
-                                {% else %}
-                                    —
-                                {% endif %}
-                            </td>
-                            <td>{{ s.quantidade }}</td>
-                            <td>{{ s.numeroprodutoresbeneficiados }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <thead>
+        </thead>
+    <tbody>
+        {% for s in solicitacoes %}
+            <tr>
+                <td data-label="ID">{{ s.idsolicitacao }}</td>
+                <td data-label="Safra">
+                    {% if s.safra_idsafra %}
+                        {{ s.safra_idsafra.ano }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+                <td data-label="Status">
+                    {% if s.status_idstatus %}
+                        {{ s.status_idstatus.nome }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+                <td data-label="Quantidade (kg)">{{ s.quantidade }}</td>
+                <td data-label="Nº produtores beneficiados">{{ s.numeroprodutoresbeneficiados }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
         {% else %}
             <p>Não há solicitações registradas para esta cooperativa.</p>
         {% endif %}

@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+/* Seu CSS Global original de desktop */
+.main-content { 
+    margin-left: 300px;
+    padding: 30px;
+    /* ... */
+}
 /* ==================================== */
 /* 1. VARIÁVEIS DE COR E ESTILOS BASE   */
 /* ==================================== */
@@ -226,6 +232,45 @@ ul li.item-menu a .icon i {
 .action-btn i {
     margin-right: 5px;
 }
+/* ====================================================== */
+/*        CORREÇÃO RESPONSIVA: PÁGINA COOPERATIVAS         */
+/* ====================================================== */
+
+@media (max-width: 768px) {
+    /* 1. Altera a direção do container de linha para coluna */
+    .cooperativas-header { 
+        flex-direction: column; 
+        /* Alinha o título e o botão à esquerda (início) */
+        align-items: flex-start;
+        padding-top: 15px;
+    }
+    
+    /* 2. Adiciona espaço entre o título e o botão */
+    .cooperativas-header h1 {
+        /* Adiciona espaço abaixo do título, afastando-o do botão */
+        margin-bottom: 15px;
+        font-size: 1.8em; /* Opcional: Diminui um pouco o título para mobile */
+    }
+    
+    /* 3. Garante que o botão ocupe 100% da largura do container */
+    .add-cooperativa-btn { 
+        width: 100%; 
+        /* Opcional: Centraliza o texto e ícone do botão */
+        justify-content: center;
+        /* Adiciona margem na parte inferior para separá-lo dos cards */
+        margin-bottom: 20px;
+    }
+
+    /* Opcional: Melhora a responsividade dos botões de Ação dentro do Card */
+    .cooperativa-card .card-actions {
+        /* Faz os botões ficarem um embaixo do outro no mobile */
+        flex-direction: column; 
+    }
+    
+    .cooperativa-card .action-btn {
+        width: 100%;
+    }
+}
 
 /* ========================================================= */
 /* 5. RESPONSIVIDADE — OCULTAR TEXTO DA SIDEBAR (<= 600px)   */
@@ -399,6 +444,38 @@ body.home-active {
     max-width: 80%;
     height: auto;
 }
+/* ====================================================== */
+/*                 CORREÇÃO PARA TELAS PEQUENAS                   */
+/* ====================================================== */
+
+@media (max-width: 768px) {
+    /*
+    * 768px é um bom breakpoint para a maioria dos tablets/mobile.
+    * Você pode ajustar este valor se o seu sidebar for mais estreito.
+    */
+
+    /* Redefine o conteúdo principal para ocupar 100% da largura */
+    body.home-active .main-content {
+        /* Remove o empurrão da margem fixa */
+        margin-left: 0 !important;
+        /* Garante que ocupe 100% da largura disponível */
+        width: 100% !important; 
+        /* O padding é importante, caso o sidebar vire um menu 'toggle' ou 'drawer' */
+        padding-left: 0 !important; 
+        padding-right: 0 !important;
+        /* A cor de fundo do main-content pode precisar de ajuste se o sidebar for transparente */
+        background: transparent !important;
+    }
+    .home-container{
+        padding-left:50px
+    }
+    
+    /* OBS: O seu sidebar (a estrutura que tem a foto e os ícones)
+       precisa de regras próprias para se recolher ou virar um menu "hamburguer"
+       neste mesmo bloco @media, mas essas regras não estão no CSS que você enviou.
+       A correção acima elimina a área branca causada pelo `.main-content`.
+    */
+}
 
 /* =============================== */
 /*   DETALHES DA COOPERATIVA       */
@@ -530,6 +607,74 @@ body.home-active {
         width: 100%;
         text-align: center;
     }
+    /* ====================================================== */
+/*         CORREÇÃO RESPONSIVA: TABELA SOLICITAÇÕES        */
+/* ====================================================== */
+
+@media (max-width: 700px) {
+    /* 1. Esconde os cabeçalhos da tabela, que não são mais necessários */
+    .tabela-solicitacoes thead {
+        display: none;
+    }
+    
+    /* 2. Transforma o corpo e as linhas em blocos */
+    .tabela-solicitacoes,
+    .tabela-solicitacoes tbody,
+    .tabela-solicitacoes tr {
+        display: block;
+        width: 100%;
+    }
+    
+    /* 3. Adiciona separação entre as linhas que viraram blocos */
+    .tabela-solicitacoes tr {
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    /* 4. Transforma as células (td) em Flex Container vertical */
+    .tabela-solicitacoes td {
+        /* Garante que a célula seja um bloco */
+        display: flex; 
+        /* Altera a direção para que os itens (rótulo e valor) fiquem em coluna */
+        flex-direction: column; 
+        
+        text-align: left; /* Alinha tudo à esquerda */
+        border-bottom: 1px dotted #eee; 
+        padding: 10px 10px 5px 10px; /* Padding interno uniforme */
+        
+        /* Remove position: relative/absolute e paddings conflitantes */
+        position: static; 
+        padding-left: 10px; 
+    }
+    
+    /* 5. Estiliza o Rótulo (o ::before) */
+    .tabela-solicitacoes td::before {
+        content: attr(data-label);
+        
+        /* Torna o rótulo um bloco e negrito */
+        display: block;
+        font-weight: bold;
+        color: var(--verde-1);
+        font-size: 0.9em; /* Diminui um pouco para ser rótulo */
+        margin-bottom: 3px; /* Espaço entre o rótulo e o valor */
+        
+        /* Remove todos os posicionamentos absolutos antigos */
+        position: static;
+        width: auto;
+        white-space: normal; /* Permite que o rótulo quebre a linha se for muito longo */
+    }
+
+    /* 6. Estiliza o Valor */
+    /* Você pode adicionar uma classe se quiser, mas por padrão o valor 
+       está contido no próprio TD após o ::before, então o estilo de 'td' já o afeta. */
+    .tabela-solicitacoes td {
+        font-size: 1em;
+        color: #333;
+    }
+}
 }
 /* ====================================================== */
 /* ESTILO EXCLUSIVO – GESTÃO DE SEMENTES                 */
@@ -648,6 +793,7 @@ body.sementes-active .main-content {
 /* Botão Deletar */
 .btn-deletar {
     background: #d74444 !important;
+    
 }
 .btn-deletar:hover {
     background: #b83737 !important;
@@ -806,65 +952,115 @@ body.sementes-lista-active .main-content {
     pointer-events: none; 
     z-index: 10; /* Garante que fique acima dos outros elementos */
 }
+
 /* ====================================================== */
-/* RESPONSIVIDADE (< 600px) — CORREÇÃO DA MARGEM BRANCA   */
+/* RESPONSIVIDADE (< 600px) — CORREÇÃO DA MARGEM BRANCA   */
 /* ====================================================== */
 
 @media (max-width: 600px) {
-
-    /* Remove qualquer espaço do sidebar */
-    body.sementes-active .main-content,
-    body.sementes-lista-active .main-content {
-        margin-left: 0 !important;
-        width: 100% !important;
-        padding: 0 !important;
+    
+    /* 🔑 CORREÇÃO CHAVE: Remove a anulação de margem. 
+       Permitindo que a regra global de 90px do .main-content assuma.
+       Se a regra global não estiver funcionando, precisamos de um !important aqui:
+    */
+    /* 1. Reforça o Main Content (Isso é crucial) */
+    .main-content {
+        /* Garante que o padding que possa ter sobrado seja menor ou removido */
+        padding: 0 !important; /* <--- NOVO: Remova o padding do main-content */
+        margin-left: 90px !important; 
+        width: calc(100% - 90px) !important;
+        /* Adiciona overflow-x: hidden para eliminar qualquer barra horizontal acidental */
+        overflow-x: hidden; 
     }
 
-    /* Ajusta o container das páginas */
-    .sementes-page,
+    /* 2. Ajuste o Container Interno (.lista-page) */
     .lista-page {
-        padding: 20px 10px !important;
+        /* O padding será aplicado aqui, para dar respiro ao conteúdo */
+        padding: 15px !important; 
         min-height: 100vh !important;
         width: 100% !important;
-        box-sizing: border-box !important;
+        box-sizing: border-box !important; 
     }
 
-    /* Card dos detalhes */
+    /* 3. Estilo do Cabeçalho (Título e Botão Adicionar) */
+    .header-lista {
+        display: flex;
+        flex-direction: column; 
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+    
+    .titulo-lista {
+        font-size: 24px; /* Diminui o título para caber melhor */
+    }
+    
+    .btn-adicionar-novo {
+        width: 100%;
+        justify-content: center;
+        margin-top: 15px;
+    }
+ 
+
+    /* 4. Cards */
+    .card-item-semente {
+        padding: 15px;
+    }
+
+    /* 5. Botões dentro do Card (para empilhar) */
+    .semente-botoes {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-detalhes, .btn-editar {
+        width: 100%;
+        text-align: center;
+    }
+    
+   /* ====================================================== */
+/*       CORREÇÃO RESPONSIVA: DETALHES DE SEMENTE         */
+/* ====================================================== */
+
+@media (max-width: 768px) {
+    
+    /* 1. Altera a direção do container de botões */
+    .botoes-acoes {
+        flex-direction: column; /* Empilha os botões verticalmente */
+        gap: 15px; /* Adiciona um espaço entre eles */
+        margin-top: 25px;
+    }
+    
+    /* 2. Força os botões a ocuparem 100% da largura */
+    .botoes-acoes .btn-padrao {
+        width: 100%;
+        text-align: center;
+        /* Redefine padding/tamanho para mobile */
+        padding: 15px 20px !important;
+        min-width: unset; /* Remove o min-width: 150px fixo */
+        font-size: 16px !important;
+    }
+
+    /* 3. Ajuste do Card para mobile */
     .sementes-card {
-        max-width: 100% !important;
-        width: 100% !important;
-        padding: 20px !important;
-
+        /* Garante que o padding interno seja menor no mobile */
+        padding: 25px !important;
+        /* Força o conteúdo interno a empilhar (importante se houver mascote) */
         flex-direction: column !important;
-        align-items: center !important;
+        align-items: flex-start !important;
     }
+}
 
     /* Esconde mascotes no mobile */
-    .mascote,
     .mascote-lista {
         display: none !important;
     }
-
-    /* Lista de armazéns */
-    .descricao-lista {
-        width: 100% !important;
-        text-align: left !important;
-    }
-
-    /* Botões */
-    .botoes-acoes {
-        justify-content: center !important;
-        flex-wrap: wrap !important;
-        gap: 10px !important;
-    }
-
-    .btn-editar,
-    .btn-deletar {
-        min-width: 120px;
-        padding: 10px 20px !important;
-        text-align: center;
+    .mascote{
+        display: none;
     }
 }
+
+    
+    
 
 /* ====================================================== */
 /* 7. ESTILOS EXCLUSIVOS – PERFIL DO GESTOR               */
@@ -1455,6 +1651,54 @@ body.lote-cadastro-ativa .main-content {
 .lote-cadastro-container .btn-success:hover {
     background-color: #1e7e34;
 }
+/* ====================================================== */
+/*       CORREÇÃO RESPONSIVA: FORMULÁRIO DE LOTE          */
+/*       (Empilhamento dos campos lado a lado)            */
+/* ====================================================== */
+
+@media (max-width: 600px) { 
+    /* ... (Mantenha as correções globais do .main-content aqui) ... */
+
+    /* 1. Força o form-row a mudar para coluna */
+    .lote-cadastro-container .form-row {
+        flex-direction: column; /* Faz com que os campos se empilhem */
+        gap: 0; /* Remove o gap horizontal (30px) entre campos */
+    }
+
+    /* 2. Garante que os grupos de campos ocupem 100% da largura */
+    .lote-cadastro-container .form-group.col-50,
+    .lote-cadastro-container .form-group.col-33 {
+        flex: 1 1 100% !important; /* Ocupa a largura total (100%) */
+        width: 100% !important; 
+        margin-bottom: 20px; /* Adiciona espaçamento vertical entre os campos */
+    }
+
+    /* 3. Ajuste do Header (para evitar que o "Voltar" vaze) */
+    .lote-cadastro-container .page-header {
+        flex-direction: column; /* Empilha Título e Botão Voltar */
+        align-items: flex-start;
+        padding-bottom: 20px;
+    }
+    
+    .lote-cadastro-container .page-header h1 {
+        margin-bottom: 10px;
+    }
+    .card-actions { 
+        display: flex; /* Garante que o display seja flex */
+        flex-direction: column; /* FORÇA o empilhamento vertical */
+        gap: 10px; /* Espaço entre os botões */
+    }
+    
+    /* 2. Os botões individuais: ocupam 100% da largura */
+    .card-actions .btn-detalhes,
+    .card-actions .btn-editar {
+        width: 100%;
+        text-align: center;
+        padding: 12px 10px; /* Aumenta a área de toque */
+        /* Garante que não haja largura mínima fixa que cause vazamento */
+        min-width: unset; 
+    }
+}
 
 /* =======================================
    ESTILOS DO DASHBOARD
@@ -1510,6 +1754,9 @@ body.lote-cadastro-ativa .main-content {
     border-bottom: 1px dashed #eee;
     padding-bottom: 8px;
 }
+
+
+
 /* =========================================================
    RESPONSIVIDADE: DASHBOARD
    ========================================================= */
@@ -1666,6 +1913,53 @@ body.solicitacao-active .main-content {
 
 .btn-submit:hover {
     background-color: #1e7e34;
+}
+/* ====================================================== */
+/*       CORREÇÃO RESPONSIVA: GESTÃO DE SOLICITAÇÕES      */
+/* ====================================================== */
+
+@media (max-width: 600px) {
+    /* (Mantenha aqui as correções globais do .main-content) */
+
+    /* 1. Ajuste do Card da Solicitação (Gestão Item) */
+    .gestao-item {
+        display: flex; /* Garante que o container use flex */
+        flex-direction: column; /* NOVO: Empilha o conteúdo e o botão */
+        align-items: flex-start; /* Alinha o conteúdo à esquerda */
+        padding: 15px; /* Ajuste o padding interno para mobile */
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* 2. Conteúdo dos Detalhes (Cooperativa, Status, etc.) */
+    .item-details {
+        /* Garante que o bloco de detalhes ocupe 100% */
+        width: 100%;
+        margin-bottom: 15px; /* Espaço antes do botão */
+    }
+
+    /* 3. Botão "Definir Status" (Rodapé) */
+    .item-acoes {
+        /* NOVO: Garante que o botão fique no rodapé, ocupando a largura total */
+        width: 100%; 
+        display: flex;
+        justify-content: center; /* Centraliza o botão dentro da largura total */
+    }
+
+    .item-acoes .btn-editar-item {
+        width: 100%;
+        padding: 12px 10px;
+        font-size: 14px;
+        text-align: center;
+        /* Adicione o estilo para garantir que ele não vaze */
+        min-width: unset; 
+    }
+    
+    /* 4. Ajuste do Título da Solicitação (evita quebra ruim) */
+    .item-titulo {
+        font-size: 1.2em;
+        line-height: 1.2;
+    }
 }
 
 
@@ -2332,5 +2626,226 @@ body.solicitacao-active .main-content {
 .divider-light {
     border-top: 1px solid #eee;
     margin: 30px 0;
+}
+
+/* ====================================================== */
+/*       CORREÇÃO RESPONSIVA: GERAL E TELA DE EXCLUSÃO    */
+/* ====================================================== */
+/* ====================================================== */
+/*       CORREÇÃO GERAL E TELA DE EXCLUSÃO (<= 600px)     */
+/* ====================================================== */
+@media (max-width: 600px) {
+
+    /* 1. CORREÇÃO GLOBAL DO LAYOUT (para respeitar a sidebar de 90px) */
+    .main-content {
+        /* Remove padding do container principal para evitar a margem branca */
+        padding: 0 !important; 
+        /* Força o conteúdo a começar APÓS a Sidebar de 90px */
+        margin-left: 90px !important; 
+        /* Garante que ocupe o restante da tela */
+        width: calc(100% - 90px) !important;
+        /* Solução de segurança para cortar vazamentos horizontais */
+        overflow-x: hidden; 
+    }
+    
+    /* 2. AJUSTE DO CARD DE EXCLUSÃO (confirmation-card) */
+    .confirmation-card {
+        /* Ocupa 100% do espaço disponível dentro do main-content */
+        width: 100% !important; 
+        max-width: none !important; 
+        /* Aplica o padding interno (agora que o main-content não tem) */
+        padding: 15px !important; 
+        box-sizing: border-box !important; 
+    }
+
+    /* 3. AJUSTE DO ALERTA VERMELHO (.delete-warning) */
+    .delete-warning {
+        width: 95%; 
+        box-sizing: border-box; 
+        padding: 10px; /* Reduz o padding interno do alerta */
+    }
+    
+    .delete-warning p {
+        /* Força quebra de linha do texto longo */
+        word-wrap: break-word; 
+        white-space: normal;
+        margin: 0;
+        font-size: 13px; /* Reduz a fonte do texto de alerta */
+        line-height: 1.3;
+        display: block;
+    }
+    
+    /* 4. AJUSTE DA LISTA DE LOTES */
+    .lotes-list-details {
+        padding-left: 0;
+    }
+    
+    .lotes-list-details li {
+        /* Quebra a linha do texto longo do lote (Peso, Armazém) */
+        word-wrap: break-word; 
+        white-space: normal;
+        margin-bottom: 10px;
+        list-style: none; 
+        font-size: 14px;
+    }
+    
+    /* 5. AJUSTE DA CHECKBOX DE CONFIRMAÇÃO */
+    .confirmation-checkbox-label {
+        display: flex;
+        align-items: flex-start; /* Alinha o texto ao topo da checkbox */
+        word-wrap: break-word; 
+        white-space: normal;
+        margin-top: 15px;
+        font-size: 13px;
+    }
+
+    .confirmation-checkbox-label input {
+        margin-right: 8px; 
+        flex-shrink: 0; /* Impede que a checkbox seja esmagada */
+    }
+
+    /* 6. AÇÕES DE RODAPÉ (Botões) */
+    .action-buttons-group {
+        display: flex;
+        flex-direction: column; /* Empilha os botões */
+        width: 80%;
+        gap: 10px; 
+        margin-top: 20px;
+        
+    }
+    
+    .btn-app { 
+        width: 100%;
+        text-align: center;
+        /* Força quebra de linha em botões com texto longo */
+        word-wrap: break-word; 
+        white-space: normal;
+        font-size: 14px; 
+        padding: 10px 5px !important; 
+        line-height: 1.2;
+    }
+
+    /* 7. Esconde mascotes no mobile */
+    .mascote-image {
+        display: none !important;
+    }
+}
+/* ====================================================== */
+/*       ESTILOS PARA SIDEBAR ABERTA (EXPANDIDA)          */
+/* ====================================================== */
+
+body.sidebar-expandida nav.sidebar {
+    transition: width 0.3s ease;
+    width: 300px !important;
+    padding-left: 1% !important; 
+}
+
+body.sidebar-expandida .main-content {
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    margin-left: 300px !important; 
+    width: calc(100% - 300px) !important;
+}
+
+body.sidebar-expandida ul li.item-menu a .txt-link {
+    display: block !important;
+}
+
+body.sidebar-expandida ul li.item-menu a {
+    justify-content: flex-start !important; 
+    gap: 20px;
+}
+/* ====================================================== */
+/*       RESPONSIVIDADE FINAL: CORREÇÃO DE LAYOUT E TOGGLE   */
+/* ====================================================== */
+@media (max-width: 600px) {
+
+    /* --- CORREÇÃO GERAL DE MOBILE (90px) --- */
+    nav.sidebar {
+        width: 90px;
+        padding-left: 0;
+    }
+
+    .main-content {
+        /* Regra padrão para mobile: respeita a Sidebar de 90px */
+        margin-left: 90px !important;
+        width: calc(100% - 90px) !important;
+        /* Remove padding do container principal e garante que não vaze */
+        padding: 0 !important;
+        overflow-x: hidden; 
+    }
+    
+    /* Corrige o header do Sidebar para o modo estreito */
+    .sidebar-header {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 0 10px 0;
+    }
+    
+    /* Esconde o texto e centraliza os ícones */
+    ul li.item-menu a .txt-link {
+        display: none;
+    }
+
+    ul li.item-menu a {
+        justify-content: center;
+        padding: 20px 0;
+        gap: 0;
+    }
+
+    /* --- ESTADO DE EXPANSÃO (TOGGLE) --- */
+    
+    body.sidebar-expandida nav.sidebar {
+        /* SOBREPOSIÇÃO: Ocupa o espaço total e fica por cima */
+        width: 300px !important;
+        position: fixed;
+        left: 0;
+        z-index: 1001;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* O Conteúdo Principal permanece no seu lugar (90px) */
+    body.sidebar-expandida .main-content {
+        /* Garante que o main content não seja empurrado além do 90px */
+        margin-left: 90px !important; 
+        width: calc(100% - 90px) !important;
+        overflow-x: visible; 
+    }
+    
+    /* --- CORREÇÃO DE ELEMENTOS INTERNOS (Empilhamento) --- */
+    
+    /* Formulário de Lotes (Empilhamento de campos) */
+    .lote-cadastro-container .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    .lote-cadastro-container .form-group.col-50,
+    .lote-cadastro-container .form-group.col-33 {
+        flex: 1 1 100% !important;
+        width: 100% !important;
+    }
+    
+    /* Botões de Ação em Cards (Geral: Lotes, Sementes) */
+    .card-actions, .semente-botoes, .botoes-acoes, .action-buttons-group {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+    }
+    
+    .card-actions a, .semente-botoes a, .botoes-acoes .btn-padrao, .action-buttons-group .btn-app {
+        width: 100%;
+        text-align: center;
+        min-width: unset;
+        word-wrap: break-word;
+    }
+    
+    /* Esconde mascotes no mobile */
+    .mascote, .mascote-lista, .mascote-image {
+        display: none !important;
+    }
+    
+    /* Ajuste para o padding das páginas internas */
+    .lista-page, .delete-confirmation-page, .armazem-page {
+        padding: 15px !important;
+    }
 }
 

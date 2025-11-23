@@ -466,3 +466,119 @@ section{
     flex: 1;
   }
 }
+
+/* ====================================================== */
+/*       ESTILO PARA O BOTÃO VOLTAR (Editar Perfil)       */
+/* ====================================================== */
+
+/* Container que envolve o título e o botão (se necessário) */
+.cadastro-gestor__content {
+    position: relative; /* Define o contexto de posicionamento */
+    /* Garante que o conteúdo não fique escondido sob o botão */
+    padding-top: 50px; 
+}
+
+.btn-voltar-perfil {
+    /* Posicionamento fixo no canto superior direito do card */
+    position: absolute;
+    top: 0px; /* Ajuste a distância do topo */
+    right: 0px; /* Ajuste a distância da lateral */
+    
+    background: rgba(255, 255, 255, 0.1); /* Fundo sutil */
+    color: #ccffcc; /* Verde claro para contraste no fundo escuro */
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 600;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-voltar-perfil:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.btn-voltar-perfil i {
+    font-size: 1.2em;
+}
+
+
+/* RESPONSIVIDADE (Ajuste para telas pequenas) */
+@media (max-width: 768px) {
+    .btn-voltar-perfil {
+        /* Move o botão para o canto superior esquerdo para melhor acesso */
+        top: 20px; 
+        left: 20px; 
+        right: auto;
+        padding: 10px; /* Torna o botão mais compacto */
+    }
+}
+
+/* ====================================================== */
+/*       RESPONSIVIDADE HOME/INDEX (< 800px) - CORREÇÃO FINAL  */
+/* ====================================================== */
+
+@media (max-width: 800px) {
+    /* **Ajuste Crítico:** Garante que NENHUM elemento force o scroll vertical */
+    html, body {
+        overflow-y: hidden; /* Corta o scroll vertical desnecessário */
+    }
+
+    /* 1. CONTAINER PRINCIPAL: Centraliza o Conteúdo */
+    .hero {
+        display: flex;
+        flex-direction: column;
+        justify-content: center; 
+        align-items: center;
+        min-height: 100vh;
+        width: 100%;
+    }
+
+    /* 2. TRANSFORMAÇÃO DO TRIÂNGULO EM FUNDO RETANGULAR */
+    .hero__triangle::before {
+        content: none;
+    }
+    
+    .hero__triangle {
+        background: var(--verde-1);
+        clip-path: none;
+        border-radius: 0;
+        width: 100%;
+        height: 100%; /* Usa 100% da área do pai (.hero) */
+        
+        /* 🔑 CORREÇÃO CENTRAL: Redefine margens e padding para centralização */
+        padding: 0; /* Remove qualquer padding fixo que possa empurrar o conteúdo */
+        margin: 0; /* Remove qualquer margem inesperada */
+        min-height: 100vh; /* Mantém a altura total para o fundo */
+
+        /* Centraliza o conteúdo (Logo e Botões) DENTRO do retângulo */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; 
+        align-items: center; 
+    }
+
+    /* 3. LAYOUT DO CONTEÚDO INTERNO (Logo e Botões) */
+    .hero__logo {
+        max-width: 150px;
+        /* Adiciona um espaçamento para o botão, garantindo a separação */
+        margin-bottom: 30px; 
+        justify-content: center;
+        margin-top: 80px;
+    }
+    
+    /* 4. EMPILHAMENTO DOS BOTÕES */
+    .hero__actions {
+        flex-direction: column; 
+        gap: 15px;
+        width: min(300px, 80%); 
+    }
+
+    .hero__actions .btn {
+        width: 100%; 
+    }
+}
