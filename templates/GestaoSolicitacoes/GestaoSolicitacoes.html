@@ -1,95 +1,48 @@
 {% extends "Siderbar/base_sidebar.html" %}
 {% load static %}
 
-{% block title %}Solicitação de Sementes - AgroConecta{% endblock %}
-{% block body_class %}solicitacao-active{% endblock %} 
+{% block title %}Gestão de Solicitações - AgroConecta{% endblock %}
+
 {% block content %}
 
-<div class="solicitacao-container">
-    
-    <header class="page-header-solicitacao">
-        <h1>Solicitação Sementes</h1>
-    </header>
-    
-    <div class="form-wrapper-solicitacao">
-        <form method="POST" class="custom-form" enctype="multipart/form-data">
-            {% csrf_token %}
-
-            <div class="form-row">
-                
-                <div class="form-group col-50">
-                    <label for="id_tipo_semente" class="form-label">Tipo de Semente *</label>
-                    
-                    <select id="id_tipo_semente" name="tipo_semente_id" class="input-rounded select-field" required>
-                        <option value="" disabled {% if not data.tipo_semente_id %}selected{% endif %}>Selecione o Tipo</option>
-                        
-                        {% for semente in tipos_semente %}
-                            <option value="{{ semente.idTipoSemente }}" 
-                                    {% if data.tipo_semente_id|safe == semente.idTipoSemente|slugify %}selected{% endif %}>
-                                {{ semente.nome }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="form-group col-50">
-                    <label for="id_produtores" class="form-label">Número de Produtores Beneficiados *</label>
-                    <input type="number" id="id_produtores" name="num_produtores" class="input-rounded"
-                            placeholder="Ex: 50" min="1" required 
-                            value="{{ data.num_produtores|default:'' }}">
-                </div>
-            </div>
-
-            <div class="form-row">
-                
-                <div class="form-group col-50">
-                    <label for="id_quantidade" class="form-label">Quantidade (kg/unidade) *</label>
-                    <input type="number" id="id_quantidade" name="quantidade" class="input-rounded"
-                            placeholder="Ex: 1000 kg" min="1" required 
-                            value="{{ data.quantidade|default:'' }}">
-                </div>
-
-                <div class="form-group col-50">
-                    <label for="id_safra" class="form-label">Safra *</label>
-                     <select id="id_safra" name="safra_id" class="input-rounded select-field" required>
-                        <option value="" disabled {% if not data.safra_id %}selected{% endif %}>Selecione a Safra</option>
-                        
-                        {% for safra in safras %}
-                            <option value="{{ safra.idSafra }}"
-                                    {% if data.safra_id|safe == safra.idSafra|slugify %}selected{% endif %}>
-                                {{ safra.nome }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group-full">
-                <label for="id_observacoes" class="form-label">Observações</label>
-                <textarea id="id_observacoes" name="observacoes" class="input-rounded textarea-full"
-                          placeholder="Detalhes adicionais sobre o pedido ou a área de plantio." rows="4">{{ data.observacoes|default:'' }}</textarea>
-            </div>
-
-            <hr class="divider-light">
-
-            <div class="form-group-full submit-area">
-                <label for="id_documentacao" class="form-label">Enviar Documentação</label>
-                
-                <input type="file" id="id_documentacao" name="documentacao" class="input-file-hidden">
-                <label for="id_documentacao" class="btn-upload btn-success btn-full-width-small">
-                    <i class="bi bi-upload"></i> Selecionar Arquivo para Documentação
-                </label>
-                <small class="form-text-file">Nenhum arquivo selecionado.</small>
-            </div>
-
-            <div class="submit-area-final">
-                <button type="submit" class="btn-submit btn-success btn-full-width">
-                    <i class="bi bi-check-circle-fill"></i> Enviar Solicitação
-                </button>
-            </div>
-
-        </form>
+<div class="gestao-container">
+    <div class="gestao-header">
+        <h1 class="gestao-titulo">Gestão de Solicitações 📋</h1>
+        
+        <a href="{% url 'cadastro_solicitacoes' %}" class="btn-adicionar">
+            <i class="bi bi-plus-lg"></i> Nova Solicitação
+        </a>
     </div>
+
+    {% for solicitacao in solicitacoes %}
+    <div class="gestao-item">
+        <div class="item-header-info">
+            <h2 class="item-titulo">
+                Solicitação #{{ solicitacao.id }} 
+                <span class="item-safra">({{ solicitacao.safra_idSafra.nome }})</span>
+            </h2>
+        </div>
+        
+        <div class="item-details">
+            <p><strong>Cooperativa:</strong> {{ solicitacao.Cooperativa_CNPJ.nome }}</p>
+            <p><strong>Quantidade (kg):</strong> {{ solicitacao.quantidade }} kg</p>
+            <p><strong>Produtores Beneficiados:</strong> {{ solicitacao.numeroProdutoresBeneficiados }}</p>
+            <p><strong>Status:</strong> <span class="status-{{ solicitacao.Status_idStatus.id }}">{{ solicitacao.Status_idStatus.nome }}</span></p>
+        </div>
+
+        <div class="item-acoes">
+            <a href="{% url 'detalhes_solicitacao' solicitacao.id %}" class="btn-detalhes">
+                <i class="bi bi-eye"></i> Ver Detalhes
+            </a>
+            
+            <a href="{% url 'editar_solicitacao' solicitacao.id %}" class="btn-editar-item">
+                <i class="bi bi-pencil"></i> Editar
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <p class="aviso-vazio">Nenhuma solicitação encontrada.</p>
+    {% endfor %}
 </div>
 
 {% endblock content %}

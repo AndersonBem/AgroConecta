@@ -1,30 +1,38 @@
-{% extends "base/base.html" %}
+{% extends "Siderbar/base_sidebar.html" %}
 {% load static %}
 
-{% block title %}Cadastro de Sementes{% endblock %}
+{% block title %}Cadastro de Sementes - AgroConecta{% endblock %}
 
 {% block content %}
 
-{% if messages %}
-<script>
-    {% for message in messages %}
-        alert("{{ message|escapejs }}");
-    {% endfor %}
-</script>
-{% endif %}
+<div class="form-page-container">
+    
+    <h1 class="page-title">Cadastro de Sementes 🌱</h1>
 
-<h1>Cadastro de Sementes 🌱</h1>
+    <form method="post" class="app-form">
+        {% csrf_token %}
 
-<form method="post">
-    {% csrf_token %}
+        <div class="form-group">
+            <label for="id_nome">Nome da semente:</label>
+            <input type="text" id="id_nome" name="nome" class="form-campo" placeholder="Ex: Milho Híbrido, Soja RR, Sorgo Forrageiro" required>
+        </div>
 
-    <label>Nome da semente:</label>
-    <input type="text" name="nome" class="campo" placeholder="Nome">
+        <div class="form-group">
+            <label for="id_descricao">Descrição:</label>
+            <textarea id="id_descricao" name="descricao" class="form-campo textarea-field" placeholder="Informações adicionais sobre a semente (opcional)"></textarea>
+        </div>
 
-    <label>Descrição:</label>
-    <textarea name="descricao" class="campo" placeholder="Descrição opcional"></textarea>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                Cadastrar <i class="bi bi-check-circle-fill"></i>
+            </button>
+            
+            <a href="{% url 'gestao_sementes' %}" class="btn btn-cancelar-secondary">
+                Voltar <i class="bi bi-arrow-left"></i> 
+            </a>
+            
+        </div>
+    </form>
+</div>
 
-    <button type="submit" class="btn">Cadastrar ✔</button>
-</form>
-
-{% endblock %}
+{% endblock content %}

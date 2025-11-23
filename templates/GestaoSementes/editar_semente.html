@@ -1,31 +1,58 @@
-{% extends "base/base.html" %}
+{% extends "Siderbar/base_sidebar.html" %}
 {% load static %}
 
-{% block title %}Editar Semente{% endblock %}
+{% block title %}Editar Semente - AgroConecta{% endblock %}
 
 {% block content %}
 
 {% if messages %}
 <script>
     {% for message in messages %}
-        alert("{{ message|escapejs }}");
+     alert("{{ message|escapejs }}");
     {% endfor %}
 </script>
 {% endif %}
 
-<h1>Editar Semente 🌱</h1>
+<div class="form-page-container">
+    
+    <h1 class="page-title">Editar Semente 🌱</h1>
 
-<form method="post">
-    {% csrf_token %}
+    <form method="post" class="app-form">
+        {% csrf_token %}
 
-    <label>Nome da Semente:</label>
-    <input type="text" name="nome" class="campo"
-           value="{{ semente.nome }}">
+        <div class="form-group">
+            <label for="id_nome">Nome da Semente:</label>
+            <input 
+                type="text" 
+                id="id_nome" 
+                name="nome" 
+                class="form-campo" 
+                value="{{ semente.nome }}" 
+                placeholder="Ex: Milho Híbrido" 
+                required>
+        </div>
 
-    <label>Descrição:</label>
-    <textarea name="descricao" class="campo">{{ semente.descricao }}</textarea>
+        <div class="form-group">
+            <label for="id_descricao">Descrição:</label>
+            <textarea 
+                id="id_descricao" 
+                name="descricao" 
+                class="form-campo textarea-field" 
+                placeholder="Informações adicionais sobre a semente (opcional)"
+            >{{ semente.descricao }}</textarea>
+        </div>
 
-    <button type="submit" class="btn">Salvar Alterações ✔</button>
-</form>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-save">
+                Salvar Alterações <i class="bi bi-check-circle-fill"></i>
+            </button>
+            
+            <a href="{% url 'detalhes_semente' semente.idtiposemente %}" class="btn btn-cancelar-secondary">
+                Cancelar <i class="bi bi-x-circle-fill"></i> 
+            </a>
+            
+        </div>
+    </form>
+</div>
 
-{% endblock %}
+{% endblock content %}
