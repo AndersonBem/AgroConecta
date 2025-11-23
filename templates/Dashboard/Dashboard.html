@@ -30,8 +30,17 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+{# --- AQUI: div oculto com os dados em JSON --- #}
+<div id="dashboard-data"
+     data-armazem-labels='{{ armazem_labels_json|default:"[]"|safe }}'
+     data-armazem-dados='{{ armazem_dados_json|default:"[]"|safe }}'
+     data-status-labels='{{ status_labels_json|default:"[]"|safe }}'
+     data-status-dados='{{ status_dados_json|default:"[]"|safe }}'
+     data-lotes-labels='{{ lotes_labels_json|default:"[]"|safe }}'
+     data-lotes-dados='{{ lotes_dados_json|default:"[]"|safe }}'>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="{% static 'js/dashboard_charts.js' %}"></script>
 
 {% endblock content %}

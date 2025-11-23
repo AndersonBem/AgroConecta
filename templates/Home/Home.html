@@ -7,6 +7,14 @@
 
 {% block content %}
 
+{% if messages %}
+  <script>
+      {% for message in messages %}
+          alert("{{ message|escapejs }}");
+      {% endfor %}
+  </script>
+{% endif %}
+
 <div class="home-page">
     <div class="home-container">
         <img src="{% static 'img/image.png' %}" alt="Logo AgroConecta" class="home-logo">

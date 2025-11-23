@@ -83,14 +83,18 @@
             <p>Não há solicitações registradas para esta cooperativa.</p>
         {% endif %}
     </section>
+        <div class="coop-acoes">
+            <a href="{% url 'editar_cooperativa' coop.cnpj %}" class="btn btn-editar">
+                Editar cooperativa
+            </a>
 
-    <div class="coop-acoes">
-        <a href="{% url 'editar_cooperativa' coop.cnpj %}" class="btn btn-editar">
-            Editar cooperativa
-        </a>
-        <a href="{% url 'gestao_cooperativa' %}" class="btn btn-voltar">
-            Voltar para lista
-        </a>
-    </div>
+            <a href="{% url 'deletar_cooperativa' coop.cnpj %}" class="btn btn-deletar">
+                Deletar cooperativa
+            </a>
+
+            <a href="{% url 'gestao_cooperativa' %}" class="btn btn-voltar">
+                Voltar para lista
+            </a>
+        </div>
 </div>
 {% endblock %}

@@ -1,0 +1,77 @@
+{% extends "Siderbar/base_sidebar.html" %}
+{% load static %}
+
+{% block title %}Confirmar Exclusão do Lote - AgroConecta{% endblock %}
+{% block body_class %}lote-delete-active{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+  <script>
+      {% for message in messages %}
+          alert("{{ message|escapejs }}");
+      {% endfor %}
+  </script>
+{% endif %}
+
+<div class="cooperativa-detalhe-container lote-detalhe-container">
+
+    <h1>Excluir Lote #{{ lote.idlote }}</h1>
+
+    <section class="coop-bloco">
+        <h2>Resumo do Lote</h2>
+        <p><strong>ID:</strong> {{ lote.idlote }}</p>
+        <p><strong>Tipo de Semente:</strong> {{ lote.tiposemente_idtiposemente.nome }}</p>
+        <p><strong>Peso:</strong> {{ lote.peso }} kg</p>
+        <p><strong>Armazém:</strong> {{ lote.armazem_idarmazem.nome }}</p>
+        <p><strong>Data de Entrada:</strong> {{ lote.dataentrada|date:"d/m/Y" }}</p>
+        <p><strong>Data de Vencimento:</strong> {{ lote.datavencimento|date:"d/m/Y" }}</p>
+        <p><strong>Data de Saída:</strong>
+            {% if lote.datasaida %}
+                {{ lote.datasaida|date:"d/m/Y H:i" }}
+            {% else %}
+                (Ainda em estoque)
+            {% endif %}
+        </p>
+    </section>
+
+    <section class="coop-bloco aviso-exclusao">
+        <h2>Aviso</h2>
+
+        {% if em_estoque %}
+            <p>
+                ⚠ Este lote ainda está marcado como <strong>Em estoque</strong>
+                (sem data de saída). Ao excluir, você perderá o registro desse
+                estoque no sistema.
+            </p>
+        {% else %}
+            <p>
+                Este lote já possui <strong>data de saída</strong>. A exclusão afetará
+                apenas o histórico, não o estoque atual.
+            </p>
+        {% endif %}
+
+        <p>Esta ação não pode ser desfeita.</p>
+    </section>
+
+    <form method="POST" class="form-delete">
+        {% csrf_token %}
+
+        <label style="display:block; margin-bottom: 1rem;">
+            <input type="checkbox" name="confirmar_exclusao" value="1">
+            Confirmo que desejo excluir este lote de forma permanente.
+        </label>
+
+        <div class="coop-acoes">
+            <button type="submit" class="btn btn-deletar">
+                Excluir Lote
+            </button>
+            <a href="{% url 'detalhes_lote' lote.idlote %}" class="btn btn-voltar">
+                Cancelar e voltar
+            </a>
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

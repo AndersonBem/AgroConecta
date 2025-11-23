@@ -3,8 +3,13 @@ from django.contrib import messages
 from django.contrib.auth.hashers import make_password,check_password
 from django.db import connection
 from .models import (Gestor, Cooperativa, OperadorArmazem, Telefone, TipoSemente,
-                     Solicitacao,Armazem, Lote, Endereco)
-from django.db.models import Count, Sum
+                     Solicitacao,Armazem, Lote, Endereco, SolicitacaoTipoSemente, Status)
+from django.db.models import Count, Sum, Q
+from datetime import date, timedelta
+import json
+from django.db.models.functions import TruncMonth
+from calendar import month_name
+from django.utils import timezone
 
 # Create your views here.
 def index(request):
@@ -154,8 +159,8 @@ def cadastro_cooperativa(request):
                 ]
             )
 
-        messages.success(request, "Cooperativa cadastrada com sucesso! Agora você já pode fazer login.")
-        return redirect("login_view")
+        messages.success(request, "Cooperativa cadastrada com sucesso!")
+        return redirect("home")
 
    # GET → só abrir o formulário em modo criação
     context = {
@@ -381,6 +386,61 @@ def detalhe_cooperativa(request, cnpj):
     }
 
     return render(request, "verCooperativa/verCooperativa.html", context)
+
+def deletar_cooperativa(request, cnpj):
+    coop = get_object_or_404(
+        Cooperativa.objects.select_related("endereco_idendereco"),
+        cnpj=cnpj
+    )
+
+    telefones = Telefone.objects.filter(cooperativa_cnpj=coop)
+
+    solicitacoes = Solicitacao.objects.filter(cooperativa_cnpj=coop)
+    solicitacoes_ids = solicitacoes.values_list("idsolicitacao", flat=True)
+
+    # AQUI: usar SolicitacaoTipoSemente e NÃO Solicitacao
+    sementes_solicitadas = SolicitacaoTipoSemente.objects.filter(
+        solicitacao_idsolicitacao__in=solicitacoes_ids
+    )
+
+    if request.method == "POST":
+        confirmar = request.POST.get("confirmar_exclusao")
+
+        if not confirmar:
+            messages.error(
+                request,
+                "Você precisa marcar a confirmação antes de excluir a cooperativa."
+            )
+            context = {
+                "coop": coop,
+                "telefones": telefones,
+                "solicitacoes": solicitacoes,
+                "sementes_solicitadas": sementes_solicitadas,
+            }
+            return render(
+                request,
+                "GestaoCooperativa/confirmar_delete_cooperativa.html",
+                context
+            )
+
+        coop.delete()
+        messages.success(
+            request,
+            "Cooperativa e dados associados foram excluídos com sucesso."
+        )
+        return redirect("gestao_cooperativa")
+
+    context = {
+        "coop": coop,
+        "telefones": telefones,
+        "solicitacoes": solicitacoes,
+        "sementes_solicitadas": sementes_solicitadas,
+    }
+    return render(
+        request,
+        "GestaoCooperativa/confirmar_delete_cooperativa.html",
+        context
+    )
 
 def gestao_sementes(request):
 
@@ -957,18 +1017,344 @@ def deletar_armazem(request, armazem_id):
 
 
 def gestao_lotes(request):
-    return render(request,"GestaoLotes/GestaoLotes.html")
 
+    
+    lotes = (
+        Lote.objects
+        .select_related(
+            "tiposemente_idtiposemente", 
+            "armazem_idarmazem",
+            "armazem_idarmazem__operadorarmazem_idoperadorarmazem"
+        )
+        .all().order_by("-idlote")
+    )
+
+    context = {
+        "lotes": lotes
+    }
+
+    return render(request, "GestaoLotes/GestaoLotes.html", context)
 
 def cadastrar_lotes(request):
-    return render(request,"GestaoLotes/CadastrarLotes.html")
+    tipos_semente = TipoSemente.objects.all()
+    armazens = Armazem.objects.all()
 
+    if request.method == "POST":
+        data_entrada = request.POST.get("dataEntrada")
+        data_venc = request.POST.get("dataVencimento")
+        peso_str = request.POST.get("peso")
+        armazem_id = request.POST.get("Armazem_idArmazem")
+        tipo_id = request.POST.get("TipoSemente_idTipoSemente")
+        qr_payload = request.POST.get("qr_payload")
+        lotecol = request.POST.get("Lotecol")
+
+        erros = []
+
+        # Verificações básicas
+        if not all([data_entrada, data_venc, peso_str, armazem_id, tipo_id]):
+            erros.append("Preencha todos os campos obrigatórios.")
+
+        # Peso
+        try:
+            peso = int(peso_str)
+            if peso <= 0:
+                erros.append("O peso deve ser maior que zero.")
+        except:
+            erros.append("Informe um peso válido para o peso (kg).")
+            peso = None
+
+        # Armazém
+        try:
+            armazem = Armazem.objects.get(idarmazem=armazem_id)
+        except Armazem.DoesNotExist:
+            erros.append("O armazém selecionado não existe.")
+            armazem = None
+
+        # Tipo de semente
+        try:
+            tipo_semente = TipoSemente.objects.get(idtiposemente=tipo_id)
+        except TipoSemente.DoesNotExist:
+            erros.append("O tipo de semente selecionado não existe.")
+            tipo_semente = None
+
+        # Em caso de erros → volta com alerta
+        if erros:
+            for e in erros:
+                messages.error(request, e)
+            return render(request, "GestaoLotes/CadastrarLotes.html", {
+                "tipos_semente": tipos_semente,
+                "armazens": armazens
+            })
+
+        # Criar o lote
+        Lote.objects.create(
+            dataentrada=data_entrada,
+            datavencimento=data_venc,
+            peso=peso,
+            armazem_idarmazem=armazem,
+            tiposemente_idtiposemente=tipo_semente,
+            qr_payload=qr_payload or None,
+            lotecol=lotecol or None
+        )
+
+        messages.success(request, "Lote cadastrado com sucesso!")
+        return redirect("gestao_lotes")
+
+    return render(request, "GestaoLotes/CadastrarLotes.html", {
+        "tipos_semente": tipos_semente,
+        "armazens": armazens
+    })
+
+def editar_lote(request, lote_id):
+    lote = get_object_or_404(
+        Lote.objects.select_related("armazem_idarmazem", "tiposemente_idtiposemente"),
+        idlote=lote_id
+    )
+
+    armazens = Armazem.objects.all()
+    tipos_semente = TipoSemente.objects.all()
+
+    if request.method == "POST":
+        data_entrada = request.POST.get("dataEntrada")
+        data_venc = request.POST.get("dataVencimento")
+        peso_str = request.POST.get("peso")
+        armazem_id = request.POST.get("Armazem_idArmazem")
+        tipo_id = request.POST.get("TipoSemente_idTipoSemente")
+        qr_payload = (request.POST.get("qr_payload") or "").strip()
+        lotecol = (request.POST.get("Lotecol") or "").strip()
+
+        erros = []
+
+        if not all([data_entrada, data_venc, peso_str, armazem_id, tipo_id]):
+            erros.append("Preencha todos os campos obrigatórios.")
+
+        # peso
+        try:
+            peso = int(peso_str)
+            if peso <= 0:
+                erros.append("O peso deve ser maior que zero.")
+        except Exception:
+            erros.append("Informe um valor numérico válido para o peso.")
+            peso = None
+
+        # armazém
+        try:
+            armazem = Armazem.objects.get(idarmazem=armazem_id)
+        except Armazem.DoesNotExist:
+            erros.append("O armazém selecionado não existe.")
+            armazem = None
+
+        # tipo de semente
+        try:
+            tipo_semente = TipoSemente.objects.get(idtiposemente=tipo_id)
+        except TipoSemente.DoesNotExist:
+            erros.append("O tipo de semente selecionado não existe.")
+            tipo_semente = None
+
+        if erros:
+            for e in erros:
+                messages.error(request, e)
+            return render(request, "GestaoLotes/editar_lote.html", {
+                "lote": lote,
+                "armazens": armazens,
+                "tipos_semente": tipos_semente,
+            })
+
+        # Atualiza o lote
+        lote.dataentrada = data_entrada
+        lote.datavencimento = data_venc
+        lote.peso = peso
+        lote.armazem_idarmazem = armazem
+        lote.tiposemente_idtiposemente = tipo_semente
+        lote.qr_payload = qr_payload or None
+        lote.lotecol = lotecol or None
+        lote.save()
+
+        messages.success(request, "Lote atualizado com sucesso!")
+        return redirect("gestao_lotes")
+
+    # GET → mostra o formulário preenchido
+    return render(request, "GestaoLotes/editar_lote.html", {
+        "lote": lote,
+        "armazens": armazens,
+        "tipos_semente": tipos_semente,
+    })
+
+def detalhes_lote(request, lote_id):
+    # Carrega o lote + armazém + semente + endereço do armazém
+    lote = get_object_or_404(
+        Lote.objects.select_related(
+            "armazem_idarmazem",
+            "armazem_idarmazem__endereco_idendereco",
+            "tiposemente_idtiposemente",
+        ),
+        idlote=lote_id
+    )
+
+    hoje = date.today()
+
+    # Status de estoque
+    if lote.datasaida:
+        status_estoque = "Expedido"
+    else:
+        status_estoque = "Em estoque"
+
+    # Status de validade
+    if lote.datavencimento < hoje:
+        status_validade = "Vencido"
+    else:
+        status_validade = "Dentro da validade"
+
+    context = {
+        "lote": lote,
+        "status_estoque": status_estoque,
+        "status_validade": status_validade,
+    }
+
+    return render(request, "GestaoLotes/DetalhesLote.html", context)
+
+def deletar_lote(request, lote_id):
+    # Busca o lote
+    lote = get_object_or_404(
+        Lote.objects.select_related("armazem_idarmazem", "tiposemente_idtiposemente"),
+        idlote=lote_id
+    )
+
+    # Só uma ajudinha visual: está em estoque ou já saiu?
+    em_estoque = lote.datasaida is None
+
+    if request.method == "POST":
+        confirmar = request.POST.get("confirmar_exclusao")
+
+        if not confirmar:
+            messages.error(
+                request,
+                "Você precisa marcar a confirmação antes de excluir o lote."
+            )
+            return render(request, "GestaoLotes/ConfirmarDeleteLote.html", {
+                "lote": lote,
+                "em_estoque": em_estoque,
+            })
+
+        # Aqui não tem tabela com FK pra Lote no seu modelo, então é seguro deletar direto
+        lote.delete()
+        messages.success(request, "Lote excluído com sucesso.")
+        return redirect("gestao_lotes")
+
+    # GET → mostra a tela de confirmação
+    return render(request, "GestaoLotes/ConfirmarDeleteLote.html", {
+        "lote": lote,
+        "em_estoque": em_estoque,
+    })
 
 def dashboard(request):
-    return render(request,"Dashboard/Dashboard.html")
+    # ================================
+    # 1) Sementes por Armazém (kg)
+    # ================================
+    sementes_por_armazem = (
+        Lote.objects
+        .values("armazem_idarmazem__nome")       # nome do armazém
+        .annotate(total_peso=Sum("peso"))        # soma dos pesos
+        .order_by("armazem_idarmazem__nome")
+    )
+
+    armazem_labels = [row["armazem_idarmazem__nome"] for row in sementes_por_armazem]
+    armazem_dados  = [row["total_peso"] or 0 for row in sementes_por_armazem]
+
+    # ================================
+    # 2) Status das Solicitações
+    # ================================
+    status_qs = (
+        Solicitacao.objects
+        .values("status_idstatus__nome")         # nome do status
+        .annotate(total=Count("idsolicitacao"))  # quantas solicitações em cada status
+        .order_by("status_idstatus__nome")
+    )
+
+    status_labels = [row["status_idstatus__nome"] for row in status_qs]
+    status_dados  = [row["total"] for row in status_qs]
+
+    # ================================
+    # 3) Lotes criados nos últimos 6 meses
+    # ================================
+    hoje = timezone.now().date()
+    seis_meses_atras = hoje - timedelta(days=360)
+
+    lotes_qs = (
+        Lote.objects
+        .filter(dataentrada__gte=seis_meses_atras)
+        .annotate(mes=TruncMonth("dataentrada"))
+        .values("mes")
+        .annotate(total=Count("idlote"))
+        .order_by("mes")
+    )
+
+    lotes_labels = [
+        row["mes"].strftime("%b/%y") for row in lotes_qs
+        if row["mes"] is not None
+    ]
+    lotes_dados  = [row["total"] for row in lotes_qs]
+
+    context = {
+       
+        "armazem_labels_json": json.dumps(armazem_labels),
+        "armazem_dados_json":  json.dumps(armazem_dados),
+
+        "status_labels_json":  json.dumps(status_labels),
+        "status_dados_json":   json.dumps(status_dados),
+
+        "lotes_labels_json":   json.dumps(lotes_labels),
+        "lotes_dados_json":    json.dumps(lotes_dados),
+    }
+
+    return render(request, "Dashboard/Dashboard.html", context)
+
 
 def cadastro_solicitacoes(request):
     return render(request,"GestaoSolicitacoes/CadastroSolicitacoes.html")
 
 def gestao_solicitacoes(request):
-    return render(request,"GestaoSolicitacoes/GestaoSolicitacoes.html")
+
+    solicitacoes = (
+        Solicitacao.objects
+        .select_related("cooperativa_cnpj", "safra_idsafra", "status_idstatus")
+        .all()
+        .order_by("-idsolicitacao")
+    )
+
+    contexto = {
+        "solicitacoes": solicitacoes
+    }
+
+    return render(request, "GestaoSolicitacoes/GestaoSolicitacoes.html", contexto)
+
+def alterar_status_solicitacao(request, solicitacao_id):
+    # Carrega a solicitação com os dados relacionados
+    solicitacao = get_object_or_404(
+        Solicitacao.objects.select_related("cooperativa_cnpj", "safra_idsafra", "status_idstatus"),
+        idsolicitacao=solicitacao_id
+    )
+
+    # Todos os status possíveis
+    statuses = Status.objects.all().order_by("nome")
+
+    if request.method == "POST":
+        novo_status_id = request.POST.get("status_id")
+
+        if not novo_status_id:
+            messages.error(request, "Selecione um status.")
+        else:
+            try:
+                novo_status = Status.objects.get(idstatus=novo_status_id)
+                solicitacao.status_idstatus = novo_status
+                solicitacao.save()
+                messages.success(request, "Status da solicitação atualizado com sucesso!")
+                return redirect("gestao_solicitacoes")
+            except Status.DoesNotExist:
+                messages.error(request, "Status informado é inválido.")
+
+    context = {
+        "solicitacao": solicitacao,
+        "statuses": statuses,
+    }
+    return render(request, "GestaoSolicitacoes/AlterarStatusSolicitacao.html", context)

@@ -1,0 +1,58 @@
+{% extends "Siderbar/base_sidebar.html" %}
+{% load static %}
+
+{% block title %}Alterar Status da Solicitação - AgroConecta{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+  <script>
+      {% for message in messages %}
+          alert("{{ message|escapejs }}");
+      {% endfor %}
+  </script>
+{% endif %}
+
+<div class="cooperativa-detalhe-container">
+
+    <h1>Alterar Status da Solicitação #{{ solicitacao.idsolicitacao }}</h1>
+
+    <section class="coop-bloco">
+        <h2>Resumo da Solicitação</h2>
+        <p><strong>Cooperativa:</strong> {{ solicitacao.cooperativa_cnpj.razaosocial }}</p>
+        <p><strong>Safra:</strong> {{ solicitacao.safra_idsafra.ano }}</p>
+        <p><strong>Quantidade (kg):</strong> {{ solicitacao.quantidade }}</p>
+        <p><strong>Produtores Beneficiados:</strong> {{ solicitacao.numeroprodutoresbeneficiados }}</p>
+        <p><strong>Status atual:</strong> {{ solicitacao.status_idstatus.nome }}</p>
+    </section>
+
+    <section class="coop-bloco">
+        <h2>Novo Status</h2>
+        <form method="POST">
+            {% csrf_token %}
+
+            <label for="id_status">Selecione o status:</label>
+            <select name="status_id" id="id_status" class="input-rounded" required>
+                <option value="" disabled selected>Selecione...</option>
+                {% for st in statuses %}
+                    <option value="{{ st.idstatus }}"
+                        {% if solicitacao.status_idstatus.idstatus == st.idstatus %}selected{% endif %}>
+                        {{ st.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <div class="coop-acoes" style="margin-top: 1.5rem;">
+                <button type="submit" class="btn btn-editar">
+                    Salvar Status
+                </button>
+                <a href="{% url 'gestao_solicitacoes' %}" class="btn btn-voltar">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </section>
+
+</div>
+
+{% endblock %}

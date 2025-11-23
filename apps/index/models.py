@@ -163,18 +163,23 @@ class Solicitacao(models.Model):
 
 # Tabela de associação (PK composta no MySQL)
 class SolicitacaoTipoSemente(models.Model):
-    id = models.AutoField(primary_key=True)  # necessário para Django
+    
     solicitacao_idsolicitacao = models.ForeignKey(
-        Solicitacao, models.CASCADE,
-        db_column='Solicitacao_idSolicitacao'
+        Solicitacao,
+        models.CASCADE,
+        db_column='Solicitacao_idSolicitacao',
+        primary_key=True,
     )
     tiposemente_idtiposemente = models.ForeignKey(
-        TipoSemente, models.CASCADE,
-        db_column='TipoSemente_idTipoSemente'
+        TipoSemente,
+        models.CASCADE,
+        db_column='TipoSemente_idTipoSemente',
     )
     quantidade = models.PositiveIntegerField()
 
     class Meta:
-        managed = False
+        managed = False              
         db_table = 'SolicitacaoTipoSemente'
-        unique_together = (('solicitacao_idsolicitacao', 'tiposemente_idtiposemente'),)
+        unique_together = (          
+            ('solicitacao_idsolicitacao', 'tiposemente_idtiposemente'),
+        )

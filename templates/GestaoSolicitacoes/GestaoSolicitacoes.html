@@ -4,39 +4,56 @@
 {% block title %}Gestão de Solicitações - AgroConecta{% endblock %}
 
 {% block content %}
+{% if messages %}
+  <script>
+      {% for message in messages %}
+          alert("{{ message|escapejs }}");
+      {% endfor %}
+  </script>
+{% endif %}
 
 <div class="gestao-container">
     <div class="gestao-header">
         <h1 class="gestao-titulo">Gestão de Solicitações 📋</h1>
-        
-        <a href="{% url 'cadastro_solicitacoes' %}" class="btn-adicionar">
-            <i class="bi bi-plus-lg"></i> Nova Solicitação
-        </a>
+        {# Removido botão de Nova Solicitação #}
     </div>
 
     {% for solicitacao in solicitacoes %}
     <div class="gestao-item">
         <div class="item-header-info">
             <h2 class="item-titulo">
-                Solicitação #{{ solicitacao.id }} 
-                <span class="item-safra">({{ solicitacao.safra_idSafra.nome }})</span>
+                Solicitação #{{ solicitacao.idsolicitacao }} 
+                <span class="item-safra">
+                    ({{ solicitacao.safra_idsafra.ano }})
+                </span>
             </h2>
         </div>
         
         <div class="item-details">
-            <p><strong>Cooperativa:</strong> {{ solicitacao.Cooperativa_CNPJ.nome }}</p>
-            <p><strong>Quantidade (kg):</strong> {{ solicitacao.quantidade }} kg</p>
-            <p><strong>Produtores Beneficiados:</strong> {{ solicitacao.numeroProdutoresBeneficiados }}</p>
-            <p><strong>Status:</strong> <span class="status-{{ solicitacao.Status_idStatus.id }}">{{ solicitacao.Status_idStatus.nome }}</span></p>
+            <p>
+                <strong>Cooperativa:</strong>
+                {{ solicitacao.cooperativa_cnpj.razaosocial }}
+            </p>
+            <p>
+                <strong>Quantidade (kg):</strong>
+                {{ solicitacao.quantidade }} kg
+            </p>
+            <p>
+                <strong>Produtores Beneficiados:</strong>
+                {{ solicitacao.numeroprodutoresbeneficiados }}
+            </p>
+            <p>
+                <strong>Status:</strong>
+                <span class="status-{{ solicitacao.status_idstatus.idstatus }}">
+                    {{ solicitacao.status_idstatus.nome }}
+                </span>
+            </p>
         </div>
 
         <div class="item-acoes">
-            <a href="{% url 'detalhes_solicitacao' solicitacao.id %}" class="btn-detalhes">
-                <i class="bi bi-eye"></i> Ver Detalhes
-            </a>
-            
-            <a href="{% url 'editar_solicitacao' solicitacao.id %}" class="btn-editar-item">
-                <i class="bi bi-pencil"></i> Editar
+            <a href="{% url 'alterar_status_solicitacao' solicitacao.idsolicitacao %}" 
+               class="btn-editar-item">
+                <i class="bi bi-toggle-on"></i> Definir Status
             </a>
         </div>
     </div>

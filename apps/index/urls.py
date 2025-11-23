@@ -4,7 +4,8 @@ from apps.index.views import (
     gestao_sementes, cadastrar_semente,editar_semente, detalhes_semente, perfil_gestor,
     gestao_armazens,ver_armazens,cadastrar_armazens,gestao_lotes,cadastrar_lotes,
     gestao_armazens,ver_armazens,cadastrar_armazens,gestao_lotes,cadastrar_lotes, dashboard,
-    deletar_semente, editar_perfil_gestor, cadastro_solicitacoes, editar_armazem, deletar_armazem,gestao_solicitacoes)
+    deletar_semente, editar_perfil_gestor, cadastro_solicitacoes, editar_armazem, deletar_armazem,gestao_solicitacoes,
+    deletar_cooperativa, editar_lote, detalhes_lote, deletar_lote, alterar_status_solicitacao)
 from django.urls import path
 
 
@@ -33,6 +34,15 @@ urlpatterns = [
         path("cadastro_solicitacoes", cadastro_solicitacoes, name="cadastro_solicitacoes"),
         path("armazens/<int:id>/editar/", editar_armazem, name="editar_armazem"),
         path("armazem/<int:armazem_id>/deletar/", deletar_armazem, name="deletar_armazem"),
-        path("gestao_solicitacoes",gestao_solicitacoes, name="gestao_solicitacoes")
+        path("gestao_solicitacoes",gestao_solicitacoes, name="gestao_solicitacoes"),
+        path("cooperativas/<path:cnpj>/deletar/", deletar_cooperativa, name="deletar_cooperativa"),
+        path('lotes/<int:lote_id>/editar/', editar_lote, name='editar_lote'),
+        path("lotes/<int:lote_id>/detalhes/", detalhes_lote, name="detalhes_lote"),
+        path("lotes/<int:lote_id>/deletar/", deletar_lote, name="deletar_lote"),
+        path(
+                "solicitacoes/<int:solicitacao_id>/status/",
+                alterar_status_solicitacao,
+                name="alterar_status_solicitacao",
+            ),
 
     ]

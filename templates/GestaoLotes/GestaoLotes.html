@@ -5,6 +5,14 @@
 {% block body_class %}lotes-lista-active{% endblock %} 
 {% block content %}
 
+{% if messages %}
+  <script>
+      {% for message in messages %}
+          alert("{{ message|escapejs }}");
+      {% endfor %}
+  </script>
+{% endif %}
+
 <div class="lista-page">
 
     <div class="header-lista">
@@ -20,20 +28,36 @@
         {# INÍCIO DO LOOP: Exibe os lotes #}
         {% for lote in lotes %}
             <div class="card-item-lote">
-                <h2 class="lote-nome">Lote {{ lote.id }} - {{ lote.tipo_semente.nome }}</h2>
-                
+
+                <h2 class="lote-nome">
+                    Lote {{ lote.idlote }} - {{ lote.tiposemente_idtiposemente.nome }}
+                </h2>
+
                 <div class="lote-info">
-                    <p><strong>Tipo Semente:</strong> {{ lote.tipo_semente.nome }}</p>
-                    <p><strong>Data Vencimento:</strong> {{ lote.data_vencimento|date:"d/m/Y" }}</p>
-                    <p><strong>Peso (kg):</strong> {{ lote.peso }}kg</p>
-                    <p><strong>Armazém:</strong> {{ lote.armazem.nome }}</p>
-                    <p><strong>Operador Responsável:</strong> {{ lote.operador.nome }}</p>
+                    <p><strong>Tipo Semente:</strong> {{ lote.tiposemente_idtiposemente.nome }}</p>
+
+                    <p><strong>Data Vencimento:</strong> 
+                        {{ lote.datavencimento|date:"d/m/Y" }}
+                    </p>
+
+                    <p><strong>Peso (kg):</strong> {{ lote.peso }} kg</p>
+
+                    <p><strong>Armazém:</strong> 
+                        {{ lote.armazem_idarmazem.nome }}
+                    </p>
+
+                    <p><strong>Operador Responsável:</strong> 
+                        {{ lote.armazem_idarmazem.operadorarmazem_idoperadorarmazem.nome }}
+                    </p>
                 </div>
 
                 <div class="lote-botoes">
-                    <a href="#" class="btn-detalhes">Ver Detalhes</a>
-                    <a href="#" class="btn-editar">Editar</a>
+                    <a href="{% url 'detalhes_lote' lote.idlote %}" class="btn-detalhes">Ver Detalhes</a>
+                    <a href="{% url 'editar_lote' lote.idlote %}" class="btn-acao btn-editar">
+                        <i class="bi bi-pencil-square"></i> Editar
+                    </a>
                 </div>
+
             </div>
         {% empty %}
             <p style="color: white; font-size: 1.1em; text-align: center; margin-top: 50px;">

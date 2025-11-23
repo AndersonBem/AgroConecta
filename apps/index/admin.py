@@ -93,9 +93,9 @@ class SolicitacaoAdmin(BaseReadOnlyPKAdmin):
 
 @admin.register(SolicitacaoTipoSemente)
 class SolicitacaoTipoSementeAdmin(BaseReadOnlyPKAdmin):
-    list_display = ('id', 'solicitacao_idsolicitacao', 'tiposemente_idtiposemente', 'quantidade')
+    list_display = ('solicitacao_idsolicitacao', 'tiposemente_idtiposemente', 'quantidade')
     search_fields = ('solicitacao_idsolicitacao__idsolicitacao', 'tiposemente_idtiposemente__nome')
     list_filter = ('tiposemente_idtiposemente',)
     autocomplete_fields = ('solicitacao_idsolicitacao', 'tiposemente_idtiposemente')
     list_select_related = ('solicitacao_idsolicitacao', 'tiposemente_idtiposemente')
-    ordering = ('id',)
+    ordering = ('solicitacao_idsolicitacao',)

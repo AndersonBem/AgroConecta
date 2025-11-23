@@ -1,0 +1,78 @@
+{% extends "Siderbar/base_sidebar.html" %}
+{% load static %}
+
+{% block title %}Confirmar Exclusão da Cooperativa - AgroConecta{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+  <script>
+      {% for message in messages %}
+          alert("{{ message|escapejs }}");
+      {% endfor %}
+  </script>
+{% endif %}
+
+<div class="cooperativa-detalhe-container">
+
+    <h1>Excluir Cooperativa: {{ coop.razaosocial }}</h1>
+
+    <section class="coop-bloco">
+        <h2>Dados principais</h2>
+        <p><strong>CNPJ:</strong> {{ coop.cnpj }}</p>
+        <p><strong>Razão social:</strong> {{ coop.razaosocial }}</p>
+        <p><strong>E-mail institucional:</strong> {{ coop.emailinstitucional }}</p>
+    </section>
+
+    <section class="coop-bloco">
+        <h2>Dados vinculados que serão afetados</h2>
+
+        <p><strong>Telefones cadastrados:</strong> {{ telefones|length }}</p>
+        {% if telefones %}
+            <ul>
+                {% for tel in telefones %}
+                    <li>{{ tel.numero }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <p><strong>Solicitações vinculadas:</strong> {{ solicitacoes|length }}</p>
+        {% if solicitacoes %}
+            <ul>
+                {% for s in solicitacoes %}
+                    <li>
+                        Solicitação #{{ s.idsolicitacao }} —
+                        Quantidade: {{ s.quantidade }} kg —
+                        Produtores: {{ s.numeroprodutoresbeneficiados }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <p><strong>Registros de tipos de semente em solicitações:</strong> {{ sementes_solicitadas|length }}</p>
+        <p class="alert-warning">
+            <strong>Atenção:</strong> Ao excluir esta cooperativa, todos os dados acima
+            associados a ela também serão removidos do sistema.
+        </p>
+    </section>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+            <input type="checkbox" name="confirmar_exclusao" value="1">
+            Confirmo que desejo excluir esta cooperativa e todos os dados relacionados.
+        </label>
+
+        <button type="submit" class="btn btn-deletar">
+            Excluir cooperativa
+        </button>
+
+        <a href="{% url 'detalhe_cooperativa' coop.cnpj %}" class="btn btn-voltar">
+            Cancelar
+        </a>
+    </form>
+
+</div>
+
+{% endblock %}

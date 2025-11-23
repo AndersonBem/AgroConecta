@@ -1,22 +1,15 @@
 {% extends "Siderbar/base_sidebar.html" %}
 {% load static %}
 
-{% block title %}Cadastro de Lote - AgroConecta{% endblock %}
+{% block title %}Editar Lote - AgroConecta{% endblock %}
 {% block body_class %}lote-cadastro-ativa{% endblock %} 
-{% block content %}
 
-{% if messages %}
-  <script>
-      {% for message in messages %}
-          alert("{{ message|escapejs }}");
-      {% endfor %}
-  </script>
-{% endif %}
+{% block content %}
 
 <div class="lote-cadastro-container">
     
     <header class="page-header">
-        <h1>Cadastrar Novo Lote 🚜</h1>
+        <h1>Editar Lote 🚜</h1>
         <a href="{% url 'gestao_lotes' %}" class="btn-voltar">
             <i class="bi bi-arrow-left-circle"></i> Voltar para Gestão de Lotes
         </a>
@@ -32,18 +25,23 @@
                 
                 <div class="form-group col-33">
                     <label for="id_dataEntrada" class="form-label">Data de Entrada *</label>
-                    <input type="date" id="id_dataEntrada" name="dataEntrada" class="input-rounded" required>
+                    <input type="date" id="id_dataEntrada" name="dataEntrada"
+                           class="input-rounded" required
+                           value="{{ lote.dataentrada|date:'Y-m-d' }}">
                 </div>
 
                 <div class="form-group col-33">
                     <label for="id_dataVencimento" class="form-label">Data de Vencimento *</label>
-                    <input type="date" id="id_dataVencimento" name="dataVencimento" class="input-rounded" required>
+                    <input type="date" id="id_dataVencimento" name="dataVencimento"
+                           class="input-rounded" required
+                           value="{{ lote.datavencimento|date:'Y-m-d' }}">
                 </div>
                 
                 <div class="form-group col-33">
                     <label for="id_peso" class="form-label">Peso (kg) *</label>
                     <input type="number" id="id_peso" name="peso" class="input-rounded"
-                            placeholder="Ex: 1050" min="1" required>
+                           placeholder="Ex: 1050" min="1" required
+                           value="{{ lote.peso }}">
                 </div>
             </div>
             
@@ -58,10 +56,14 @@
 
                     <select id="id_armazem" name="Armazem_idArmazem"
                             class="input-rounded select-field" required>
-                        <option value="" disabled selected>Selecione um Armazém</option>
+                        <option value="" disabled>Selecione um Armazém</option>
 
                         {% for armazem in armazens %}
-                            <option value="{{ armazem.idarmazem }}">
+                            <option value="{{ armazem.idarmazem }}"
+                                {% if lote.armazem_idarmazem.idarmazem == armazem.idarmazem %}
+                                    selected
+                                {% endif %}
+                            >
                                 {{ armazem.idarmazem }} - {{ armazem.nome }}
                             </option>
                         {% empty %}
@@ -69,18 +71,22 @@
                         {% endfor %}
                     </select>
 
-                    <small class="form-text">Escolha onde o lote será armazenado.</small>
+                    <small class="form-text">Armazém onde o lote está estocado.</small>
                 </div>
 
                 <div class="form-group col-50">
                     <label for="id_semente" class="form-label">Tipo de Semente *</label>
                     
-                    <select id="id_semente" name="TipoSemente_idTipoSemente" class="input-rounded select-field" required>
-                        <option value="" disabled selected>Selecione (ID - Nome)</option>
+                    <select id="id_semente" name="TipoSemente_idTipoSemente"
+                            class="input-rounded select-field" required>
+                        <option value="" disabled>Selecione (ID - Nome)</option>
                         
-                        {# LOOP SOBRE OS DADOS DO BANCO: TIPOSEMENTE #}
                         {% for semente in tipos_semente %}
-                            <option value="{{ semente.idtiposemente }}">
+                            <option value="{{ semente.idtiposemente }}"
+                                {% if lote.tiposemente_idtiposemente.idtiposemente == semente.idtiposemente %}
+                                    selected
+                                {% endif %}
+                            >
                                 {{ semente.idtiposemente }} - {{ semente.nome }}
                             </option>
                         {% empty %}
@@ -88,7 +94,7 @@
                         {% endfor %}
                         
                     </select>
-                    <small class="form-text">Qual tipo de semente este lote contém.</small>
+                    <small class="form-text">Tipo de semente deste lote.</small>
                 </div>
             </div>
             
@@ -97,22 +103,24 @@
                 <div class="form-group col-50">
                     <label for="id_qr_payload" class="form-label">QR Code Payload</label>
                     <input type="text" id="id_qr_payload" class="input-rounded"
-                            name="qr_payload" placeholder="Ex: QR0001">
-                    <small class="form-text">Identificador único (geralmente gerado automaticamente).</small>
+                           name="qr_payload" placeholder="Ex: QR0001"
+                           value="{{ lote.qr_payload }}">
+                    <small class="form-text">Identificador único (se houver).</small>
                 </div>
 
                 <div class="form-group col-50">
                     <label for="id_lotecol" class="form-label">Código do Lote</label>
                     <input type="text" id="id_lotecol" class="input-rounded"
-                            name="Lotecol" placeholder="Ex: Lote-001">
-                    <small class="form-text">Código interno de referência (LoteCol).</small>
+                           name="Lotecol" placeholder="Ex: Lote-001"
+                           value="{{ lote.lotecol }}">
+                    <small class="form-text">Código interno de referência.</small>
                 </div>
 
             </div>
             
             <div class="submit-area">
                 <button type="submit" class="btn-success btn-full-width">
-                    <i class="bi bi-save"></i> Cadastrar Lote
+                    <i class="bi bi-save"></i> Salvar alterações
                 </button>
             </div>
 
