@@ -105,16 +105,27 @@ Acesse em:
 ##📂 Estrutura do Projeto
 
 AgroConecta/
+
 │── apps/
+
 │   ├── Gestor/
+
 │   ├── Armazem/
+
 │   ├── Lote/
+
 │   ├── Semente/
+
 │   ├── Cooperativa/
+
 │   ├── Solicitacao/
+
 │── static/
+
 │── templates/
+
 │── manage.py
+
 │── requirements.txt
 
 ## 📉 Dashboard Analítico
@@ -138,5 +149,6 @@ Wendell Barboza — Front-end e design
 ## 📄 Licença
 
 Projeto acadêmico — Livre para uso educacional.
+
 
 
