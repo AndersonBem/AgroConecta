@@ -16,7 +16,7 @@ body {
 .hero {
   position: relative;
   min-height: 100vh;
-  width: 100%;
+  width: 100;
   overflow: hidden;
 }
 
@@ -24,7 +24,7 @@ body {
 .hero__bg {
   position: absolute;
   inset: 0;
-  background-image: url("../img/plantacao.jpg");
+  background-image: url("../img/milharal-pexel.jpg");
   background-size: cover;
   background-position: center;
   filter: saturate(1.05) contrast(1.05);
@@ -541,6 +541,8 @@ section{
     /* 2. TRANSFORMAÇÃO DO TRIÂNGULO EM FUNDO RETANGULAR */
     .hero__triangle::before {
         content: none;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%) !important;
+
     }
     
     .hero__triangle {
