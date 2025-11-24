@@ -102,31 +102,6 @@ python manage.py runserver
 Acesse em:
 👉 http://127.0.0.1:8000/
 
-##📂 Estrutura do Projeto
-
-AgroConecta/
-
-│── apps/
-
-│   ├── Gestor/
-
-│   ├── Armazem/
-
-│   ├── Lote/
-
-│   ├── Semente/
-
-│   ├── Cooperativa/
-
-│   ├── Solicitacao/
-
-│── static/
-
-│── templates/
-
-│── manage.py
-
-│── requirements.txt
 
 ## 📉 Dashboard Analítico
 
@@ -149,6 +124,7 @@ Wendell Barboza — Front-end e design
 ## 📄 Licença
 
 Projeto acadêmico — Livre para uso educacional.
+
 
 
 
