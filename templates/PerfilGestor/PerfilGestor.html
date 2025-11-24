@@ -49,24 +49,22 @@ class="perfil-gestor-active"
                     </tr>
                 </thead>
                 <tbody>
-                    {% for arm in armazens %}
-                        <tr>
-                            <td>{{ arm.idarmazem }}</td>
-                            <td>{{ arm.nome }}</td>
-                            {# não temos capacidade no model, então deixo traço #}
-                            <td>-</td>
-                            <td>Ativo</td>
-                            <td>
-                                <a href="{% url 'ver_armazens' arm.idarmazem %}" class="table-action-btn">Ver</a>
-                                {# futuramente você pode trocar por {% url 'detalhe_armazem' arm.idarmazem %} #}
-                            </td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="5">Nenhum armazém associado a este gestor.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
+    {% for arm in armazens %}
+        <tr>
+            <td data-label="ID">{{ arm.idarmazem }}</td>
+            <td data-label="Nome do Armazém">{{ arm.nome }}</td>
+            <td data-label="Capacidade (kg)">-</td>
+            <td data-label="Status">Ativo</td>
+            <td data-label="Ações">
+                <a href="{% url 'ver_armazens' arm.idarmazem %}" class="table-action-btn">Ver</a>
+            </td>
+        </tr>
+    {% empty %}
+        <tr>
+            <td colspan="5">Nenhum armazém associado a este gestor.</td>
+        </tr>
+    {% endfor %}
+</tbody>
             </table>
         </div>
     </div>

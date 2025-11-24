@@ -37,6 +37,9 @@
     <!-- conteúdo central -->
     <section class="cadastro-gestor__content">
       <h1 class="cadastro-gestor__title">Crie Seu Cadastro</h1>
+      <a href="{% url 'index' %}" class="btn-voltar-perfil">
+        <i class="bi bi-arrow-left-circle"></i> Voltar
+      </a><form class="cadastro-gestor__form" method="post" >
 
       <form class="cadastro-gestor__form" method="post">
         {% csrf_token %}

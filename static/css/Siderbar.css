@@ -2849,3 +2849,99 @@ body.sidebar-expandida ul li.item-menu a {
     }
 }
 
+@media(max-width: 800px){
+    .cooperativas-header > h1 {
+       margin-left: 1.65rem;
+    }
+    .add-cooperativa-btn{
+        max-width: 80%;
+        margin-left: 1.65rem;
+    }
+    .lote-botoes {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza */
+    gap: 10px;
+}
+.gestor-profile-container {
+        /* O valor 30px ou 40px deve ser o suficiente para descolar do topo */
+        padding-top: 40px; 
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-bottom: 50px;
+    }
+
+    /* Opcional: Adiciona um margin-bottom ao título para separá-lo do primeiro card */
+    .profile-title {
+        margin-bottom: 25px; 
+        font-size: 1.8rem; /* Reduz o tamanho do título em mobile */
+    }
+    
+    /* Outros ajustes de cards no mobile... */
+    .profile-card {
+        margin-bottom: 20px;
+    }
+    .data-table-container {
+        overflow-x: hidden; 
+    }
+
+    /* 2. Esconder cabeçalhos da tabela */
+    .data-table-container table thead {
+        /* Esconde a linha de cabeçalho na visualização mobile */
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    /* 3. Fazer com que linhas e células se comportem como blocos */
+    .data-table-container table,
+    .data-table-container table tbody,
+    .data-table-container table tr,
+    .data-table-container table td {
+        display: block;
+        width: 100%; /* Linha e Célula ocupam 100% da largura */
+    }
+
+    /* Adicionar um pequeno espaçamento entre as linhas */
+    .data-table-container table tr {
+        margin-bottom: 20px;
+        border: 1px solid #ccc; /* Opcional: Para criar a aparência de "card" */
+        border-radius: 8px;
+        padding: 10px;
+    }
+
+   /* 1. Estilizar Células (TD) */
+    .data-table-container table td {
+        /* Alinha o texto do VALOR para a esquerda (mais natural em formato de lista) */
+        text-align: left; 
+        
+        /* Aumentamos o padding-left para garantir espaço suficiente para o RÓTULO */
+        padding-left: 150px; /* Aumentado de 50% para um valor fixo seguro */
+        padding-top: 5px;   /* Adiciona um respiro vertical */
+        padding-bottom: 5px;
+        position: relative;
+    }
+
+    /* 2. Estilizar Rótulos (TD::BEFORE) */
+    .data-table-container table td::before {
+        /* Exibe o nome da coluna usando o atributo data-label */
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        
+        /* Largura fixada para os rótulos */
+        width: 130px; /* Garante que o rótulo 'Nome do Armazém' caiba e empurre o valor */
+        
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        /* Se o rótulo for muito longo, ele será cortado com 'overflow: hidden;' (Opcional) */
+        overflow: hidden; 
+        text-overflow: ellipsis;
+    }
+}
