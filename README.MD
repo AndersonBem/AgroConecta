@@ -58,20 +58,20 @@ O **AgroConecta** centraliza e facilita o gerenciamento de todo o processo de di
 # 🛠️ Como Rodar Localmente
 
 ## 1. Clone o repositório
-bash
+
 git clone https://github.com/AndersonBem/AgroConecta.git
 cd AgroConecta
 
 ## 2. Crie o ambiente virtual
 python -m venv venv
 venv\Scripts\activate   # Windows
-# OU:
+OU:
 source venv/bin/activate  # Linux/Mac
 
-##3. Instale as dependências
+## 3. Instale as dependências
 pip install -r requirements.txt
 
-##4. Configure o MySQL
+## 4. Configure o MySQL
 
 Crie o banco:
 
@@ -138,4 +138,5 @@ Wendell Barboza — Front-end e design
 ## 📄 Licença
 
 Projeto acadêmico — Livre para uso educacional.
+
 
