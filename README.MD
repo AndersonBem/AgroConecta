@@ -58,7 +58,7 @@ O **AgroConecta** centraliza e facilita o gerenciamento de todo o processo de di
 # 🛠️ Como Rodar Localmente
 
 ## 1. Clone o repositório
-```bash
+bash
 git clone https://github.com/AndersonBem/AgroConecta.git
 cd AgroConecta
 
@@ -138,3 +138,4 @@ Wendell Barboza — Front-end e design
 ## 📄 Licença
 
 Projeto acadêmico — Livre para uso educacional.
+
