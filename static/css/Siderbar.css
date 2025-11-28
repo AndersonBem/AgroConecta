@@ -1753,6 +1753,7 @@ body.lote-cadastro-ativa .main-content {
     margin-bottom: 15px;
     border-bottom: 1px dashed #eee;
     padding-bottom: 8px;
+   
 }
 
 
@@ -2629,9 +2630,6 @@ body.solicitacao-active .main-content {
 }
 
 /* ====================================================== */
-/*       CORREÇÃO RESPONSIVA: GERAL E TELA DE EXCLUSÃO    */
-/* ====================================================== */
-/* ====================================================== */
 /*       CORREÇÃO GERAL E TELA DE EXCLUSÃO (<= 600px)     */
 /* ====================================================== */
 @media (max-width: 600px) {
@@ -2943,5 +2941,15 @@ body.sidebar-expandida ul li.item-menu a {
         /* Se o rótulo for muito longo, ele será cortado com 'overflow: hidden;' (Opcional) */
         overflow: hidden; 
         text-overflow: ellipsis;
+    }
+}
+/* ====================================================== */
+/*       OCULTAR BOTÃO HAMBÚRGUER EM TELAS GRANDES        */
+/* ====================================================== */
+
+/* Oculta o container do botão em telas maiores que 600px (Desktop/Tablet Grande) */
+@media (min-width: 601px) {
+    .btn-expandir {
+        display: none !important;
     }
 }
