@@ -1,8 +1,11 @@
 // static/js/dashboard_charts.js
 
-const PRIMARY_COLOR = '#002D28';   // var(--verde-1)
+const PRIMARY_COLOR = '#002D28';  // var(--verde-1)
 const SECONDARY_COLOR = '#489372'; // var(--verde-2)
-const DANGER_COLOR = '#ee7f25ff';
+const PENDING_COLOR = '#ff9900';  // Novo Laranja/Amarelo, mais padrão Chart.js
+const CANCEL_COLOR = '#a1a1a1ff';  // Seu Vermelho Forte
+const REJECT_COLOR = '#c20303ff';  // NOVO: Tom de Ciano/Verde Escuro para Reprovada (Diferente do SECUNDÁRIO)
+// const DANGER_COLOR = '#ee7f25ff'; // NÃO USAR MAIS, use PENDING_COLOR ou CANCEL_COLOR
 
 // Lê os dados do <div id="dashboard-data">
 function getChartData() {
@@ -79,9 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     label: 'Nº de Solicitações',
                     data: data.statusDados,
                     backgroundColor: [
-                        SECONDARY_COLOR,
-                        '#ff2c07ff', // pendente
-                        DANGER_COLOR
+                       SECONDARY_COLOR, // 1. Aprovada (Verde)
+                       CANCEL_COLOR, // 2. Cancelada (Vermelho Forte)
+                       PENDING_COLOR,  // 3. Pendente (Laranja)
+                       REJECT_COLOR
                     ],
                     hoverOffset: 4
                 }]
